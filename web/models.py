@@ -6,15 +6,19 @@ class Usuario(models.Model):
     correo = models.CharField(max_length=200)
     contrasena = models.CharField(max_length=200)
     alias = models.CharField(max_length=200)
+    verificado = models.BooleanField(default=False)
     conversaciones = models.ForeignKey("Conversacion",null=True)
 
 class Persona(models.Model):
-    perfil = models.ForeignKey("Perfil")
     identificador = models.CharField(max_length=200)
     usuariosSimilares = models.ManyToManyField("Persona")
 
+    def obtener_perfil(self):
+        return Perfil.objects.get(persona=me)
+
 class Perfil(models.Model):
-    fechaNacimiento =models.DateTimeField(default=timezone.now)
+    persona = models.ForeignKey("Persona")
+    fechaNacimiento =models.DateTimeField()
     sexo = models.CharField(max_length=200)
     trabajadorEstudiante = models.BooleanField()
     campo = models.CharField(max_length=200)
@@ -22,9 +26,12 @@ class Perfil(models.Model):
     animalCompania = models.CharField(max_length=200)
     descripcion = models.TextField()
     zonaBuscada = models.CharField(max_length=200)
-    inicioEstancia = models.DateTimeField(default=timezone.now)
-    finEstancia = models.DateTimeField(default=timezone.now)
+    inicioEstancia = models.DateTimeField()
+    finEstancia = models.DateTimeField()
     instrumento = models.CharField(max_length=200)
+
+    def obtener_tags_asociados(self):
+        return TagValue.objects.get(perfil=me)
 
 class TagValue(models.Model):
     perfil = models.ForeignKey("Perfil")
@@ -40,6 +47,9 @@ class Tag(models.Model):
 
 class Conversacion(models.Model):
     emisor = models.ForeignKey("Usuario")
+
+    def obtener_mensajes(self):
+        return Mensaje.objects.get(conversacion=me)
 
 class Mensaje(models.Model):
     conversacion = models.ForeignKey("Conversacion")
@@ -60,13 +70,16 @@ class Casa(models.Model):
     precioAlquiler = models.FloatField()
     gastosComplementarios = models.FloatField()
 
+    def obtener_habitaciones(self):
+        return Habitacion.objects.get(casa=me)
+
 class FotoCasa(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
     casa = models.ForeignKey("Casa")
 
 class Habitacion(models.Model):
-    descripcion = models.TextField()
     casa = models.ForeignKey("Casa")
+    descripcion = models.TextField()
 
 class FotoHabitacion(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
