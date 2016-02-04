@@ -6,7 +6,7 @@ class Usuario(models.Model):
     correo = models.CharField(max_length=200)
     contrasena = models.CharField(max_length=200)
     alias = models.CharField(max_length=200)
-    conversaciones = models.ForeignKey("Conversacion")
+    conversaciones = models.ForeignKey("Conversacion",null=True)
 
 class Persona(models.Model):
     perfil = models.ForeignKey("Perfil")
