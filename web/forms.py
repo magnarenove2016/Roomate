@@ -11,6 +11,6 @@ class CasaForm(forms.ModelForm):
 
     class Meta:
         model = Casa
-        fields = ('ciudad', 'num Habitaciones','numHabitacionesDisponibles',
+        fields = ('ciudad', 'numHabitaciones','numHabitacionesDisponibles',
          'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
          'gastosComplementarios')
