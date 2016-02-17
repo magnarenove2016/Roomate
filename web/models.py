@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from web.views import arrendatario
 
 # Create your models here.
 class Usuario(models.Model):
@@ -8,6 +9,7 @@ class Usuario(models.Model):
     alias = models.CharField(max_length=200)
     verificado = models.BooleanField(default=False)
     conversaciones = models.ForeignKey("Conversacion",null=True)
+    arrendatario = models.BooleanField(default=False)
 
 class Persona(models.Model):
     identificador = models.CharField(max_length=200)
