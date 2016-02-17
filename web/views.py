@@ -16,3 +16,17 @@ def register_new_user(request):
     else:
         form = UsuarioForm()
     return render(request, 'web/register_new_user.html', {'form':form})
+#Arrendatario, registro de un arrendatario
+@login_required
+def arrendatario(request):
+    if request.method == "POST":
+        form = ArrendatarioForm(request.POST)
+        if form.isvalid():
+            Usuario = form.save(commit=False)
+            Usuario.save()
+            return redirect('')
+    else:
+        form = ArrendatarioForm()
+    return render(request, 'web/', {'arrendatario': form})
+
+    
