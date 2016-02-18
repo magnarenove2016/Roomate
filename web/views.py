@@ -16,3 +16,6 @@ def register_new_user(request):
     else:
         form = UsuarioForm()
     return render(request, 'web/register_new_user.html', {'form':form})
+    
+def web_prueba(request):
+    return render(request, 'index.html', {})
