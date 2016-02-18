@@ -13,8 +13,19 @@ def register_new_user(request):
     if request.method == "POST":
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            Usuario = form.save(commit=False)
-            Usuario.save()
+            b = Usuario.objects.filter(correo=request.POST.get('correo'))#si existe un usuario con el mismo correo se guarda en b
+            if b.count() == 0: #guarda el usuario sii no existe un usuario con el mismo correo
+            	usuario = form.save(commit=False)
+            	usuario.save()
+            	context = {
+            		'created':request.POST.get('correo')
+            	}
+            	return render_to_response('web/register_new_user.html', context, context_instance=RequestContext(request))
+            else:
+            	context = {
+            		'exist':request.POST.get('correo')
+            	}
+            	return render_to_response('web/register_new_user.html', context, context_instance=RequestContext(request))
             return redirect('/',)
     else:
         form = UsuarioForm()
@@ -47,4 +58,9 @@ def recover_password_done(request, mail):
 	context = {
 		'mail': mail
 	}
+	#b = Usuario.objects.get(correo=mail)
+	b = Usuario.objects.filter(correo=mail)
+	if b.count() > 0:
+		#send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'admin@roomate.com', [mail], fail_silently=False)
+		none
 	return render_to_response('web/recover_password_done.html', context, context_instance=RequestContext(request))

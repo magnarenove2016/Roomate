@@ -1,9 +1,18 @@
 {% extends 'web/base.html' %}
 
 {% block contenido %}
-  <h1>Por favor, completa el siguiente formulario</h1>
+ 
   <form method="POST" class="post-form">{% csrf_token %}
+      {% if exist %}
+      <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce otro correo.</p>
+      <button type="submit" class="save btn btn-default">Go back</button>
+      {% elif created %}
+      <p>Se ha enviado un correo electrónico a <strong>{{created}}</strong>. Por favor, sigue las instrucciones en él.</p>
+      <button type="submit" class="save btn btn-default">Go back</button>
+      {% else %}
+      <h1>Por favor, completa el siguiente formulario</h1>
       {{ form.as_p }}
       <button type="submit" class="save btn btn-default">Save</button>
+      {% endif %}
   </form>
 {% endblock %}
