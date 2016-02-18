@@ -26,7 +26,7 @@ def register_new_user(request):
                 plenamente de tu cuenta: \
                 http://localhost:8080/accounts/confirm/'%s'" % (Usuario.alias, activation_key)
             send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com',
-                [email], fail_silently=False)
+                [Usuario.correo], fail_silently=False)
 
             return HttpResponseRedirect('/accounts/register_success')
 
