@@ -22,11 +22,9 @@ def arrendatario(request):
     if request.method == "POST":
         form = ArrendatarioForm(request.POST)
         if form.isvalid():
-            Usuario = form.save(commit=False)
-            Usuario.save()
+            Perfil = form.save(coomit=False)
+            Perfil.save()
             return redirect('')
     else:
         form = ArrendatarioForm()
     return render(request, 'web/', {'arrendatario': form})
-
-    
