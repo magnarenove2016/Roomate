@@ -30,6 +30,7 @@ def register_new_user(request):
     else:
         form = UsuarioForm()
     return render(request, 'web/register_new_user.html', {'form':form})
+<<<<<<< HEAD
 
 
 '''def recover_password(request):
@@ -64,3 +65,8 @@ def recover_password_done(request, mail):
 		#send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'admin@roomate.com', [mail], fail_silently=False)
 		none
 	return render_to_response('web/recover_password_done.html', context, context_instance=RequestContext(request))
+=======
+    
+def web_prueba(request):
+    return render(request, 'index.html', {})
+>>>>>>> 03ad9a07363a04b397128e166d1ae73dfda014bf

@@ -118,8 +118,8 @@ USE_TZ = True
 #A continuacion esta la config. para usar una cuenta gmail, con la clave especifica para aplicaciones
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '32kontrabass@gmail.com'
-EMAIL_HOST_PASSWORD = 'jibkpcjqnepiyxlh'
+EMAIL_HOST_USER = 'magnasis.grupo1@gmail.com'
+EMAIL_HOST_PASSWORD = 'M4gn4sis'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
