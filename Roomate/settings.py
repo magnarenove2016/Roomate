@@ -115,6 +115,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+#A continuacion esta la config. para usar una cuenta gmail, con la clave especifica para aplicaciones
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'magnasis.grupo1@gmail.com'
+EMAIL_HOST_PASSWORD = 'M4gn4sis'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/

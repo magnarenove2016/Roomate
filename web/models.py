@@ -9,6 +9,12 @@ class Usuario(models.Model):
     activation_key = models.CharField(max_length=40)
     verificado = models.BooleanField(default=False)
     conversaciones = models.ForeignKey("Conversacion",null=True)
+    def cambiar_contrasena(self, x):
+        self.contrasena = x
+    def cambiar_alias(self, x):
+        self.alias = x
+    def cambiar_correo(self, x):
+        self.correo = x
 
 class Persona(models.Model):
     identificador = models.CharField(max_length=200)
@@ -16,6 +22,10 @@ class Persona(models.Model):
 
     def obtener_perfil(self):
         return Perfil.objects.get(persona=me)
+    
+    def eliminar_perfil(self):
+        b = Perfil.objects.get(persona=me)
+        b.delete()
 
 class Perfil(models.Model):
     persona = models.ForeignKey("Persona")

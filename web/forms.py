@@ -3,7 +3,6 @@ from .models import Usuario, Casa
 
 #formulario para la creación de nuevos usuarios
 class UsuarioForm(forms.ModelForm):
-
     class Meta:
         model = Usuario
         fields = ('correo', 'contrasena','alias',)
@@ -15,3 +14,9 @@ class CasaForm(forms.ModelForm):
         fields = ('ciudad', 'numHabitaciones','numHabitacionesDisponibles',
          'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
          'gastosComplementarios')
+
+#formulario para la recuperación de contrasenas
+class RecoverPasswordForm(forms.ModelForm):
+	class Meta:
+		model = Usuario
+		fields = ('correo',)
