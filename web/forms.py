@@ -1,14 +1,15 @@
 from django import forms
 from .models import Usuario, Casa
 
+#formulario para la creación de nuevos usuarios
 class UsuarioForm(forms.ModelForm):
 
     class Meta:
         model = Usuario
         fields = ('correo', 'contrasena','alias',)
 
+#formulario para la creacion de casas
 class CasaForm(forms.ModelForm):
-
     class Meta:
         model = Casa
         fields = ('ciudad', 'numHabitaciones','numHabitacionesDisponibles',
