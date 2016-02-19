@@ -131,3 +131,12 @@ EMAIL_USE_TLS = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
+APPEND_SLASH = False
+
+#configuracion de la cuenta de correo de Gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=465
+EMAIL_HOST_USER = 'magnasis.grupo1'
+EMAIL_HOST_PASSWORD = 'M4gn4sis'
+DEFAULT_EMAIL_FROM = 'magnasis.prupo1@gmail.com'

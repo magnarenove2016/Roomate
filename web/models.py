@@ -6,6 +6,7 @@ class Usuario(models.Model):
     correo = models.CharField(max_length=200)
     contrasena = models.CharField(max_length=200)
     alias = models.CharField(max_length=200)
+    activation_key = models.CharField(max_length=40)
     verificado = models.BooleanField(default=False)
     conversaciones = models.ForeignKey("Conversacion",null=True)
     def cambiar_contrasena(self, x):
