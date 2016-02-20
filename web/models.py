@@ -41,6 +41,39 @@ class Perfil(models.Model):
     finEstancia = models.DateTimeField()
     instrumento = models.CharField(max_length=200)
 
+    def cambiar_fechaNacimiento(self, x):
+        self.fechaNacimiento = x
+
+    def cambiar_sexo(self, x):
+        self.sexo = x
+
+    def cambiar_trabajadorEstudiante(self, x):
+        self.trabajadorEstudiante = x
+
+    def cambiar_campo(self, x):
+        self.campo = x
+
+    def cambiar_fumador(self, x):
+        self.fumador = x
+
+    def cambiar_animalCompania(self, x):
+        self.animalCompania = x
+
+    def cambiar_descripcion(self, x):
+        self.descripcion = x
+
+    def cambiar_zonaBuscada(self, x):
+        self.zonaBuscada = x
+
+    def cambiar_inicioEstancia(self, x):
+        self.inicioEstancia = x
+
+    def cambiar_finEstancia(self, x):
+        self.finEstancia = x
+
+    def cambiar_instrumento(self, x):
+        self.instrumento = x
+
     def obtener_tags_asociados(self):
         return TagValue.objects.get(perfil=me)
 

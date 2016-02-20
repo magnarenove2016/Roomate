@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^search/$', views.get_location_search, name='get_location_search'),
     url(r'^register/$', views.register_new_user, name='register_new_user'),
     url(r'^add_house/$', views.add_house, name='add_house'),
+    url(r'^completar_perfil/$', views.completar_perfil, name='completar_perfil'),
     #url(r'^accounts/confirmation/$', views.confirmar_email, name='confirmar_email'),
 	url(r'^recoverPassword/$', views.recover_password, name='recover_password'),
     #url(r'^recover-password/sent=(?P<mail>\w+)/$', views.recover_password_done, name='recover_password_done'),
