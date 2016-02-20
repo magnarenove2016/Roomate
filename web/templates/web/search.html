@@ -1,9 +1,5 @@
 <!doctype html>
-<<<<<<< HEAD
-{%load staticfiles%}
-=======
 {% load staticfiles %}
->>>>>>> origin/master
 <html>
 <head>
 <meta charset="utf-8">
@@ -26,7 +22,7 @@
         <div id="header"></div>
         <header>
 <div id="image_logo" style="height: 100%; border: 1px solid black;">
-<img alt="Client Logo" title="Client Logo" src="{% static 'images/donosti_pan.png' %}" />
+<img alt="Client Logo" title="Client Logo" src="images/donosti_pan.png" />
 </div>
 
 </header>
@@ -57,9 +53,9 @@
         </li>
       </ul>
 
-      <form action="" method="" class="glow navbar-form navbar-left" role="search">		    
-		<input type="search" placeholder="Search...">		    	
-		<button>Search</button>
+      <form action="/search/" method="get" class="glow navbar-form navbar-left post-form" >	{% csrf_token %}    
+		<input type="text" placeholder="Search..." name="s" id="id_s"/>	    	
+		<button type="submit" class="save btn btn-default" value="Search">Search</button>
 	</form>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
@@ -81,7 +77,10 @@
 
 </header>
         
-        <div id="content"></div>
+        <div id="content">
+            {% block contenido %}
+            {% endblock %} 
+        </div>
         <div id="footer"></div>
     </div>
 

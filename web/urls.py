@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.web_prueba),
+    url(r'^search/$', views.get_location_search, name='get_location_search'),
     url(r'^register/$', views.register_new_user, name='register_new_user'),
     url(r'^add_house/$', views.add_house, name='add_house'),
     #url(r'^accounts/confirmation/$', views.confirmar_email, name='confirmar_email'),
