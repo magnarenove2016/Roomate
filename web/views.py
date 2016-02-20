@@ -110,3 +110,6 @@ def recover_password_done(request, mail):
 
 def welcome(request):
     return render(request, 'web/welcome.html', {})
+
+def undeveloped(request):
+    return render(request, 'web/undeveloped.html', {})
