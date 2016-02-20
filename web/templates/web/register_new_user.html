@@ -3,6 +3,15 @@
 {% block contenido %}
  
   <form method="POST" class="post-form">{% csrf_token %}
+  
+      {% if messages %}
+      <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+
       {% if exist %}
       <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce otro correo.</p>
       <button type="submit" class="save btn btn-default">Go back</button>
