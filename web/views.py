@@ -3,8 +3,9 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail #para el prototipo de enviar mail
 from django.template import Context, RequestContext #para mostrar el mail en el .html
+from geopy.geocoders import Nominatim
 
-import hashlib, datetime, random
+import hashlib, datetime, random, math
 
 from .forms import *
 from .models import *
@@ -107,7 +108,53 @@ def recover_password_done(request, mail):
 		none
 	return render_to_response('web/recover_password_done.html', context, context_instance=RequestContext(request))
 
-'''
+def getLocation(name):
+    geolocator = Nominatim()
+    localizacion = geolocator.geocode(name, exactly_one='False')
+    return localizacion
+
+def distance_meters(lat1, long1, lat2, long2):
+    #earth's radius in meters
+    R=6371000
+    alfa1=math.radians(lat1)
+    alfa2=math.radians(lat2)
+    betaLat=math.radians(lat2-lat1)
+    betaLong=math.radians(long2-long1)
+    
+    a=math.sin(betaLat/2) * math.sin(betaLat/2) + math.cos(alfa1) * math.cos(alfa2) * math.sin(betaLong/2)*math.sin(betaLong/2)
+    
+    c=2*math.atan2(math.sqrt(a), math.sqrt(1-a))
+    dist=R*c
+    return dist
+
+def metersToKm(dist):
+    return round(dist/1000,2)
+
+
+def get_location_search(request):
+    if 's' in request.GET:
+        search_str=request.GET['s']
+        print(search_str)
+        loc=getLocation(search_str)
+        if loc is not None:
+            search=loc[0]
+            print (search.latitude)
+            #Punto en donostia
+            latitude=43.3224219
+            longitude=-1.9838888
+            dist=distance_meters(search.latitude, search.longitude, latitude, longitude)
+            dist=metersToKm(dist)
+        else:
+            #Nothing found
+            return render(request, 'web/search.html', {})
+    else:
+        #used url /search/ with no parameters
+        return render(request, 'web/search.html', {})
+    return render_to_response('web/search_result.html',{'latitude': search.latitude, 'longitude': search.longitude,'distance':dist},context_instance=RequestContext(request))
+
+
+
+
 def web_prueba(request):
-    return render(request, 'index.html', {})
-'''
+    return render(request, 'web/search.html', {})
+
