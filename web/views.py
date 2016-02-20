@@ -107,7 +107,6 @@ def recover_password_done(request, mail):
 		none
 	return render_to_response('web/recover_password_done.html', context, context_instance=RequestContext(request))
 
-'''
-def web_prueba(request):
-    return render(request, 'index.html', {})
-'''
+
+def welcome(request):
+    return render(request, 'web/welcome.html', {})

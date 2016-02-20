@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.web_prueba),
+    url(r'^$', views.welcome, name='main'),
     url(r'^register/$', views.register_new_user, name='register_new_user'),
     url(r'^add_house/$', views.add_house, name='add_house'),
     #url(r'^accounts/confirmation/$', views.confirmar_email, name='confirmar_email'),
