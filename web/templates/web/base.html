@@ -63,22 +63,28 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{% url 'undeveloped' %}">Buscar casa</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li>
-                        <a href="{% url 'undeveloped' %}">Mi perfil</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'undeveloped' %}">Añadir casa</a>
-                    </li>
-                    {% endif %}
-                    <li>
-                      {% block login %}
-                        {% include "web/login.html" %}
-                      {% endblock %}
-                    </li>
+                  <li>
+                    <form action="/search/" method="get" class="glow navbar-form navbar-left post-form" >	{% csrf_token %}
+                      <input type="text" placeholder="Buscar hogar..." name="s" id="id_s"/>
+                      <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
+                    </form>
+                  </li>
+                  <li>
+                      <a href="{% url 'undeveloped' %}">Buscar casa</a>
+                  </li>
+                  {% if user.is_authenticated %}
+                  <li>
+                      <a href="{% url 'undeveloped' %}">Mi perfil</a>
+                  </li>
+                  <li>
+                      <a href="{% url 'undeveloped' %}">Añadir casa</a>
+                  </li>
+                  {% endif %}
+                  <li>
+                    {% block login %}
+                      {% include "web/login.html" %}
+                    {% endblock %}
+                  </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

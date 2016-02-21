@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario, Casa
+from .models import Usuario, Casa, Perfil
 
 #formulario para la creacion de nuevos usuarios
 class UsuarioForm(forms.ModelForm):
@@ -20,3 +20,11 @@ class RecoverPasswordForm(forms.ModelForm):
 	class Meta:
 		model = Usuario
 		fields = ('correo',)
+
+#formulario para completar el perfil de arrendatario
+class completarPerfilForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ('fechaNacimiento', 'sexo', 'trabajadorEstudiante',
+         'campo', 'fumador', 'animalCompania', 'descripcion', 'zonaBuscada',
+          'inicioEstancia', 'finEstancia', 'instrumento')
