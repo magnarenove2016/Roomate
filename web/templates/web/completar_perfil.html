@@ -5,12 +5,17 @@
 <a  name="contenido"></a>
 <div class="content-section-a">
   <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
 
-    <h1>Por favor, completa el siguiente formulario</h1>
-    <form method="POST" class="custom_form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+        <h1>Por favor, completa el siguiente formulario</h1>
+        <form method="POST" class="custom_form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+        
+      </div>
+    </div>
 
   </div>
   <!-- /.contenido -->
