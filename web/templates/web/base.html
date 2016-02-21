@@ -29,6 +29,7 @@
 
     <!-- Custom CSS -->
     <link href="{% static 'css/landing-page.css' %}" rel="stylesheet">
+    <link href="{% static 'css/forms.css' %}" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
@@ -63,22 +64,38 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                  <li>
-                    <form action="/search/" method="get" class="glow navbar-form navbar-left post-form" >	{% csrf_token %}
-                      <input type="text" placeholder="Buscar hogar..." name="s" id="id_s"/>
-                      <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
-                    </form>
-                  </li>
-                  <li>
-                      <a href="{% url 'undeveloped' %}">Buscar casa</a>
-                  </li>
-                  {% if user.is_authenticated %}
-                  <li>
-                      <a href="{% url 'undeveloped' %}">Mi perfil</a>
-                  </li>
-                  <li>
-                      <a href="{% url 'undeveloped' %}">Añadir casa</a>
-                  </li>
+                  {% if request.user.is_superuser %}
+                    <li>
+                        <a href="{% url 'undeveloped' %}">Modificar contraseña</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'undeveloped' %}">Gestionar usuarios</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'undeveloped' %}">Gestionar logs</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'undeveloped' %}">Gestionar copias de seguridad</a>
+                    </li>
+                  {% else %}
+                    <li>
+                      <form action="/search/" method="get" class="glow navbar-form navbar-left post-form" >	{% csrf_token %}
+                        <input type="text" placeholder="Buscar hogar..." name="s" id="id_s"/>
+                        <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
+                      </form>
+                    </li>
+                    <li>
+                        <a href="{% url 'undeveloped' %}">Buscar compa&ntilde;ero</a>
+                    </li>
+                    {% if user.is_authenticated %}
+
+                      <li>
+                          <a href="{% url 'completar_perfil' %}">Mi perfil</a>
+                      </li>
+                      <li>
+                          <a href="{% url 'add_house' %}">Añadir casa</a>
+                      </li>
+                    {% endif %}
                   {% endif %}
                   <li>
                     {% block login %}

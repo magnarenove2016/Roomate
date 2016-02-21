@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
     'web',
 ]
 
@@ -129,3 +130,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = False
+
+#Clave publica para usar en ReCaptcha
+RECAPTCHA_PUBLIC_KEY = '6Les4RgTAAAAAL4VlqmvMgmV3oGjmDcQV2IsnZH4'
+RECAPTCHA_PRIVATE_KEY = '6Les4RgTAAAAAB07ILkbQe5pE2Rbq3njHsYWap6J'
+NOCAPTCHA = True

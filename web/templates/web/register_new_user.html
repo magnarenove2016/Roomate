@@ -2,11 +2,21 @@
 
 {% block contenido %}
 
+
+<script type="text/javascript">
+
+  function notificar(clickedid) {
+      alert("Aún no hemos redactado las condiciones de uso, upss.");
+      return true;
+    }
+
+</script>
+
 <a  name="contenido"></a>
 <div class="content-section-a">
     <div class="container">
 
-      <form method="POST" class="post-form">{% csrf_token %}
+      <form method="POST" class="custom_form">{% csrf_token %}
 		<!-- esto es para probar otro metodo de enviar mensajes, lo mas probable es que lo borremos-->
 		<!--
 		  {% if messages %}
@@ -17,15 +27,23 @@
 		  </ul>
 		  {% endif %}
 		-->
-		  {% if exist %}
-		  <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce otro correo.</p>
-		  <button type="submit" class="save btn btn-default">Go back</button>
-		  {% elif created %}
+      {% if exist %}
+      <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce otro correo.</p>
+      <button type="submit" class="save btn btn-default">Go back</button>
+      {% elif insecure %}
+      <p style='color:#ff0000'>La contraseña no es lo suficientemente segura. Requiere al menos 8 caracteres y contenter al menos una letra y un n&uacute;mero</p>
+      <button type="submit" class="save btn btn-default">Go back</button>
+      {% elif created %}
 		  <p>Se ha enviado un correo electrónico a <strong>{{created}}</strong>. Por favor, sigue las instrucciones en él.</p>
 		  <button type="submit" class="save btn btn-default">Go back</button>
 		  {% else %}
 		  <h1>Por favor, completa el siguiente formulario</h1>
 		  {{ form.as_p }}
+
+      <div class="checkbox" name="recordar">
+        <label> <input type="checkbox" id="recordarme" onchange="notificar('recordarme')"> He le&iacute;do y acepto las condiciones de uso </label>
+      </div>
+
 		  <button type="submit" class="save btn btn-default">Save</button>
 		  {% endif %}
 		</form>

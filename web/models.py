@@ -1,8 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 # Create your models here.
 class Usuario(models.Model):
+    # Campo asociado al usuario gestionado por django.
+    user = models.OneToOneField(User)
+
     correo = models.CharField(max_length=200)
     contrasena = models.CharField(max_length=200)
     alias = models.CharField(max_length=200)
@@ -16,19 +20,21 @@ class Usuario(models.Model):
     def cambiar_correo(self, x):
         self.correo = x
 
+
 class Persona(models.Model):
     identificador = models.CharField(max_length=200)
     usuariosSimilares = models.ManyToManyField("Persona")
 
     def obtener_perfil(self):
         return Perfil.objects.get(persona=me)
-    
+
     def eliminar_perfil(self):
         b = Perfil.objects.get(persona=me)
         b.delete()
 
+
 class Perfil(models.Model):
-    persona = models.ForeignKey("Persona")
+    persona = models.ForeignKey("Usuario")
     fechaNacimiento =models.DateTimeField()
     sexo = models.CharField(max_length=200)
     trabajadorEstudiante = models.BooleanField()
