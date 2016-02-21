@@ -44,7 +44,7 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             b = Usuario.objects.filter(correo=request.POST.get('correo'))#si existe un usuario con el mismo correo se guarda en b
-            if b.count() == 0: #guarda el usuario sii no existe un usuario con el mismo correo
+            if b.count() == 0: #guarda el usuario si no existe un usuario con el mismo correo
             	usuario = form.save(commit=False)
             	usuario.save()
             	context = {
