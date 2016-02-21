@@ -13,35 +13,6 @@ import re #for regex expresions
 from .forms import *
 from .models import *
 
-'''
-# Registrar nuevo usuario (Version Asier).
-def register_new_user(request):
-    if request.method == "POST":
-        form = UsuarioForm(request.POST)
-        if form.is_valid():
-            Usuario = form.save(commit=False)
-            salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-            activation_key = hashlib.sha1(salt+Usuario.correo).hexdigest()
-            Usuario.activation_key= activation_key
-            Usuario.verificado=False
-            Usuario.save()
-
-            email_subject = 'Confirmacion de cuenta'
-            email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
-                en el siguiente link para confirmar tu correo y disfrutar \
-                plenamente de tu cuenta: \
-                http://localhost:8080/accounts/confirm/'%s'" % (Usuario.alias, activation_key)
-            send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com',
-                [Usuario.correo], fail_silently=False)
-
-            return HttpResponseRedirect('/accounts/register_success')
-
-            return redirect('/',)
-    else:
-        form = UsuarioForm()
-    return render(request, 'web/register_new_user.html', {'form':form})
-'''
-
 # Registrar nuevo usuario (Version Jon).
 def register_new_user(request):
     if request.method == "POST":
@@ -54,12 +25,32 @@ def register_new_user(request):
                 }
                 context.update(csrf(request))
                 return render_to_response('web/register_new_user.html', context)
+            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ): #verificar seguridad del password
+                context = {
+                    'no_email':request.POST.get('correo')
+                }
+                context.update(csrf(request))
+                return render_to_response('web/register_new_user.html', context)
             elif b.count() == 0: #guarda el usuario sii no existe un usuario con el mismo correo
                 usuario = form.save(commit=False)
                 userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
                 usuario.user=userDjango
+                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+                activation_key = hashlib.sha1(salt+usuario.correo).hexdigest()
+                usuario.activation_key= activation_key
+                usuario.verificado=False
                 usuario.save()
                 userDjango.save()
+
+
+                email_subject = 'Confirmacion de cuenta'
+                email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
+                en el siguiente link para confirmar tu correo y disfrutar \
+                plenamente de tu cuenta: \
+                http://localhost:8080/accounts/confirm/%s" % (usuario.alias, activation_key)
+                send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com',
+                    [usuario.correo], fail_silently=False)
+
                 context = {
                     'created':request.POST.get('correo')
                 }

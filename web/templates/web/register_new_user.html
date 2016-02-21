@@ -27,13 +27,16 @@
 		  </ul>
 		  {% endif %}
 		-->
-      {% if exist %}
+    {% if exist %}
       <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce otro correo.</p>
       <button type="submit" class="save btn btn-default">Go back</button>
-      {% elif insecure %}
+    {% elif insecure %}
       <p style='color:#ff0000'>La contraseña no es lo suficientemente segura. Requiere al menos 8 caracteres y contenter al menos una letra y un n&uacute;mero</p>
       <button type="submit" class="save btn btn-default">Go back</button>
-      {% elif created %}
+    {% elif no_email %}
+      <p style='color:#ff0000'>El correo electronico no tiene el formato adecuado</p>
+      <button type="submit" class="save btn btn-default">Go back</button>
+    {% elif created %}
 		  <p>Se ha enviado un correo electrónico a <strong>{{created}}</strong>. Por favor, sigue las instrucciones en él.</p>
 		  <button type="submit" class="save btn btn-default">Go back</button>
 		  {% else %}
@@ -45,7 +48,7 @@
       </div>
 
 		  <button type="submit" class="save btn btn-default">Save</button>
-		  {% endif %}
+		{% endif %}
 		</form>
 
     </div>
