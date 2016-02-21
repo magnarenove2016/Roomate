@@ -8,37 +8,10 @@ from geopy.geocoders import Nominatim
 
 import hashlib, datetime, random, math
 
+import re #for regex expresions
+
 from .forms import *
 from .models import *
-
-'''
-# Registrar nuevo usuario (Version Asier).
-def register_new_user(request):
-    if request.method == "POST":
-        form = UsuarioForm(request.POST)
-        if form.is_valid():
-            Usuario = form.save(commit=False)
-            salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-            activation_key = hashlib.sha1(salt+Usuario.correo).hexdigest()
-            Usuario.activation_key= activation_key
-            Usuario.verificado=False
-            Usuario.save()
-
-            email_subject = 'Confirmacion de cuenta'
-            email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
-                en el siguiente link para confirmar tu correo y disfrutar \
-                plenamente de tu cuenta: \
-                http://localhost:8080/accounts/confirm/'%s'" % (Usuario.alias, activation_key)
-            send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com',
-                [Usuario.correo], fail_silently=False)
-
-            return HttpResponseRedirect('/accounts/register_success')
-
-            return redirect('/',)
-    else:
-        form = UsuarioForm()
-    return render(request, 'web/register_new_user.html', {'form':form})
-'''
 
 # Registrar nuevo usuario (Version Jon).
 def register_new_user(request):
@@ -46,21 +19,48 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             b = Usuario.objects.filter(correo=request.POST.get('correo'))#si existe un usuario con el mismo correo se guarda en b
-            if b.count() == 0: #guarda el usuario sii no existe un usuario con el mismo correo
+            if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ): #verificar seguridad del password
+                context = {
+                    'insecure':request.POST.get('correo')
+                }
+                context.update(csrf(request))
+                return render_to_response('web/register_new_user.html', context)
+            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ): #verificar seguridad del password
+                context = {
+                    'no_email':request.POST.get('correo')
+                }
+                context.update(csrf(request))
+                return render_to_response('web/register_new_user.html', context)
+            elif b.count() == 0: #guarda el usuario sii no existe un usuario con el mismo correo
                 usuario = form.save(commit=False)
+                userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
+                usuario.user=userDjango
+                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+                activation_key = hashlib.sha1(salt+usuario.correo).hexdigest()
+                usuario.activation_key= activation_key
+                usuario.verificado=False
                 usuario.save()
+                userDjango.save()
+
+
+                email_subject = 'Confirmacion de cuenta'
+                email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
+                en el siguiente link para confirmar tu correo y disfrutar \
+                plenamente de tu cuenta: \
+                http://localhost:8080/accounts/confirm/%s" % (usuario.alias, activation_key)
+                send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com',
+                    [usuario.correo], fail_silently=False)
+
                 context = {
                     'created':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                #return render_to_response('web/register_new_user.html', context, context_instance=RequestContext(request)) #no se cual es la diferencia entre este y el siguiente
                 return render_to_response('web/register_new_user.html', context)
             else: #existe un usuario con ese correo
                 context = {
                     'exist':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                #return render_to_response('web/register_new_user.html', context, context_instance=RequestContext(request))
                 return render_to_response('web/register_new_user.html', context)
             return redirect('/',)
     else:
@@ -143,9 +143,9 @@ def distance_meters(lat1, long1, lat2, long2):
     alfa2=math.radians(lat2)
     betaLat=math.radians(lat2-lat1)
     betaLong=math.radians(long2-long1)
-    
+
     a=math.sin(betaLat/2) * math.sin(betaLat/2) + math.cos(alfa1) * math.cos(alfa2) * math.sin(betaLong/2)*math.sin(betaLong/2)
-    
+
     c=2*math.atan2(math.sqrt(a), math.sqrt(1-a))
     dist=R*c
     return dist
@@ -169,10 +169,10 @@ def get_location_search(request):
             dist=metersToKm(dist)
         else:
             #Nothing found
-            return render(request, 'web/search.html', {})
+            return render(request, 'web/error.html', {})
     else:
         #used url /search/ with no parameters
-        return render(request, 'web/search.html', {})
+        return render(request, 'web/error.html', {})
     return render_to_response('web/search_result.html',{'latitude': search.latitude, 'longitude': search.longitude,'distance':dist},context_instance=RequestContext(request))
 
 

@@ -1,8 +1,11 @@
 from django import forms
 from .models import Usuario, Casa, Perfil
 
+from captcha.fields import ReCaptchaField
+
 #formulario para la creacion de nuevos usuarios
 class UsuarioForm(forms.ModelForm):
+    captcha = ReCaptchaField()
     class Meta:
         model = Usuario
         fields = ('correo', 'contrasena','alias',)

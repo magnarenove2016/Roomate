@@ -1,0 +1,20 @@
+{% extends 'web/base.html' %}
+
+{% block contenido %}
+
+<a  name="contenido"></a>
+  <div class="content-section-a">
+      <div class="container">
+
+        <FORM id="user_form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ uform.as_p }}
+          {{ pform.as_p }}
+          <INPUT type="submit" name="submit" value="submit" />
+        </FORM>
+
+      </div>
+      <!-- /.contenido -->
+  </div>
+
+{% endblock %}
