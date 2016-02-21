@@ -2,7 +2,6 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
-    url(r'^', include('favicon.urls')), #para poder mostrar el favicon
     url(r'^$', views.welcome, name='main'),
     url(r'^undeveloped/$', views.undeveloped, name='undeveloped'),
     url(r'^search/$', views.get_location_search, name='get_location_search'),
