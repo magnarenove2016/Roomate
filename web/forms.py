@@ -1,7 +1,7 @@
 from django import forms
 from .models import Usuario, Casa, Perfil
 
-#formulario para la creación de nuevos usuarios
+#formulario para la creacion de nuevos usuarios
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
@@ -15,7 +15,7 @@ class CasaForm(forms.ModelForm):
          'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
          'gastosComplementarios')
 
-#formulario para la recuperación de contrasenas
+#formulario para la recuperacion de contrasenas
 class RecoverPasswordForm(forms.ModelForm):
 	class Meta:
 		model = Usuario

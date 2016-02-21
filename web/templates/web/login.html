@@ -1,0 +1,50 @@
+{% load staticfiles %}
+       {% if user.is_authenticated %}
+          <li><p class="navbar-text">¡Hola {{ user.username }}!(<a href="{% url 'django.contrib.auth.views.logout' %}">Cerrar sesi&oacute;n</a>)</p></li>
+       {% else %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+              <ul id="login-dp" class="dropdown-menu">
+                <li>
+                  <div class="row">
+                    <div class="col-md-12">
+                       <!--<form class="form" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}" accept-charset="UTF-8" id="login-nav">
+                      -->
+                      <form class="navbar-form navbar-center" role="form" method="POST" action="{% url 'auth_login' %}" accept-charset="UTF-8" id="login-nav">
+                      {% csrf_token %}
+                            <div class="form-group">
+                              <label class="sr-only" for="Email">Usuario</label>
+                              <!--<input type_'text' class='form-control' name='username' placeholder='Username'/>  -->
+                              {{ form.username }}
+                              <!-- input type="text" class="form-control" id="Email" placeholder="Email address" required> -->
+                            </div>
+                            <div class="form-group">
+                              <label class="sr-only" for="Password">Contrase&Ntilde;a</label>
+                              <!-- <input type_'text' class='form-control' name='password' placeholder='Password'/>    -->   
+                              {{ form.password }}
+                              <!-- <input type="password" class="form-control" id="Password" placeholder="Password" required> -->
+                              <div class="help-block text-center"><a href="{% url 'recover_password' %}">¿Contrase&ntilde;a olvidada?</a></div>
+                            </div>
+                            <div class="form-group">
+                              <button type="submit" class="btn btn-primary btn-block" value="login">Iniciar sesi&oacute;n</button>
+                              <input type="hidden" name="next" value="{{ next }}" />
+                            </div>
+
+
+                        <!--
+                        <div class="checkbox">
+                          <label>
+                          <input type="checkbox"> keep me logged-in
+                          </label>
+                        </div>
+                        -->
+                      </form>
+                    </div>
+                    <div class="bottom text-center">
+                      Nuevo aqu&iacute; ? <a href="{% url 'register_new_user' %}"><b>Registrate</b></a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          {% endif %}
