@@ -128,6 +128,21 @@ LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = False
 
 #Clave publica para usar en ReCaptcha
-RECAPTCHA_PUBLIC_KEY = '6Les4RgTAAAAAL4VlqmvMgmV3oGjmDcQV2IsnZH4'
-RECAPTCHA_PRIVATE_KEY = '6Les4RgTAAAAAB07ILkbQe5pE2Rbq3njHsYWap6J'
+RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'
+RECAPTCHA_PRIVATE_KEY = '6LccDhkTAAAAAKwu3cOcPn3sW0x_oIcaSKjTzq19'
 NOCAPTCHA = True
+
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
+
+DEBUG = False
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

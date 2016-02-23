@@ -13,6 +13,10 @@ import re #for regex expresions
 from .forms import *
 from .models import *
 
+castellano = "es"
+euskera = "eu"
+idioma = "eu"
+
 # Registrar nuevo usuario (Version Jon).
 def register_new_user(request):
     if request.method == "POST":
@@ -28,7 +32,7 @@ def register_new_user(request):
                     'insecure':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
             #verificar seguridad del password
             if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ):
@@ -36,7 +40,7 @@ def register_new_user(request):
                     'no_email':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
             #guarda el usuario sii no existe un usuario con el mismo correo
             elif b.count() == 0:
@@ -73,18 +77,18 @@ def register_new_user(request):
 
                 #render
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
             else: #existe un usuario con ese correo
                 context = {
                     'exist':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
             return redirect('/',)
     else:
         #generar formulario
         form = UsuarioForm()
-    return render(request, 'web/register_new_user.html', {'form':form})
+    return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
 #Registrar un arrendatario completando su perfil (requiere login)
 @login_required
@@ -101,7 +105,7 @@ def completar_perfil(request):
     else:
         #generamos form
         form = completarPerfilForm()
-    return render(request, 'web/completar_perfil.html', {'form':form})
+    return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
 
 #Anadir una casa (requiere login)
 @login_required
@@ -118,11 +122,11 @@ def add_house(request):
     else:
         #generamos form
         form = CasaForm()
-    return render(request, 'web/add_house.html', {'form':form})
+    return render(request, 'web/'+idioma+'/add_house.html', {'form':form})
 
 #pagina generica para funciones sin desarrollar
 def undeveloped(request):
-    return render(request, 'web/undeveloped.html', {})
+    return render(request, 'web/'+idioma+'/undeveloped.html', {})
 
 #----------------------------------- Funciones experimentales sin documentar -----------------------------------------
 
@@ -138,7 +142,7 @@ def recover_password(request):
 			return redirect('recover_password_done',mail=user_mail)
 	else:
 		form = RecoverPasswordForm()
-	return render(request, 'web/recover_password.html', {'form':form})
+	return render(request, 'web/'+idioma+'/recover_password.html', {'form':form})
 '''
 
 #funcion para la recuperacion de la password
@@ -152,7 +156,7 @@ def recover_password(request):
     else:
         #creamos form
         form = RecoverPasswordForm()
-    return render(request, 'web/recover_password.html', {'form' : form})
+    return render(request, 'web/'+idioma+'/recover_password.html', {'form' : form})
 
 def recover_password_done(request, mail):
     #creamos variable de contexto "mail"
@@ -164,7 +168,7 @@ def recover_password_done(request, mail):
     b = Usuario.objects.filter(correo=mail)
     if b.count() > 0:
         send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'magnasis.grupo1@gmail.com', [mail], fail_silently=False)
-    return render_to_response('web/recover_password_done.html', context)
+    return render_to_response('web/'+idioma+'/recover_password_done.html', context)
 
 #----------------------------------- Funciones adicionales -----------------------------------------
 
@@ -174,7 +178,7 @@ def getLocation(name):
     return localizacion
 
 def welcome(request):
-    return render(request, 'web/welcome.html', {})
+    return render(request, 'web/'+idioma+'/welcome.html', {})
 
 def distance_meters(lat1, long1, lat2, long2):
     #earth's radius in meters
@@ -209,9 +213,11 @@ def get_location_search(request):
             dist=metersToKm(dist)
         else:
             #Nothing found
-            return render(request, 'web/error.html', {})
+            return render(request, 'web/es/error.html', {})
     else:
         #used url /search/ with no parameters
-        return render(request, 'web/error.html', {})
-    return render_to_response('web/search_result.html',{'latitude': search.latitude, 'longitude': search.longitude,'distance':dist},context_instance=RequestContext(request))
+        return render(request, 'web/'+idioma+'/error.html', {})
+    return render_to_response('web/'+idioma+'/search_result.html', {'latitude': search.latitude, 'longitude': search.longitude, 'distance':dist}, context_instance=RequestContext(request))
 
+def cambairIdioma(nuevo_idioma):
+    idioma=nuevo_idioma
