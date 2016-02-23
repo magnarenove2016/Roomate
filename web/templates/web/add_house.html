@@ -2,16 +2,16 @@
 
 {% block contenido %}
 
-<a  name="contenido"></a>
-<div class="content-section-a">
-    <div class="container">
-      <h1>Por favor, completa el siguiente formulario</h1>
-      <form method="POST" class="custom_form">{% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit" class="save btn btn-default">Save</button>
-      </form>
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+            <h1>Por favor, completa el siguiente formulario</h1>
+            <form method="POST" class="custom_form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default">Save</button>
+            </form>
+        </div>
+        <!-- /.contenido -->
     </div>
-    <!-- /.contenido -->
-</div>
 
 {% endblock %}

@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -71,7 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Roomate.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -122,8 +120,6 @@ EMAIL_HOST_USER = 'magnasis.grupo1@gmail.com'
 EMAIL_HOST_PASSWORD = 'M4gn4sis'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'

@@ -1,77 +1,70 @@
+<!-- Pagina para el registro de nuevos ususarios y muestra de mensajes de error -->
+
 {% extends 'web/base.html' %}
 
 {% block contenido %}
 
+    <!-- Script para mostrar mensajes al pulsar un checkbox -->
+    <script type="text/javascript">
+        function notificar(clickedid) {
+            alert("Aún no hemos redactado las condiciones de uso, upss.");
+            return true;
+        }
+    </script>
 
-<script type="text/javascript">
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Introduce tu infromaci&oacute;n y &uacute;nete a nosotros.</h1>
 
-  function notificar(clickedid) {
-      alert("Aún no hemos redactado las condiciones de uso, upss.");
-      return true;
-    }
+                    <form method="POST" class="custom_form">{% csrf_token %}
 
-</script>
+                        <!-- El correo ya existe -->
+                        {% if exist %}
+                            <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce
+                                otro correo.</p>
+                            <button type="submit" class="save btn btn-default">Go back</button>
 
+                            <!-- si la contrasena no es segura -->
+                        {% elif insecure %}
+                            <p style='color:#ff0000'>La contraseña no es lo suficientemente segura. Requiere al menos 8
+                                caracteres y contenter al menos una letra y un n&uacute;mero</p>
+                            <button type="submit" class="save btn btn-default">Go back</button>
 
-<a  name="contenido"></a>
-<div class="content-section-a">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h1>Introduce tu infromaci&oacute;n y &uacute;nete a nosotros.</h1>
+                            <!-- si el correo no tiene un formato adecuado -->
+                        {% elif no_email %}
+                            <p style='color:#ff0000'>El correo electronico no tiene el formato adecuado</p>
+                            <button type="submit" class="save btn btn-default">Go back</button>
 
-        <form method="POST" class="custom_form">{% csrf_token %}
-  		<!-- esto es para probar otro metodo de enviar mensajes, lo mas probable es que lo borremos-->
-  		<!--
-  		  {% if messages %}
-  		  <ul class="messages">
-  		  {% for message in messages %}
-  		  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-  		  {% endfor %}
-  		  </ul>
-  		  {% endif %}
-  		-->
-        {% if exist %}
-          <p style='color:#ff0000'>El correo <strong>{{ exist }}</strong> existe. Por favor introduce otro correo.</p>
-          <button type="submit" class="save btn btn-default">Go back</button>
-        {% elif insecure %}
-          <p style='color:#ff0000'>La contraseña no es lo suficientemente segura. Requiere al menos 8 caracteres y contenter al menos una letra y un n&uacute;mero</p>
-          <button type="submit" class="save btn btn-default">Go back</button>
-        {% elif no_email %}
-          <p style='color:#ff0000'>El correo electronico no tiene el formato adecuado</p>
-          <button type="submit" class="save btn btn-default">Go back</button>
-        {% elif created %}
-    		  <p>Se ha enviado un correo electrónico a <strong>{{created}}</strong>. Por favor, sigue las instrucciones en él.</p>
-    		  <button type="submit" class="save btn btn-default">Go back</button>
-    		  {% else %}
-    		  <h1>Por favor, completa el siguiente formulario</h1>
-    		  {{ form.as_p }}
+                            <!-- Si el correo ha sido creado -->
+                        {% elif created %}
+                            <p>Se ha enviado un correo electrónico a <strong>{{ created }}</strong>. Por favor, sigue
+                                las instrucciones en él.</p>
+                            <button type="submit" class="save btn btn-default">Go back</button>
 
-          <div class="checkbox" name="recordar">
-            <label> <input type="checkbox" id="recordarme" onchange="notificar('recordarme')"> He le&iacute;do y acepto las condiciones de uso </label>
-          </div>
+                            <!-- En su defecto, poner el formulario de creaccion -->
+                        {% else %}
+                            <h1>Por favor, completa el siguiente formulario</h1>
+                            {{ form.as_p }}
 
-    		  <button type="submit" class="save btn btn-default">Save</button>
-    		{% endif %}
-    		</form>
+                            <!-- Checkbox para acpetar las condiciones de uso -->
+                            <div class="checkbox" name="condiciones">
+                                <label> <input type="checkbox" id="condiciones" onchange="notificar('condiciones')"> He
+                                    le&iacute;do y acepto las condiciones de uso </label>
+                            </div>
 
-      </div>
+                            <button type="submit" class="save btn btn-default">Save</button>
+
+                        {% endif %}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
     </div>
-  </div>
-  <!-- /.container -->
-</div>
-<!-- /.intro-header -->
-
-
-
-<a  name="contenido"></a>
-<div class="content-section-a">
-    <div class="container">
-
-
-
-    </div>
-    <!-- /.contenido -->
-</div>
+    <!-- /.container -->
 
 {% endblock %}
