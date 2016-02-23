@@ -16,44 +16,62 @@ from .models import *
 # Registrar nuevo usuario (Version Jon).
 def register_new_user(request):
     if request.method == "POST":
+        #obtener formulario
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            b = Usuario.objects.filter(correo=request.POST.get('correo'))#si existe un usuario con el mismo correo se guarda en b
-            if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ): #verificar seguridad del password
+            #si existe un usuario con el mismo correo se guarda en b
+            b = Usuario.objects.filter(correo=request.POST.get('correo'))
+
+            #verificar seguridad del password
+            if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
                 context = {
                     'insecure':request.POST.get('correo')
                 }
                 context.update(csrf(request))
                 return render_to_response('web/register_new_user.html', context)
-            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ): #verificar seguridad del password
+
+            #verificar seguridad del password
+            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ):
                 context = {
                     'no_email':request.POST.get('correo')
                 }
                 context.update(csrf(request))
                 return render_to_response('web/register_new_user.html', context)
-            elif b.count() == 0: #guarda el usuario sii no existe un usuario con el mismo correo
+
+            #guarda el usuario sii no existe un usuario con el mismo correo
+            elif b.count() == 0:
                 usuario = form.save(commit=False)
+
+                #creamos un User de tipo Django
                 userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
+
+                #asignar el usuario recien creado a nuestro usuario
                 usuario.user=userDjango
+
+                #generar hash para la verificacion por mail y asignar
                 salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
                 activation_key = hashlib.sha1(salt+usuario.correo).hexdigest()
                 usuario.activation_key= activation_key
+
+                #marcar como no verificado y guardar ambos
                 usuario.verificado=False
                 usuario.save()
                 userDjango.save()
 
-
+                #crear el mail y enviarlo
                 email_subject = 'Confirmacion de cuenta'
                 email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
                 en el siguiente link para confirmar tu correo y disfrutar \
                 plenamente de tu cuenta: \
                 http://localhost:8080/accounts/confirm/%s" % (usuario.alias, activation_key)
-                send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com',
-                    [usuario.correo], fail_silently=False)
+                send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com', [usuario.correo], fail_silently=False)
 
+                #crear variable de contexto "created" (para el render de la HTML)
                 context = {
                     'created':request.POST.get('correo')
                 }
+
+                #render
                 context.update(csrf(request))
                 return render_to_response('web/register_new_user.html', context)
             else: #existe un usuario con ese correo
@@ -64,37 +82,52 @@ def register_new_user(request):
                 return render_to_response('web/register_new_user.html', context)
             return redirect('/',)
     else:
+        #generar formulario
         form = UsuarioForm()
     return render(request, 'web/register_new_user.html', {'form':form})
 
-#Registrar un arrendatario completando su perfil
+#Registrar un arrendatario completando su perfil (requiere login)
 @login_required
 def completar_perfil(request):
     if request.method == "POST":
+        #creamos form
         form = completarPerfilForm(request.POST)
         if form.is_valid():
+            #obtener datos y guardar perfil
             Perfil = completarPerfilForm(request.POST)
             Perfil.persona=request.user
             Perfil.save()
             return redirect('/',)
     else:
+        #generamos form
         form = completarPerfilForm()
     return render(request, 'web/completar_perfil.html', {'form':form})
 
+#Anadir una casa (requiere login)
 @login_required
 def add_house(request):
     if request.method == "POST":
+        #creamos form
         form = CasaForm(request.POST)
         if form.is_valid():
+            #obtener datos y guardar perfil
             Casa = form.save(commit=False)
             Casa.dueno=request.user
             Casa.save()
             return redirect('/',)
     else:
+        #generamos form
         form = CasaForm()
     return render(request, 'web/add_house.html', {'form':form})
 
-'''def recover_password(request):
+#pagina generica para funciones sin desarrollar
+def undeveloped(request):
+    return render(request, 'web/undeveloped.html', {})
+
+#----------------------------------- Funciones experimentales sin documentar -----------------------------------------
+
+'''
+def recover_password(request):
 	if request.method == "POST":
 		form = RecoverPasswordForm(request.POST)
 		if form.is_valid():
@@ -105,28 +138,35 @@ def add_house(request):
 			return redirect('recover_password_done',mail=user_mail)
 	else:
 		form = RecoverPasswordForm()
-	return render(request, 'web/recover_password.html', {'form':form})'''
-
-def recover_password(request):
-	if request.method == "POST":
-		user_mail = request.POST.get('correo')
-		#send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'admin@roomate.com', [user_mail], fail_silently=False)
-		return redirect('recover_password_done',mail=user_mail)
-	else:
-		form = RecoverPasswordForm()
 	return render(request, 'web/recover_password.html', {'form':form})
+'''
+
+#funcion para la recuperacion de la password
+def recover_password(request):
+    if request.method == "POST":
+        #obtenemos form
+        user_mail = request.POST.get('correo')
+        #TODO: envio de mail desactivado
+        #send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'admin@roomate.com', [user_mail], fail_silently=False)
+        return redirect('recover_password_done', mail=user_mail)
+    else:
+        #creamos form
+        form = RecoverPasswordForm()
+    return render(request, 'web/recover_password.html', {'form' : form})
 
 def recover_password_done(request, mail):
+    #creamos variable de contexto "mail"
     context = {
         'mail': mail
     }
     #b = Usuario.objects.get(correo=mail) #es otra manera de conseguir los objetos deseados de la base de datos
+    #obtenemos el mail
     b = Usuario.objects.filter(correo=mail)
     if b.count() > 0:
         send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'magnasis.grupo1@gmail.com', [mail], fail_silently=False)
-        #none
-    #return render_to_response('web/recover_password_done.html', context, context_instance=RequestContext(request))
     return render_to_response('web/recover_password_done.html', context)
+
+#----------------------------------- Funciones adicionales -----------------------------------------
 
 def getLocation(name):
     geolocator = Nominatim()
@@ -175,6 +215,3 @@ def get_location_search(request):
         return render(request, 'web/error.html', {})
     return render_to_response('web/search_result.html',{'latitude': search.latitude, 'longitude': search.longitude,'distance':dist},context_instance=RequestContext(request))
 
-
-def undeveloped(request):
-    return render(request, 'web/undeveloped.html', {})
