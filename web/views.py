@@ -14,7 +14,7 @@ from .forms import *
 from .models import *
 
 castellano = "es"
-euskera = "eu"
+euskera = "es"
 idioma = "eu"
 
 # Registrar nuevo usuario (Version Jon).
