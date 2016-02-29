@@ -6,13 +6,11 @@ from django.utils import timezone
 class Usuario(models.Model):
     # Campo asociado al usuario gestionado por django.
     user = models.OneToOneField(User)
-
-    correo = models.CharField(max_length=200)
+    correo = models.CharField(max_length=200,unique=True)
     contrasena = models.CharField(max_length=200)
     alias = models.CharField(max_length=200)
     activation_key = models.CharField(max_length=40)
     verificado = models.BooleanField(default=False)
-    conversaciones = models.ForeignKey("Conversacion",null=True)
     def cambiar_contrasena(self, x):
         self.contrasena = x
     def cambiar_alias(self, x):
@@ -23,7 +21,11 @@ class Usuario(models.Model):
 
 class Persona(models.Model):
     identificador = models.CharField(max_length=200)
-    usuariosSimilares = models.ManyToManyField("Persona")
+    usuario=models.OneToOneField(
+        Usuario,
+        on_delete=models.CASCADE,
+        null=True, blank=True
+    )
 
     def obtener_perfil(self):
         return Perfil.objects.get(persona=me)
@@ -32,9 +34,16 @@ class Persona(models.Model):
         b = Perfil.objects.get(persona=me)
         b.delete()
 
+class GrupoUsuariosSimilares(models.Model):
+    persona=models.ManyToManyField(Persona)
+    desc=models.CharField(max_length=200)
 
 class Perfil(models.Model):
-    persona = models.ForeignKey("Usuario")
+    persona=models.OneToOneField(
+        Persona,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
     fechaNacimiento =models.DateTimeField()
     sexo = models.CharField(max_length=200)
     trabajadorEstudiante = models.BooleanField()
@@ -84,26 +93,33 @@ class Perfil(models.Model):
         return TagValue.objects.get(perfil=me)
 
 class TagValue(models.Model):
-    perfil = models.ForeignKey("Perfil")
-    tagName = models.ForeignKey("Tag")
+    perfil = models.ForeignKey(Perfil,null=True, blank=True)
+    tag = models.ForeignKey("Tag",null=True, blank=True)
     value = models.TextField()
 
 class FotoPerfil(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
-    perfil = models.ForeignKey("Perfil")
+    perfil = models.ForeignKey(Perfil)
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)
 
 class Conversacion(models.Model):
-    emisor = models.ForeignKey("Usuario")
-
+    emisor = models.ForeignKey(Usuario,related_name='conversacion_emisor',null=True, blank=True)
+    receptor = models.ForeignKey(Usuario,related_name='conversacion_receptor',null=True, blank=True)
+    inicioConv = models.DateTimeField(default=timezone.now)
     def obtener_mensajes(self):
         return Mensaje.objects.get(conversacion=me)
 
 class Mensaje(models.Model):
-    conversacion = models.ForeignKey("Conversacion")
-    emisor = models.ForeignKey("Usuario")
+    conversacion = models.ForeignKey(Conversacion, null=True, blank=True)
+    emisor = models.ForeignKey(Usuario,related_name='mensaje_emisor',null=True, blank=True)
+    #u2.mensaje_emisor.all()
+    #obtener todos los mensajes en los que u2 es emisor
+    receptor= models.ForeignKey(Usuario,related_name='mensaje_receptor',null=True, blank=True)
+    #u2.mensaje_receptor.all()
+    #obtener todos los mensajes en los que u2 es receptor
+    fechaEnvio = models.DateTimeField(default=timezone.now)
     mensaje = models.TextField()
 
 class Log(models.Model):
@@ -111,7 +127,7 @@ class Log(models.Model):
     evento = models.TextField()
 
 class Casa(models.Model):
-    dueno = models.ForeignKey("Persona")
+    dueno = models.ForeignKey(Persona,blank=True,null=True)
     ciudad = models.CharField(max_length=200)
     numHabitaciones = models.IntegerField()
     numHabitacionesDisponibles = models.IntegerField()
@@ -125,12 +141,13 @@ class Casa(models.Model):
 
 class FotoCasa(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
-    casa = models.ForeignKey("Casa")
+                                            #Probablemente pasaran a ser filefield
+    casa = models.ForeignKey(Casa,blank=True,null=True)
 
 class Habitacion(models.Model):
-    casa = models.ForeignKey("Casa")
+    casa = models.ForeignKey(Casa,null=True, blank=True)
     descripcion = models.TextField()
 
 class FotoHabitacion(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
-    habitacion = models.ForeignKey("Habitacion")
+    habitacion = models.ForeignKey(Habitacion,blank=True,null=True)
