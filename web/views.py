@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail #para el prototipo de enviar mail
 from django.template import Context, RequestContext #para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
-
+from django.db import IntegrityError
 import hashlib, datetime, random, math
 
 import re #for regex expresions
@@ -20,7 +20,7 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             #si existe un usuario con el mismo correo se guarda en b
-            b = Usuario.objects.filter(correo=request.POST.get('correo'))
+            #b = Usuario.objects.filter(correo=request.POST.get('correo'))
 
             #verificar seguridad del password
             if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
@@ -43,19 +43,30 @@ def register_new_user(request):
                 usuario = form.save(commit=False)
 
                 #creamos un User de tipo Django
+                
                 userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
-
                 #asignar el usuario recien creado a nuestro usuario
                 usuario.user=userDjango
 
                 #generar hash para la verificacion por mail y asignar
-                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-                activation_key = hashlib.sha1(salt+usuario.correo).hexdigest()
+                salt_str=str(random.random())
+                salt = hashlib.sha1(salt_str.encode('utf_8')).hexdigest()[:5]
+                salt_bytes = salt.encode('utf-8')
+                correo_bytes=usuario.correo.encode('utf-8')
+                activation_key = hashlib.sha1(salt_bytes+correo_bytes).hexdigest()
                 usuario.activation_key= activation_key
 
                 #marcar como no verificado y guardar ambos
                 usuario.verificado=False
-                usuario.save()
+                try:
+                    usuario.save()
+                except IntegrityError as e:
+                    print("Correo existente")
+                    context = {
+                        'exist':request.POST.get('correo')
+                    }
+                    context.update(csrf(request))
+                    return render_to_response('web/register_new_user.html', context)
                 userDjango.save()
 
                 #crear el mail y enviarlo
