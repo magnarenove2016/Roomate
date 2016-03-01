@@ -15,7 +15,7 @@ from .models import *
 
 castellano = "es"
 euskera = "es"
-idioma = "eu"
+idioma = "es"
 
 # Registrar nuevo usuario (Version Jon).
 def register_new_user(request):
@@ -47,7 +47,7 @@ def register_new_user(request):
                 usuario = form.save(commit=False)
 
                 #creamos un User de tipo Django
-                
+
                 userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
                 #asignar el usuario recien creado a nuestro usuario
                 usuario.user=userDjango
