@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
-    'web',
+    'web',    
+	'bootstrap3',
 ]
 
 MIDDLEWARE_CLASSES = [

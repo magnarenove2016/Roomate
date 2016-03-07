@@ -1,0 +1,35 @@
+{% extends 'web/es/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}Editar perfil{% endblock %}
+
+{% block contenido %}
+<a name="contenido"></a>
+<div class="content-section-a">
+		<div class="container">
+				<div class="row">
+						<div class="col-lg-12">
+
+
+						<form method="POST" class="edit-profile-form container">
+
+						  {% csrf_token %}
+						  <h3>Edita tu perfil</h3><hr>
+
+						  {% bootstrap_form form layout='horizontal'%}
+
+						  <div class='text-right'>
+						    {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
+						    {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-default"%}
+						  </div>
+
+						</form>
+</div>
+</div>
+</div>
+<!-- /.container -->
+</div>
+<!-- /.container -->
+
+{% endblock %}

@@ -118,6 +118,26 @@ def completar_perfil(request):
         form = completarPerfilForm()
     return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
 
+
+#Registrar un arrendatario completando su perfil (requiere login) Eficiente
+@login_required
+def edit_profile(request):
+    # Comprobar si el usuario ya tiene un perfil creado
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid(): #comprobar los datos
+            form.save()
+            return redirect('main')
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
+
+
 #Anadir una casa (requiere login)
 @login_required
 def add_house(request):
@@ -189,7 +209,8 @@ def getLocation(name):
     return localizacion
 
 def welcome(request):
-    return render(request, 'web/'+idioma+'/welcome.html', {})
+    return render(request, 'web/'+idioma+'/welcome.html',{})
+
 
 def distance_meters(lat1, long1, lat2, long2):
     #earth's radius in meters
