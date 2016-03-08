@@ -1,7 +1,7 @@
 
 from django.conf.urls import include, url
 from django.contrib import admin
-#from django.contrib.auth import views
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -13,6 +13,23 @@ urlpatterns = [
     url(r'^register/success/$', views.user_created, name='register_success'), #mensaje que se muestra cuando se creó bien el nuevo usuario
     #url(r'^completar_perfil/$', views.completar_perfil, name='completar_perfil'),
     #url(r'^accounts/logout/$', views.logout, {'next_page': '/'}), #logout provisto por Django
+    url(r'^accounts/password/reset/$',auth_views.password_reset, {'template_name' : 'web/es/password_reset.html', 'post_reset_redirect' : 'password_reset_done'},
+    name='password_reset'),
+
+    url(r'^accounts/password/reset/done/$',
+    auth_views.password_reset_done,
+    {'template_name' : 'web/es/password_reset_done.html'},
+    name='password_reset_done'),
+
+    url(r'^accounts/password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    auth_views.password_reset_confirm,
+    {'template_name' : 'web/es/password_reset_confirm.html'},
+    name='password_reset_confirm'),
+
+    url(r'^accounts/password/reset/complete/$',
+    auth_views.password_reset_complete,
+    {'template_name' : 'web/es/password_reset_complete.html'},
+    name='password_reset_complete'),
     url(r'^accounts/logout/$', views.logout, name='logout'), #cerrar sesión
     url(r'', include('web.urls')),  #todas las urls de web/urls.py
 ]
