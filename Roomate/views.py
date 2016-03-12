@@ -1,36 +1,36 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth.models import User
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.contrib import auth
 from . import forms
 
 idioma = "es"
 
 
-# Iniciar sesión
+# Iniciar sesi&oacute;n
 def login(request):
 	c = {}
-	c.update(csrf(request)) #actualizar la autenticidad de la redieccion
+	c.update(csrf(request)) #actualizar la autenticidad de la redireccion
 	return render_to_response('accounts/login.html',c)
 
 #comprobar si el usuario esta registrado
 def auth_view(request):
 	username = request.POST.get('username','') #almacenamos el nombre de usuario
-	password = request.POST.get('password','') #almacenamos la contraseña
+	password = request.POST.get('password','') #almacenamos la contrase&ntilde;a
 	user = auth.authenticate(username=username,password=password) # iniciamos session con dichos datos
-	if user is not None: #si el usuario y la contraseña son validos
+	if user is not None: #si el usuario y la contrase&ntilde;a son validos
 		auth.login(request, user)
 		return redirect('main') #le redirigimos a la pagina de Inicio
 	else:
-		return redirect('invalid') # si no son validos los datos, se redirige al usuario a una magina de error
+		return redirect('invalid') # si no son validos los datos, se redirige al usuario a una pagina de error
 
-#edirige al usuario a una magina de error
+#redirige al usuario a una pagina de error
 def invalid_login(request):
 	c = {}
 	c.update(csrf(request))
 	return render_to_response('web/'+idioma+'/invalid_login.html',c)
 
-# Cerrar sesión
+# Cerrar sesi&oacute;n
 def logout(request):
 	auth.logout(request)
 	c = {}

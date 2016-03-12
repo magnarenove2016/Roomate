@@ -6,24 +6,24 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 #formato de mensaje para controlar correos duplicados en el registro
-DOBLE_EMAIL = _(u"Este Correo ya esta en uso. "u"Por favor utilice otro correo o inicie sesión")
+DOBLE_EMAIL = _("Este Correo ya esta en uso. Por favor utilice otro correo o inicie sesi&oacute;n")
 
 #formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
     
-    # Añadir al formulario un campo para el email, el captcha,
+    # A&ntilde;adir al formulario un campo para el email, el captcha,
     # y un checkbox para que el usuario acepte las condiciones de uso
     email = forms.EmailField(
         required = True
     )
-    #añadir el campo de Captcha
+    #a&ntilde;adir el campo de Captcha
     captcha = ReCaptchaField(
         label = 'Captcha'
     )
     #checkbox de licencia el cual el usuario debe aceptar
     tos = forms.BooleanField(
         widget = forms.CheckboxInput,
-        label = 'He leído y acepto las condiciones de uso',
+        label = 'He le&iacute;do y acepto las condiciones de uso',
         error_messages={'required': 'Debes aceptar las condiciones de uso para continuar'}
     )
     #funcion que se encargar de mirar en la base de datos si es que ya existe el correo com el que se intenta registrarse
@@ -37,7 +37,7 @@ class RegistrationForm(UserCreationForm):
                 raise forms.ValidationError(DOBLE_EMAIL)
             return self.cleaned_data['email']
 
-    # Ampliar la función de guardado para que también guarde el email
+    # Ampliar la funci&oacute;n de guardado para que tambi&eacute;n guarde el email
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]

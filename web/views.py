@@ -42,7 +42,7 @@ def register_new_user(request):
                 context.update(csrf(request))
                 return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
-            #guarda el usuario sii no existe un usuario con el mismo correo
+            #guarda el usuario si no existe un usuario con el mismo correo
             elif b.count() == 0:
                 usuario = form.save(commit=False)
 
@@ -101,22 +101,23 @@ def register_new_user(request):
         form = UsuarioForm()
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
-#Registrar un arrendatario completando su perfil (requiere login)
-@login_required
-def completar_perfil(request):
-    if request.method == "POST":
-        #creamos form
-        form = completarPerfilForm(request.POST)
-        if form.is_valid():
-            #obtener datos y guardar perfil
-            Perfil = completarPerfilForm(request.POST)
-            Perfil.persona=request.user
-            Perfil.save()
-            return redirect('/',)
-    else:
-        #generamos form
-        form = completarPerfilForm()
-    return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
+
+# #Registrar un arrendatario completando su perfil (requiere login)
+# @login_required
+# def completar_perfil(request):
+#     if request.method == "POST":
+#         #creamos form
+#         form = completarPerfilForm(request.POST)
+#         if form.is_valid():
+#             #obtener datos y guardar perfil
+#             Perfil = completarPerfilForm(request.POST)
+#             Perfil.persona=request.user
+#             Perfil.save()
+#             return redirect('/',)
+#     else:
+#         #generamos form
+#         form = completarPerfilForm()
+#     return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
 
 
 #Registrar un arrendatario completando su perfil (requiere login) Eficiente
@@ -127,14 +128,21 @@ def edit_profile(request):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
-
+    tags = 2    #TODO: coger cantidad de tags de manera dinamica
     if request.method == 'POST':
+
+        #TODO: if (add_tag)
+            # guardar estado actual del formulario
+            # obtener formulario con con los tags que ya tiene + 1
+            # form = ProfileForm(instance=profile,num_tags=(tags+1)) #TODO: anadir instance=tags
+
         form = ProfileForm(request.POST, instance=profile)
         if form.is_valid(): #comprobar los datos
             form.save()
+            #TODO: guardar los tags
             return redirect('main')
     else:
-        form = ProfileForm(instance=profile)
+        form = ProfileForm(instance=profile,num_tags=tags)  #formulario con solo con los tags que ya tiene
     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
 
 
