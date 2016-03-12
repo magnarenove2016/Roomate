@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _  #traduccion de los form
 
 #formato de mensaje para controlar que no se meta mal las fechas
 FECHAS_ESTANCIA_ERROR = _(u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
+FECHAS_ESTANCIA_INCOMPLT = _(u"revise las fechas de estancia. "u"Rellene las fechas de estancia")
 
 
 # Create your models here.
@@ -154,7 +155,9 @@ class Profile(models.Model):
     #controlar que las fechas de estancia sean coherentes.
     def clean(self):
         from django.core.exceptions import ValidationError
-        if self.iniEstancia > self.finEstancia:
+        if (self.iniEstancia is None  and   self.finEstancia is not None) or (self.iniEstancia is not None  and  self.finEstancia is  None):
+            raise ValidationError(FECHAS_ESTANCIA_INCOMPLT)
+        elif (self.iniEstancia is not None  and  self.finEstancia is not None) and self.iniEstancia > self.finEstancia:
             raise ValidationError(FECHAS_ESTANCIA_ERROR)
 
     def __str__(self):
@@ -197,8 +200,11 @@ class Mensaje(models.Model):
     mensaje = models.TextField()
 
 class Log(models.Model):
+    titulo = models.CharField(max_length=50) #nombre indentificativo del log
     fecha = models.DateTimeField(default=timezone.now)
     evento = models.TextField()
+    def __str__(self):
+        return 'Log: ' + self.titulo
 
 class Casa(models.Model):
     dueno = models.ForeignKey(Persona,blank=True,null=True)
