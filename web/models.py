@@ -7,6 +7,7 @@ from time import time
 # formato de mensaje para controlar que no se meta mal las fechas
 FECHAS_ESTANCIA_ERROR = _(
     u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
+FECHAS_ESTANCIA_INCOMPLT = _(u"revise las fechas de estancia. "u"Rellene las fechas de estancia")
 
 """
     Perfil del usuario que contiene todos los datos extra que
@@ -65,7 +66,9 @@ class Profile(models.Model):
     # Controlar que las fechas de estancia sean coherentes
     def clean(self):
         from django.core.exceptions import ValidationError
-        if self.iniEstancia > self.finEstancia:
+        if (self.iniEstancia is None  and   self.finEstancia is not None) or (self.iniEstancia is not None  and  self.finEstancia is  None):
+            raise ValidationError(FECHAS_ESTANCIA_INCOMPLT)
+        elif (self.iniEstancia is not None  and  self.finEstancia is not None) and self.iniEstancia > self.finEstancia:
             raise ValidationError(FECHAS_ESTANCIA_ERROR)
 
     def __str__(self):
