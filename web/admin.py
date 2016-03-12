@@ -5,7 +5,6 @@ from .models import *
 admin.site.register(Usuario)
 admin.site.register(Persona)
 admin.site.register(Perfil)
-admin.site.register(TagValue)
 admin.site.register(FotoPerfil)
 admin.site.register(Tag)
 admin.site.register(Conversacion)
