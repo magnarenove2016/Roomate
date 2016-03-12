@@ -134,13 +134,20 @@ def edit_profile(request):
         #TODO: if (add_tag)
             # guardar estado actual del formulario
             # obtener formulario con con los tags que ya tiene + 1
-            # form = ProfileForm(instance=profile,num_tags=(tags+1)) #TODO: anadir instance=tags
+            # form = ProfileForm(instance=profile,num_tags=(tags+1)) #TODO: anadir instance=tags??
 
         form = ProfileForm(request.POST, instance=profile)
-        if form.is_valid(): #comprobar los datos
-            form.save()
-            #TODO: guardar los tags
-            return redirect('main')
+        # if form.is_valid(): #TODO: comprobar si los datos son validos
+        # form.save()
+
+        # for tags in form.get_tags():           #TODO: iterar tags ONE?
+        #     if name.startswith('tag_'):
+        #         value=form[name].value           #TODO: obtener value DONE?
+        #         tag = Tag()
+        #         tag.perfil=profile
+        #         tag.text=value
+
+        return redirect('main')
     else:
         form = ProfileForm(instance=profile,num_tags=tags)  #formulario con solo con los tags que ya tiene
     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})

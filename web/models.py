@@ -165,18 +165,13 @@ class Profile(models.Model):
         verbose_name_plural = 'Perfiles'
 
 
-
-class TagValue(models.Model):
-    perfil = models.ForeignKey(Perfil,null=True, blank=True)
-    tag = models.ForeignKey("Tag",null=True, blank=True)
-    value = models.TextField()
-
 class FotoPerfil(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
     perfil = models.ForeignKey(Perfil)
 
 class Tag(models.Model):
-    name = models.CharField(max_length=200)
+    perfil = models.ForeignKey(Perfil,null=True, blank=True)
+    text = models.CharField(max_length=200)
 
 class Conversacion(models.Model):
     emisor = models.ForeignKey(Usuario,related_name='conversacion_emisor',null=True, blank=True)
