@@ -99,25 +99,25 @@ class Perfil(models.Model):
         return TagValue.objects.get(perfil=me)
 
 """
-    perfil del usuario en él.
+    perfil del usuario en el.
     contiene todos los datos extra que  necesitamos saber de un Usuario
     a parte de los que le pedimos cuando se registra.
     hay un unico perfil por usuario.
 """
 class Profile(models.Model):
-    #las elecciones posibles de la opción de sexo. del usuario
+    #las elecciones posibles de la opcion de sexo. del usuario
     GENDER_CHOICES = (
         ('', 'Sin especificar'),
         ('H', 'Hombre'),
         ('M', 'Mujer'),
     )
-    #las elecciones posibles de la opción de ocupación. del usuario
+    #las elecciones posibles de la opcion de ocupacion. del usuario
     OCUPATION_CHOICES = (
         ('', 'Sin especificar'),
         ('E', 'Estudiante'),
         ('T', 'Trabajador'),
     )
-    #las elecciones posibles de la opción de mascota. del usuario
+    #las elecciones posibles de la opcion de mascota. del usuario
     PET_CHOICES = (
         ('', 'Ninguna'),
         ('P', 'Perro'),
@@ -126,8 +126,8 @@ class Profile(models.Model):
     )
 
 
-    # Expresión regular para validar el número de teléfono
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Número de teléfono inválido (debe tener de 9 a 15 dígitos)")
+    # Expresion regular para validar el numero de telefono
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)")
 
 
     # Usuario asociado al perfil (un perfil por usuario)
@@ -136,12 +136,12 @@ class Profile(models.Model):
     # Campos del perfil
     firstName = models.CharField(max_length=35, blank=True, verbose_name='Nombre')
     lastName = models.CharField(max_length=35, blank=True, verbose_name='Apellidos')
-    telephone = models.CharField(max_length=15, validators=[phone_regex], blank=True, verbose_name='Número de teléfono')
+    telephone = models.CharField(max_length=15, validators=[phone_regex], blank=True, verbose_name='Numero de telefono')
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name="Sexo")
 
     birthdate = models.DateField(blank=True, null=True, verbose_name="Fecha de nacimiento")
-    ocupation = models.CharField(max_length=1, choices=OCUPATION_CHOICES, blank=True, verbose_name="Ocupación")
-    description = models.TextField(blank=True, verbose_name="Descripción")
+    ocupation = models.CharField(max_length=1, choices=OCUPATION_CHOICES, blank=True, verbose_name="Ocupacion")
+    description = models.TextField(blank=True, verbose_name="Descripcion")
 
     pet = models.CharField(max_length=1, choices=PET_CHOICES, blank=True, verbose_name='Mascota')
     isSmoker = models.BooleanField(default=False, verbose_name='Fumador')
