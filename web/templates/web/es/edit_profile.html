@@ -21,6 +21,11 @@
 
                     {% bootstrap_form form layout='horizontal'%}
 
+                    {% for tag in tag_forms %}
+                        {% bootstrap_form tag layout='horizontal'%}
+                    {% endfor %}
+
+
                     <button id="add-another" onclick="">A&ntilde;adir un campo personalizado() tag</button>
 
                     <div class='text-right'>

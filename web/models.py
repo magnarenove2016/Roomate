@@ -129,7 +129,6 @@ class Profile(models.Model):
     # Expresion regular para validar el numero de telefono
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)")
 
-
     # Usuario asociado al perfil (un perfil por usuario)
     user = models.OneToOneField('auth.User', models.CASCADE)
 
@@ -170,8 +169,8 @@ class FotoPerfil(models.Model):
     perfil = models.ForeignKey(Perfil)
 
 class Tag(models.Model):
-    perfil = models.ForeignKey(Perfil,null=True, blank=True)
-    text = models.CharField(max_length=200)
+    perfil = models.ForeignKey(Profile,null=True, blank=True)
+    text = models.CharField(max_length=200, verbose_name='Etiqueta')
 
 class Conversacion(models.Model):
     emisor = models.ForeignKey(Usuario,related_name='conversacion_emisor',null=True, blank=True)

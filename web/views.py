@@ -101,7 +101,6 @@ def register_new_user(request):
         form = UsuarioForm()
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
-
 # #Registrar un arrendatario completando su perfil (requiere login)
 # @login_required
 # def completar_perfil(request):
@@ -120,6 +119,42 @@ def register_new_user(request):
 #     return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
 
 
+# #Registrar un arrendatario completando su perfil (requiere login) Eficiente
+# @login_required
+# def edit_profile(request):
+#     # Comprobar si el usuario ya tiene un perfil creado
+#     try:
+#         profile = request.user.profile
+#     except Profile.DoesNotExist:
+#         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+#     tags = 2    #TODO: coger cantidad de tags de manera dinamica
+#     if request.method == 'POST':
+#
+#         #TODO: if (add_tag)
+#             # guardar estado actual del formulario
+#             # obtener formulario con con los tags que ya tiene + 1
+#             # form = ProfileForm(instance=profile,num_tags=(tags+1)) #TODO: anadir instance=tags??
+#
+#         form = ProfileForm(request.POST, instance=profile)
+#         form.user=request.user
+#         # print(form)
+#         if form.is_valid(): #TODO: comprobar si los datos son validos
+#             print('valido')
+#         form.save()
+#
+#         # for tags in form.get_tags():           #TODO: iterar tags ONE?
+#         #     if name.startswith('tag_'):
+#         #         value=form[name].value           #TODO: obtener value DONE?
+#         #         tag = Tag()
+#         #         tag.perfil=profile
+#         #         tag.text=value
+#
+#         return redirect('main')
+#     else:
+#         form = ProfileForm(instance=profile,num_tags=tags)  #formulario con solo con los tags que ya tiene
+#     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
+
+
 #Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
 def edit_profile(request):
@@ -128,29 +163,31 @@ def edit_profile(request):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
-    tags = 2    #TODO: coger cantidad de tags de manera dinamica
+
+    tags = Tag.objects.filter(perfil=profile)  #obtener tags asociados al perfil
+
     if request.method == 'POST':
 
-        #TODO: if (add_tag)
-            # guardar estado actual del formulario
-            # obtener formulario con con los tags que ya tiene + 1
-            # form = ProfileForm(instance=profile,num_tags=(tags+1)) #TODO: anadir instance=tags??
+        formProfile = ProfileForm(request.POST, instance=profile, prefix='perfil')
+        if formProfile.is_valid():
+            formProfile.save() #TODO: no se guarda??
 
-        form = ProfileForm(request.POST, instance=profile)
-        # if form.is_valid(): #TODO: comprobar si los datos son validos
-        # form.save()
+            for tag in tags: #TODO: iterar tags y guardarlos
+                tag=TagForm(request.POST, instance=tag, prefix='tag')
+                tag.perfil=profile
 
-        # for tags in form.get_tags():           #TODO: iterar tags ONE?
-        #     if name.startswith('tag_'):
-        #         value=form[name].value           #TODO: obtener value DONE?
-        #         tag = Tag()
-        #         tag.perfil=profile
-        #         tag.text=value
+        # for i in range(num_tags): #TODO: iterar tags y guardarlos
+        #     tag=TagForm(request.POST, prefix='tag')
+        #     tag.perfil=profile
 
-        return redirect('main')
+        return redirect('completar_perfil')
     else:
-        form = ProfileForm(instance=profile,num_tags=tags)  #formulario con solo con los tags que ya tiene
-    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
+        form = ProfileForm(instance=profile, prefix='perfil')  #formulario con solo con los tags que ya tiene
+        tag_forms = []  #lista de formularios de tag vacia
+        for tag in tags:    #iterar los campos de tag asociados aal perfil
+            tag_forms.append(TagForm(prefix='tag', instance=tag))   #anadir un campo tipo tag
+        tag_forms.append(TagForm(prefix='tag'))     #anadir tag en blanco adicional #TODO: esto hacerlo en base a un boton
+    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form, 'tag_forms' :tag_forms})
 
 
 #Anadir una casa (requiere login)
