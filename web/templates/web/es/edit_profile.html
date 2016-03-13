@@ -6,19 +6,19 @@
 
 {% block contenido %}
 
-<script>
-    function add_extra_tag()
-    {
-        $.ajax({
-            url: "/completar_perfil/",
-            type: "GET",
-            data: {'extra':'true',
-            success: function(response) {
-            },
-
-        });
-    }
-</script>
+{#<script>#}
+{#    function add_extra_tag()#}
+{#    {#}
+{#        $.ajax({#}
+{#            url: "/completar_perfil/",#}
+{#            type: "GET",#}
+{#            data: {'extra':'true',#}
+{#            success: function(response) {#}
+{#            },#}
+{##}
+{#        });#}
+{#    }#}
+{#</script>#}
 
 <a name="contenido"></a>
 <div class="content-section-a">
@@ -38,8 +38,7 @@
 
                     {% endfor %}
 
-
-                    <button id="add-another" onclick="add_extra_tag();">A&ntilde;adir un campo personalizado(tag)</button>
+{#                    <button id="add-another" onclick="add_extra_tag();">A&ntilde;adir un campo personalizado(tag)</button>#}
 
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
