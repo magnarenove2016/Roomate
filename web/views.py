@@ -25,7 +25,7 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             #si existe un usuario con el mismo correo se guarda en b
-            #b = Usuario.objects.filter(correo=request.POST.get('correo'))
+            b = Usuario.objects.filter(correo=request.POST.get('correo'))
 
             #verificar seguridad del password
             if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
@@ -71,7 +71,7 @@ def register_new_user(request):
                         'exist':request.POST.get('correo')
                     }
                     context.update(csrf(request))
-                    return render_to_response('web/register_new_user.html', context)
+                    return render_to_response('web/'+idioma+'/register_new_user.html', context)
                 userDjango.save()
 
                 #crear el mail y enviarlo
@@ -184,11 +184,11 @@ def delete_tag(request, texto_del_tag):
 def add_house(request):
     if request.method == "POST":
         #creamos form
-        form = CasaForm(request.POST)
+        form = CasaForm(request.POST,request.FILES)
         if form.is_valid():
             #obtener datos y guardar perfil
             Casa = form.save(commit=False)
-            Casa.dueno=request.user
+            Casa.dueno=request.user.usuario.persona
             Casa.save()
             return redirect('/',)
     else:
@@ -286,7 +286,7 @@ def get_location_search(request):
             dist=metersToKm(dist)
         else:
             #Nothing found
-            return render(request, 'web/es/error.html', {})
+            return render(request, 'web/'+idioma+'/error.html', {})
     else:
         #used url /search/ with no parameters
         return render(request, 'web/'+idioma+'/error.html', {})

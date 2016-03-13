@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from time import time
+
 from django.core.validators import RegexValidator  #utilizando una expresion regular valida un determinado campo
 from django.utils.translation import ugettext_lazy as _  #traduccion de los formatos de texto de errores
 
@@ -11,7 +13,7 @@ FECHAS_ESTANCIA_ERROR = _(u"revise las fechas de estancia. "u"La fecha de inicio
 # Create your models here.
 class Usuario(models.Model):
     # Campo asociado al usuario gestionado por django.
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User,related_name='usuario')
     correo = models.CharField(max_length=200,unique=True)
     contrasena = models.CharField(max_length=200)
     alias = models.CharField(max_length=200)
@@ -28,7 +30,7 @@ class Usuario(models.Model):
 class Persona(models.Model):
     identificador = models.CharField(max_length=200)
     usuario=models.OneToOneField(
-        Usuario,
+        Usuario,related_name='persona',
         on_delete=models.CASCADE,
         null=True, blank=True
     )
@@ -37,7 +39,7 @@ class Persona(models.Model):
         return Perfil.objects.get(persona=me)
 
     def eliminar_perfil(self):
-        b = Perfil.objects.get(persona=me)
+        b = self.perfil
         b.delete()
 
 class GrupoUsuariosSimilares(models.Model):
@@ -46,7 +48,7 @@ class GrupoUsuariosSimilares(models.Model):
 
 class Perfil(models.Model):
     persona=models.OneToOneField(
-        Persona,
+        Persona,related_name='perfil',
         on_delete=models.CASCADE,
         primary_key=True
     )
@@ -207,9 +209,13 @@ class Casa(models.Model):
     def obtener_habitaciones(self):
         return Habitacion.objects.get(casa=me)
 
+
+def generar_ruta_image(instance, filename):
+    return "%s_%s" % (str(time()).replace('.', '_'),filename)
+
+
 class FotoCasa(models.Model):
-    foto = models.CharField(max_length=200) #path a las fotos
-                                            #Probablemente pasaran a ser filefield
+    foto = models.FileField(upload_to=generar_ruta_image)
     casa = models.ForeignKey(Casa,blank=True,null=True)
 
 class Habitacion(models.Model):
