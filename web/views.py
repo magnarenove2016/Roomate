@@ -167,26 +167,36 @@ def edit_profile(request):
     tags = Tag.objects.filter(perfil=profile)  #obtener tags asociados al perfil
 
     if request.method == 'POST':
+        formProfile = ProfileForm(request.POST, instance=profile,prefix='perfil') #extraemos el profile del POST
 
-        formProfile = ProfileForm(request.POST, instance=profile, prefix='perfil')
-        if formProfile.is_valid():
-            formProfile.save() #TODO: no se guarda??
+        if formProfile.is_valid(): #comprobamos que el profile es valido
+            formProfile.save()  #y lo guardamos
 
-            for tag in tags: #TODO: iterar tags y guardarlos
-                tag=TagForm(request.POST, instance=tag, prefix='tag')
-                tag.perfil=profile
+        i=0
+        for tag in tags:
+            tagForm=TagForm(request.POST, instance=tag, prefix='tag_%s' %i)
+            i=i+1
+            tagForm.perfil=profile
+            if tagForm.is_valid():
+                tagForm.save()
 
-        # for i in range(num_tags): #TODO: iterar tags y guardarlos
-        #     tag=TagForm(request.POST, prefix='tag')
-        #     tag.perfil=profile
+        # if request.GET.get("extra")=="true": #TODO: esto es solo una prueba, ha de ser borrado
+        #     print("campo extra!!!")
 
         return redirect('completar_perfil')
     else:
         form = ProfileForm(instance=profile, prefix='perfil')  #formulario con solo con los tags que ya tiene
         tag_forms = []  #lista de formularios de tag vacia
-        for tag in tags:    #iterar los campos de tag asociados aal perfil
-            tag_forms.append(TagForm(prefix='tag', instance=tag))   #anadir un campo tipo tag
-        tag_forms.append(TagForm(prefix='tag'))     #anadir tag en blanco adicional #TODO: esto hacerlo en base a un boton
+
+        i=0
+        for tag in tags:    #iterar los campos de tag asociados al perfil
+            tag_forms.append(TagForm(instance=tag, prefix='tag_%s' %i))   #anadir un campo tipo tag con un prefijo unico
+            i=i+1
+
+        # if request.GET.get("extra")=="true":
+        #     print("campo extra!!!")
+        #     tag_forms.append(TagForm(prefix='tag'))     #anadir tag en blanco adicional #TODO: esto hacerlo en base a un boton
+
     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form, 'tag_forms' :tag_forms})
 
 
