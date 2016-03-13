@@ -7,8 +7,6 @@ from django.utils.translation import ugettext_lazy as _  #traduccion de los form
 #formato de mensaje para controlar que no se meta mal las fechas
 FECHAS_ESTANCIA_ERROR = _(u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
 FECHAS_ESTANCIA_INCOMPLT = _(u"revise las fechas de estancia. "u"Rellene las fechas de estancia")
-
-
 # Create your models here.
 class Usuario(models.Model):
     # Campo asociado al usuario gestionado por django.

@@ -36,7 +36,7 @@ def logout(request):
 	auth.logout(request)
 	c = {}
 	c.update(csrf(request))
-	return render_to_response('web/'+idioma+'/welcome.html',c)
+	return redirect('main')
 
 # Registrar un nuevo usuario
 def register_new_user(request):
