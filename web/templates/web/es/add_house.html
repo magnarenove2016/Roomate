@@ -1,15 +1,44 @@
 {% extends 'web/es/base.html' %}
 
 {% block contenido %}
-
+{% load staticfiles %}
+    <link href="{% static 'css/dropzone.css' %}" type="text/css" rel="stylesheet"/>
     <a name="contenido"></a>
     <div class="content-section-a">
         <div class="container">
             <h1>Por favor, completa el siguiente formulario</h1>
-            <form method="POST" class="custom_form">{% csrf_token %}
+            <form method="POST"  action="#" class="custom_form " enctype="multipart/form-data">{% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="submit" class="save btn btn-default" id="submit-all">Save</button>
+
+
             </form>
+            <form action="#" class="dropzone" id="my-awesome-dropzone"></form>
+                <script src="{% static 'js/dropzone.js' %}"></script>
+                <script type="text/javascript">
+                Dropzone.options.myDropzone = {
+
+                        // Prevents Dropzone from uploading dropped files immediately
+                        autoProcessQueue : false,
+
+                        init : function() {
+                            var submitButton = document.querySelector("#submit-all")
+                            myDropzone = this;
+
+                            submitButton.addEventListener("click", function() {
+                                myDropzone.processQueue();
+                                // Tell Dropzone to process all queued files.
+                            });
+
+                            // You might want to show the submit button only when
+                            // files are dropped here:
+                            this.on("addedfile", function() {
+                                // Show submit button here and/or inform user to click it.
+                            });
+
+                        }
+                    };
+                </script>
         </div>
         <!-- /.contenido -->
     </div>
