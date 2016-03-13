@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.widgets import SelectDateWidget
-from .models import Usuario, Casa, Perfil,Profile
+from .models import Usuario, Casa, Perfil,Profile, Tag
 from captcha.fields import ReCaptchaField
 from datetime import datetime
 
@@ -43,33 +43,29 @@ class ProfileForm(forms.ModelForm):
         'ocupation', 'pet','iniEstancia','finEstancia','Instrument', 'description', 'lookingIn', 'isSmoker')
         widgets = {
             'birthdate': SelectDateWidget(years = range(datetime.now().year, 1800, -1)),
-            'iniEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)),#generar 5 years m&aacute;s desde el year actual
-            'finEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)), #generar 5 years m&aacute;s desde el year actual
+            'iniEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)),#generar 5 years mas desde el year actual
+            'finEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)), #generar 5 years mas desde el year actual
         }
 
 
-    def __init__(self, *args, **kwargs):
-        if kwargs.has_key('num_tags'):
-            num_tags = kwargs.pop('num_tags') #obtener el numero de tags deseado
-            super(ProfileForm, self).__init__(*args, **kwargs) #extender el constructor original
-
-            for i in range(num_tags): #iterar los campos de tag necesarios
-                self.fields['tag_%s' % (i+1)] = forms.CharField(label='Etiqueta %s' % (i+1),required=False) #crear campo
-
-    #TODO: codigo sin completar, quiero obtener todos lo tags
-    def get_tags(self):
-        for name, value in self.cleaned_data.items():
-            if name.startswith('tag_'):
-                yield (self.fields[name].label, value)
-
     # def __init__(self, *args, **kwargs):
-    #     extra = kwargs.pop('extra')
-    #     super(completarPerfilForm, self).__init__(*args, **kwargs)
+    #     num_tags = kwargs.get('num_tags')
+    #     #print(num_tags)
+    #     super(ProfileForm, self).__init__() #extender el constructor original
     #
-    #     for i, tag in enumerate(extra):
-    #         self.fields['tag_%s' % i] = forms.CharField(label=tag)
+    #     if not (num_tags is None):
     #
+    #         for i in range(num_tags): #iterar los campos de tag necesarios
+    #             self.fields['tag_%s' % (i+1)] = forms.CharField(label='Etiqueta %s' % (i+1),required=False) #crear campo
+    #
+    # #TODO: codigo sin completar, quiero obtener todos lo tags
     # def get_tags(self):
     #     for name, value in self.cleaned_data.items():
     #         if name.startswith('tag_'):
     #             yield (self.fields[name].label, value)
+
+
+class TagForm(forms.ModelForm):
+	class Meta:
+		model = Tag
+		fields = ('text',)
