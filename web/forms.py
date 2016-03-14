@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.widgets import SelectDateWidget
-from .models import Usuario, Casa,Profile, FotoCasa
+from .models import Usuario, Casa,Profile, FotoCasa,Tag
 from datetime import datetime
 from captcha.fields import ReCaptchaField
 
@@ -39,3 +39,8 @@ class ProfileForm(forms.ModelForm):
             'iniEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)),#generar 5 años más desde el año actual
             'finEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)), #generar 5 años más desde el año actual
         }
+
+class TagForm(forms.ModelForm):
+	class Meta:
+		model = Tag
+		fields = ('text',)
