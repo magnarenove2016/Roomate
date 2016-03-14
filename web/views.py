@@ -103,6 +103,7 @@ def register_new_user(request):
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
 
+
 #Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
 def edit_profile(request):
@@ -183,18 +184,24 @@ def delete_tag(request, texto_del_tag):
 @login_required
 def add_house(request):
     if request.method == "POST":
+
         #creamos form
         form = CasaForm(request.POST,request.FILES)
         if form.is_valid():
             #obtener datos y guardar perfil
             Casa = form.save(commit=False)
-            Casa.dueno=request.user.usuario.persona
+            Casa.dueno=request.user
             Casa.save()
-            return redirect('/',)
+            for f in request.FILES._itervalues():
+                newFoto=FotoCasa(foto=f)
+                newFoto.casa=Casa
+                newFoto.save()
+            return render_to_response('web/'+idioma+'/welcome.html', {})
     else:
         #generamos form
-        form = CasaForm()
-    return render(request, 'web/'+idioma+'/add_house.html', {'form':form})
+        formcasa = CasaForm()
+    return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
+
 
 #pagina generica para funciones sin desarrollar
 def undeveloped(request):
