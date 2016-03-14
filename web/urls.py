@@ -13,6 +13,7 @@ urlpatterns = [
     #url(r'^completar_perfil/$', views.completar_perfil, name='completar_perfil'),
     #url(r'^accounts/confirm/(?P<activation_key>\w+)/$', views.confirmar_email, name='confirmar_email'),
 	url(r'^recoverPassword/$', views.recover_password, name='recover_password'),
+    
     #url(r'^recover-password/sent=(?P<mail>\w+)/$', views.recover_password_done, name='recover_password_done'),
     url(r'^recoverPassword/sendTo=(?P<mail>\w+[@]\w+[.]\w+)$', views.recover_password_done, name='recover_password_done'),
 ]
