@@ -55,7 +55,6 @@ def edit_profile(request):
 # anadir tag al usuario
 @login_required
 def add_tag(request):
-    print("add tag")
 
     try:  # obtenemos el perfil del usuario
         profile = request.user.profile
@@ -74,7 +73,6 @@ def add_tag(request):
 # eliminar determinado tag del usuario
 @login_required
 def delete_tag(request, texto_del_tag):
-    print("delete tag")
 
     try:
         profile = request.user.profile
@@ -153,11 +151,9 @@ def metersToKm(dist):
 def get_location_search(request):
     if 's' in request.GET:
         search_str = request.GET['s']
-        print(search_str)
         loc = getLocation(search_str)
         if loc is not None:
             search = loc[0]
-            print(search.latitude)
             # Punto en donostia
             latitude = 43.3224219
             longitude = -1.9838888
