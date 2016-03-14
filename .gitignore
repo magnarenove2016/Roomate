@@ -3,7 +3,7 @@ __pycache__
 myvenv
 db.sqlite3
 .DS_Store
-.project
-.pydevproject
 .idea/
 idea/
+/.pydevproject
+/.project
