@@ -1,8 +1,9 @@
 # coding: latin1
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import check_password
-from django.test import TestCase, override_settings
 from unittest import skip
+
+from django.contrib.auth.models import User
+from django.test import TestCase
+
 
 #-------------------------------------------------------------------------------
 
@@ -77,6 +78,7 @@ class PasswordChangeTest(DefaultTestCase):
         self.client.login(username = self.username, password = self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
+        # Comprobar que se usa el template adecuado
         response = self.client.get('/accounts/password/change/')
         self.assertTemplateUsed(response, 'web/es/password_change.html')
 
@@ -125,6 +127,15 @@ class DeleteUserTest(DefaultTestCase):
         # El usuario es redigido a la página de login
         response = self.client.get('/accounts/user/delete/')
         self.assertRedirects(response, '/accounts/login/?next=/accounts/user/delete/', target_status_code=302)
+
+    def test_delete_user_logged_user(self):
+        # Iniciar sesión
+        self.client.login(username=self.username, password=self.password)
+        self.assertIn('_auth_user_id', self.client.session)
+
+        # Comprobar que se usa el template adecuado
+        response = self.client.get('/accounts/user/delete/')
+        self.assertTemplateUsed(response, 'web/es/delete_user.html')
 
     def test_delete_user_success(self):
         # Iniciar sesión
