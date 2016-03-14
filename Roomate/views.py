@@ -6,7 +6,6 @@ from . import forms
 
 idioma = "es"
 
-
 # Comprobar si el usuario esta registrado
 def auth_view(request):
     username = request.POST.get('username', '')  # Almacenamos el nombre de usuario

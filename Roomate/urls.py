@@ -8,8 +8,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls), #url para administracion
     url(r'^accounts/login/$', views.auth_view,name='auth_login'), #login provisto por Django
     url(r'^accounts/logout/$', views.logout, name='logout'),  # cerrar sesion
-    url(r'^accounts/invalid/$', views.invalid_login, name='invalid'),
-    # mostrar el mensaje de error cuando el usuario falla los datos
+    url(r'^accounts/invalid/$', views.invalid_login, name='invalid'), # mostrar el mensaje de error cuando el usuario falla los datos
     url(r'^accounts/user/delete/$', views.delete_user, name='delete_user'),
     url(r'^register/$', views.register_new_user, name='register_new_user'), #registrar a un nuevo usuario
     url(r'^register/success/$', views.user_created, name='register_success'), #mensaje que se muestra cuando se ha creado bien el nuevo usuario
@@ -43,8 +42,7 @@ urlpatterns = [
     {'template_name' : 'web/es/password_change_done.html'},
     name='password_change_done'),
 
-    url(r'', include('web.urls')),  #todas las urls de web/urls.py
-
+    url(r'', include('web.urls')), #todas las urls de web/urls.py
 ]
 
 #Nota: he intentado que esten aqui todos los link relacionados con la gestion de usuarios
