@@ -5,53 +5,51 @@
 {% block title %}Registrarse{% endblock %}
 
 {% block contenido %}
-<a name="contenido"></a>
-<div class="content-section-a">
-		<div class="container">
-				<div class="row">
-						<div class="col-lg-12">
-								<h1>Introduce tu informaci&oacute;n y &uacute;nete a nosotros.</h1>
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Introduce tu informaci&oacute;n y &uacute;nete a nosotros.</h1>
 
 
+                    <form method="POST" class="register-form">
+                        {% csrf_token %}
+                        <h4><strong>Registrarse</strong></h4>
 
-								<form method="POST" class="register-form">
-									{% csrf_token %}
-									<h4><strong>Registrarse</strong></h4>
+                        <p><br>
+                            Acuérdate de leer y aceptar <a href=""> las condiciones de uso </a> para poder continuar</p>
 
-									<p> <br>
-										Acuérdate de leer y aceptar <a href=""> las condiciones de uso </a> para poder continuar</p>
+                        <hr>
 
-									<hr>
+                        {% bootstrap_label "1. Nombre de usuario" %}
+                        {% bootstrap_field form.username show_label=false show_help=false %}
 
-									{% bootstrap_label "1. Nombre de usuario" %}
-									{% bootstrap_field form.username show_label=false show_help=false%}
+                        {% bootstrap_label "2. Cuenta de correo" %}
+                        {% bootstrap_field form.email show_label=false show_help=false %}
 
-									{% bootstrap_label "2. Cuenta de correo" %}
-									{% bootstrap_field form.email show_label=false show_help=false%}
+                        {% bootstrap_label "3. Contraseña" %}
+                        {% bootstrap_field form.password1 show_label=false show_help=false %}
 
-									{% bootstrap_label "3. Contraseña" %}
-									{% bootstrap_field form.password1 show_label=false show_help=false%}
+                        {% bootstrap_label "4. Confirmación de la contraseña" %}
+                        {% bootstrap_field form.password2 show_label=false show_help=false %}
 
-									{% bootstrap_label "4. Confirmación de la contraseña" %}
-									{% bootstrap_field form.password2 show_label=false show_help=false%}
+                        {% bootstrap_label "5. Captcha" %}
+                        {% bootstrap_field form.captcha show_label=false %}
 
-									{% bootstrap_label "5. Captcha" %}
-									{% bootstrap_field form.captcha show_label=false%}
+                        <div class="form-buttons">
+                            {% bootstrap_field form.tos show_label=false %}
+                            {% bootstrap_button "Crear cuenta" button_type="submit" button_class="btn-primary" %}
+                            {% bootstrap_button "Iniciar sesión" button_type="link" href="/accounts/login" button_class="btn-default" %}
+                        </div>
 
-									<div class="form-buttons">
-										{% bootstrap_field form.tos show_label=false%}
-										{% bootstrap_button "Crear cuenta" button_type="submit" button_class="btn-primary"%}
-										{% bootstrap_button "Iniciar sesión" button_type="link" href="/accounts/login" button_class="btn-default" %}
-									</div>
-
-								</form>
-
+                    </form>
 
 
-</div>
-</div>
-</div>
-<!-- /.container -->
-</div>
-<!-- /.container -->
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.container -->
 {% endblock %}

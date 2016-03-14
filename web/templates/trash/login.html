@@ -1,12 +1,4 @@
 {% load staticfiles %}
-<!-- Modulo con el menu desplegable del login [para meter en base.html]-->
-<!-- Script para que salte un mensaje al usar un checkbox -->
-<script type="text/javascript">
-    function notificar(clickedid) {
-        alert("Esto es una demo, por el momento no podemos recordarte, disculpa las molestias.");
-        return true;
-    }
-</script>
 
 <!-- Si el usuario ya ha hecho login -->
 {% if user.is_authenticated %}
@@ -29,7 +21,7 @@
                     <div class="col-md-12">
 
                       {% if form.errors %}
-                      <p class="text-danger">Los datos introducidos son erróneos</p>
+                      <p class="text-danger">Los datos introducidos son err&oacute;neos</p>
 
                       {% endif %}
 
@@ -42,11 +34,11 @@
 
                         <div class="form-group">
                           <span class="glyphicon glyphicon-lock"></span>
-                          <label class="control-label">Contraseña</label>
+                          <label class="control-label">Contrase&ntilde;a</label>
                           <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña">
                         </div>
 
-                        <a href="/accounts/password/reset/">¿contraseña olvidada?</a>
+                        <a href="/accounts/password/reset/">¿Contrase&ntilde;a olvidada?</a>
 
                         <div class="form-group text-center">
                           <input type="submit" value="Entrar" class="btn btn-primary">

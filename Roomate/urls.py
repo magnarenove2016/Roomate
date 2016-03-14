@@ -45,4 +45,3 @@ urlpatterns = [
     url(r'', include('web.urls')), #todas las urls de web/urls.py
 ]
 
-#Nota: he intentado que esten aqui todos los link relacionados con la gestion de usuarios

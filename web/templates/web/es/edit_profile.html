@@ -6,59 +6,64 @@
 
 {% block contenido %}
 
-<script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-$('#add_tag_button').click(function() {
-    window.alert("tag pedido");
-    $.ajax('/add_tag/');
-});
-</script>
+    <script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+        $('#add_tag_button').click(function () {
+            window.alert("tag pedido");
+            $.ajax('/add_tag/');
+        });
+    </script>
 
-<a name="contenido"></a>
-<div class="content-section-a">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
 
-                <form method="POST" class="edit-profile-form container">
+                    <form method="POST" class="edit-profile-form container">
 
-                    {% csrf_token %}
-                    <h3>Edita tu perfil</h3><hr>
+                        {% csrf_token %}
+                        <h3>Edita tu perfil</h3>
+                        <hr>
 
-                    {% bootstrap_form form layout='horizontal'%} <!-- formulario del perfil -->
+                        {% bootstrap_form form layout='horizontal' %} <!-- formulario del perfil -->
 
-                    {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
-                    <div class="container-fluid">
-                        <div class="col-md-10">
-                            {% bootstrap_form tag class="form-control" placeholder=".col-xs-3"%} <!-- cada tag se muestra aqui -->
+                        {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
+                            <div class="container-fluid">
+                                <div class="col-md-10">
+                                    {% bootstrap_form tag class="form-control" placeholder=".col-xs-3" %}
+                                    <!-- cada tag se muestra aqui -->
+                                </div>
+                                <div class="col-md-2">
+                                    </br>
+                                    <button>
+                                        <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este
+                                            campo </a> <!-- boton para borrar este tag en concreto -->
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class='text-left'>
+                            {% bootstrap_button "A&ntilde;adir un campo personalizado" button_type="link" href='/add_tag/' button_class="btn-info" %}
+                            <!-- boton para anadir tag -->
                         </div>
-                        <div class="col-md-2">
-                            </br>
-                            <button>
-                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este campo </a> <!-- boton para borrar este tag en concreto -->
-                            </button>
+
+                        </br>
+                        </br>
+
+                        <div class='text-right'>
+                            {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary" %}
+                            {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-danger" %}
+
                         </div>
-                    </div>
-                    {% endfor %}
-
-                     <div class='text-left'>
-                        {% bootstrap_button "A&ntilde;adir un campo personalizado" button_type="link" href='/add_tag/' button_class="btn-info"%} <!-- boton para anadir tag -->
-                    </div>
-
-                    </br>
-                    </br>
-
-                    <div class='text-right'>
-                        {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
-                        {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-danger"%}
-
-                    </div>
-                    <font size="3" color="red"> **(guarda los cambios antes de a&ntilde; o se borrar&acute; lo que has escrito)</font>  <!-- mensaje de alerta -->
+                        <font size="3" color="red"> **(guarda los cambios antes de a&ntilde; o se borrar&acute; lo que
+                            has escrito)</font>  <!-- mensaje de alerta -->
 
 
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}

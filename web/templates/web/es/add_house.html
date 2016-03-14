@@ -9,71 +9,71 @@
     <div class="content-section-a">
         <div class="container">
             <h1>Por favor, completa el siguiente formulario</h1>
-                                <!-- IMPORTANT enctype attribute! -->
-                <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data" action="#">
-​
-                    {% csrf_token %}
-                    <h3>Crea tu casa</h3>
-                    <hr>
-​
-                    {% bootstrap_form formCasa layout='horizontal'%}
+            <!-- IMPORTANT enctype attribute! -->
+            <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data" action="#">
+                ​
+                {% csrf_token %}
+                <h3>Crea tu casa</h3>
+                <hr>
+                ​
+                {% bootstrap_form formCasa layout='horizontal' %}
 
 
-                    <div class='text-right'>
-                        {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
-                        {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-default"%}
-                    </div>
-                </form>
+                <div class='text-right'>
+                    {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary" %}
+                    {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-default" %}
+                </div>
+            </form>
 
-                                <script src="{% static 'js/dropzone.js' %}"></script>
-                            <script type="text/javascript">
-                                Dropzone.options.myDropzone = {
+            <script src="{% static 'js/dropzone.js' %}"></script>
+            <script type="text/javascript">
+                Dropzone.options.myDropzone = {
 
-                                    // Prevents Dropzone from uploading dropped files immediately
-                                        autoProcessQueue: false,
-                                    addRemoveLinks: true,
-                                    //probably with this it was easier to recover files
-                                        paramName: "file",
-                                    acceptedFiles: "image/*",
-                                        maxFilesize: 5.0,
-                                        maxFiles: 2,
-                                        parallelUploads: 10000,
-                                        uploadMultiple: true,
+                    // Prevents Dropzone from uploading dropped files immediately
+                    autoProcessQueue: false,
+                    addRemoveLinks: true,
+                    //probably with this it was easier to recover files
+                    paramName: "file",
+                    acceptedFiles: "image/*",
+                    maxFilesize: 5.0,
+                    maxFiles: 2,
+                    parallelUploads: 10000,
+                    uploadMultiple: true,
 
 
-                                    init : function() {
+                    init: function () {
 
-                                        myDropzone = this;
+                        myDropzone = this;
 
-                                        // You might want to show the submit button only when
-                                        // files are dropped here:
-                                        this.on("addedfile", function(file) {
-                                            if (document.querySelectorAll(".btn-primary").length>0){
-                                            var sub = document.querySelector(".btn-primary");
-                                            sub.parentNode.removeChild(sub);
-                                            var textright = document.querySelector(".text-right");
-                                            var cancel = document.querySelector(".btn-default");
-                                            var element = document.createElement("button");
-                                            element.className = "btn btn-sec";
-                                            element.type = "button";
+                        // You might want to show the submit button only when
+                        // files are dropped here:
+                        this.on("addedfile", function (file) {
+                            if (document.querySelectorAll(".btn-primary").length > 0) {
+                                var sub = document.querySelector(".btn-primary");
+                                sub.parentNode.removeChild(sub);
+                                var textright = document.querySelector(".text-right");
+                                var cancel = document.querySelector(".btn-default");
+                                var element = document.createElement("button");
+                                element.className = "btn btn-sec";
+                                element.type = "button";
 
-                                                var data = document.createTextNode("Guardar cambios");
-                                                element.appendChild(data);
-                                                textright.insertBefore(element, textright.firstChild);
-                                                submitButton = element;
+                                var data = document.createTextNode("Guardar cambios");
+                                element.appendChild(data);
+                                textright.insertBefore(element, textright.firstChild);
+                                submitButton = element;
 
-                                                submitButton.addEventListener("click", function () {
-                                                    var files = myDropzone.getAcceptedFiles();
-                                                    myDropzone.processFiles(files);
-                                                    myDropzone.processQueue();
-                                                    // Tell Dropzone to process all queued files.
-                                                });
-                                            }
-                                        });
+                                submitButton.addEventListener("click", function () {
+                                    var files = myDropzone.getAcceptedFiles();
+                                    myDropzone.processFiles(files);
+                                    myDropzone.processQueue();
+                                    // Tell Dropzone to process all queued files.
+                                });
+                            }
+                        });
 
-                                    }
-                                };
-                            </script>
+                    }
+                };
+            </script>
         </div>
         <!-- /.contenido -->
     </div>
