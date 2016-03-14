@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Formato de mensaje para controlar correos duplicados en el registro
-DOBLE_EMAIL = _(u"Este correo ya está en uso. "u"Por favor utilice otro correo o inicie sesión")
+DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro correo o inicie sesi&oacte;n")
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
@@ -33,15 +33,15 @@ class RegistrationForm(UserCreationForm):
     # si existe el correo con el que intenta registrarse
     def clean_email(self):
             """
-            Ya que Django solo nos ofrece el formulario de registro, pero no controla que el campo de correo electrónico
-            no sea doble, así que con esta funcion cada vez que el usuario le da al botón de registrar verificamos que su correo
+            Ya que Django solo nos ofrece el formulario de registro, pero no controla que el campo de correo electronico
+            no sea doble, asi que con esta funcion cada vez que el usuario le da al boton de registrar verificamos que su correo
             no exista previamente en la base de datos.
             """
             if User.objects.filter(email__iexact=self.cleaned_data['email']): # Buscar en la base de datos el correo introducido
                 raise forms.ValidationError(DOBLE_EMAIL)
             return self.cleaned_data['email']
 
-    # Ampliar la función de guardado para que también guarde el email
+    # Ampliar la funcion de guardado para que tambien guarde el email
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]

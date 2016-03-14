@@ -133,10 +133,12 @@ def edit_profile(request):
         form = ProfileForm(instance=profile, prefix='perfil')  #formulario con solo con los tags que ya tiene
         tag_forms = []  #lista de formularios de tag vacia
 
-        i=0
-        for tag in tags:    #iterar los campos de tag asociados al perfil
-            tag_forms.append(TagForm(instance=tag, prefix='tag_%s' %i))   #anadir un campo tipo tag con un prefijo unico
-            i=i+1
+
+        if tags:
+            i=0
+            for tag in tags:    #iterar los campos de tag asociados al perfil
+                tag_forms.append(TagForm(instance=tag, prefix='tag_%s' %i))   #anadir un campo tipo tag con un prefijo unico
+                i=i+1
 
     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form, 'tag_forms' :tag_forms})
 
@@ -149,6 +151,7 @@ def add_tag(request):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+        profile.save()
 
     tag=Tag()
 
@@ -168,6 +171,8 @@ def delete_tag(request, texto_del_tag):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+        profile.save()
 
     tag=Tag.objects.filter(perfil=profile, text=texto_del_tag) #obtenemos sus tags #TODO: buscamos el tag a eliminar
 

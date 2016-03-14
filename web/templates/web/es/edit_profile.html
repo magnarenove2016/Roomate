@@ -24,31 +24,36 @@ $('#add_tag_button').click(function() {
                     {% csrf_token %}
                     <h3>Edita tu perfil</h3><hr>
 
-                    {% bootstrap_form form layout='horizontal'%}
+                    {% bootstrap_form form layout='horizontal'%} <!-- formulario del perfil -->
 
-                    {% for tag in tag_forms %}
+                    {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
+                    <div class="container-fluid">
                         <div class="col-md-10">
-                            {% bootstrap_form tag class="form-control" placeholder=".col-xs-3"%}
+                            {% bootstrap_form tag class="form-control" placeholder=".col-xs-3"%} <!-- cada tag se muestra aqui -->
                         </div>
                         <div class="col-md-2">
                             </br>
                             <button>
-                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este campo  </a>{# TODO: crear la url con el texto bien#}
+                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este campo </a> <!-- boton para borrar este tag en concreto -->
                             </button>
                         </div>
+                    </div>
                     {% endfor %}
-                    </br>
-                    </br>
-                    <button>
-                        <a href="{% url 'add_tag' %}">A&ntilde;adir un campo personalizado</a>
-                    </button>
-                    <font size="3" color="red"> **(guarda los cambios antes de hacer esto o se borrar&aacute;n)</font>
 
+                     <div class='text-left'>
+                        {% bootstrap_button "A&ntilde;adir un campo personalizado" button_type="link" href='/add_tag/' button_class="btn-info"%} <!-- boton para anadir tag -->
+                    </div>
+
+                    </br>
+                    </br>
 
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
-                        {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-default"%}
+                        {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-danger"%}
+
                     </div>
+                    <font size="3" color="red"> **(guarda los cambios antes de a&ntilde; o se borrar&acute; lo que has escrito)</font>  <!-- mensaje de alerta -->
+
 
                 </form>
             </div>

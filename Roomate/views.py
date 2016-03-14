@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth.decorators import login_required
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib import auth
@@ -15,7 +15,7 @@ def login(request):
 	c.update(csrf(request)) #actualizar la autenticidad de la redireccion
 	return render_to_response('accounts/login.html',c)
 
-# Comprobar si el usuario está registrado
+# Comprobar si el usuario estaS registrado
 def auth_view(request):
 	username = request.POST.get('username','') #Almacenamos el nombre de usuario
 	password = request.POST.get('password','') #Almacenamos la password
@@ -24,7 +24,7 @@ def auth_view(request):
 		auth.login(request, user)
 		return redirect('main') # Le redirigimos a la pagina de Inicio
 	else:
-		return redirect('invalid') # Si no son válidos, se redirige al usuario a una pagina de error
+		return redirect('invalid') # Si no son validos, se redirige al usuario a una pagina de error
 
 #Redirige al usuario a una pagina de error
 def invalid_login(request):
@@ -45,7 +45,7 @@ def register_new_user(request):
 		form = forms.RegistrationForm(request.POST); # Generar un formulario con los datos introducidos por el usuario
 		if form.is_valid(): # Comprobar si los datos son validos
 			new_user = form.save(commit=True) # Si son validos, los guardamos
-			return redirect('register_success') # Redireccion a una página que muestra un mensaje de usuario creado
+			return redirect('register_success') # Redireccion a una pagina que muestra un mensaje de usuario creado
 	else:
 		form = forms.RegistrationForm(); #Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
 	return render(request, 'web/'+idioma+'/register.html', {'form': form})
