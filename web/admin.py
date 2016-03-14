@@ -1,9 +1,7 @@
 from django.contrib import admin
 from .models import *
 
-#mapeamos todos nuestros objetos para poder administrarlos desde /admin
-admin.site.register(Usuario)
-admin.site.register(Persona)
+# Mapeamos todos nuestros objetos para poder administrarlos desde /admin
 admin.site.register(FotoPerfil)
 admin.site.register(Tag)
 admin.site.register(Conversacion)

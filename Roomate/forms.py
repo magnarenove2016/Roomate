@@ -1,8 +1,7 @@
+from captcha.fields import ReCaptchaField
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from captcha.fields import ReCaptchaField
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 # Formato de mensaje para controlar correos duplicados en el registro
@@ -17,12 +16,12 @@ class RegistrationForm(UserCreationForm):
         required = True
     )
 
-    #Anadir el campo de Captcha
+    # Anadir el campo de Captcha
     captcha = ReCaptchaField(
         label = 'Captcha'
     )
 
-    #Checkbox de licencia el cual el usuario debe aceptar
+    # Checkbox para las condiciones de uso que el usuario debe aceptar
     tos = forms.BooleanField(
         widget = forms.CheckboxInput,
         label = 'He le&iacute;do y acepto las condiciones de uso',
