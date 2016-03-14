@@ -4,7 +4,6 @@ from django import forms
 from django.forms.widgets import SelectDateWidget
 from .models import Casa, Profile, Tag
 
-
 #formulario para la creacion de casas
 class CasaForm(forms.ModelForm):
     class Meta:
