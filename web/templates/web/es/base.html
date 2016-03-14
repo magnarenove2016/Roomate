@@ -100,23 +100,24 @@
                 {% endif %}
                 <li>
                     {% block login %}
-                        {% include "web/es/login.html" %}
+                        {% include "web/es/../../trash/login.html" %}
                     {% endblock %}
                 </li>
                 <!-- Menú desplegable para acceder a los caso de uso
                      cambiar contraseña y borrar usuario -->
                 {% if user.is_authenticated %}
-                <li class="dropdown">
-                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
-                  </ul>
-                </li>
-                {% endif%}
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <!-- /.navbar-collapse -->
