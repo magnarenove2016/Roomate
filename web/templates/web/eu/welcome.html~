@@ -1,0 +1,9 @@
+<!-- Pagina de bienvenida con informacion sobre la aplicacion -->
+
+{% extends 'web/es/base.html' %}
+
+{% block contenido %}
+
+contenido de web en euskera
+
+{% endblock %}

@@ -1,7 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.validators import RegexValidator  #utilizando una expresion regular valida un determinado campo
+from django.utils.translation import ugettext_lazy as _  #traduccion de los formatos de texto de errores
 from time import time
+
+#formato de mensaje para controlar que no se meta mal las fechas
+FECHAS_ESTANCIA_ERROR = _(u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
+
+
 
 
 # Create your models here.
@@ -41,70 +48,84 @@ class GrupoUsuariosSimilares(models.Model):
     desc=models.CharField(max_length=200)
 
 
-class Perfil(models.Model):
-    persona=models.OneToOneField(
-        Persona,related_name='perfil',
-        on_delete=models.CASCADE,
-        primary_key=True
+
+"""
+    perfil del usuario en él.
+    contiene todos los datos extra que  necesitamos saber de un Usuario
+    a parte de los que le pedimos cuando se registra.
+    hay un unico perfil por usuario.
+"""
+class Profile(models.Model):
+    #las elecciones posibles de la opción de sexo. del usuario
+    GENDER_CHOICES = (
+        ('', 'Sin especificar'),
+        ('H', 'Hombre'),
+        ('M', 'Mujer'),
     )
-    fechaNacimiento =models.DateTimeField()
-    sexo = models.CharField(max_length=200)
-    trabajadorEstudiante = models.BooleanField()
-    campo = models.CharField(max_length=200)
-    fumador = models.BooleanField()
-    animalCompania = models.CharField(max_length=200)
-    descripcion = models.TextField()
-    zonaBuscada = models.CharField(max_length=200)
-    inicioEstancia = models.DateTimeField()
-    finEstancia = models.DateTimeField()
-    instrumento = models.CharField(max_length=200)
+    #las elecciones posibles de la opción de ocupación. del usuario
+    OCUPATION_CHOICES = (
+        ('', 'Sin especificar'),
+        ('E', 'Estudiante'),
+        ('T', 'Trabajador'),
+    )
+    #las elecciones posibles de la opción de mascota. del usuario
+    PET_CHOICES = (
+        ('', 'Ninguna'),
+        ('P', 'Perro'),
+        ('G', 'Gato'),
+        ('O', 'Otros'),
+    )
 
-    def cambiar_fechaNacimiento(self, x):
-        self.fechaNacimiento = x
 
-    def cambiar_sexo(self, x):
-        self.sexo = x
+    # Expresión regular para validar el número de teléfono
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Número de teléfono inválido (debe tener de 9 a 15 dígitos)")
 
-    def cambiar_trabajadorEstudiante(self, x):
-        self.trabajadorEstudiante = x
 
-    def cambiar_campo(self, x):
-        self.campo = x
+    # Usuario asociado al perfil (un perfil por usuario)
+    user = models.OneToOneField('auth.User', models.CASCADE)
 
-    def cambiar_fumador(self, x):
-        self.fumador = x
+    # Campos del perfil
+    firstName = models.CharField(max_length=35, blank=True, verbose_name='Nombre')
+    lastName = models.CharField(max_length=35, blank=True, verbose_name='Apellidos')
+    telephone = models.CharField(max_length=15, validators=[phone_regex], blank=True, verbose_name='Número de teléfono')
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name="Sexo")
 
-    def cambiar_animalCompania(self, x):
-        self.animalCompania = x
+    birthdate = models.DateField(blank=True, null=True, verbose_name="Fecha de nacimiento")
+    ocupation = models.CharField(max_length=1, choices=OCUPATION_CHOICES, blank=True, verbose_name="Ocupación")
+    description = models.TextField(blank=True, verbose_name="Descripción")
 
-    def cambiar_descripcion(self, x):
-        self.descripcion = x
+    pet = models.CharField(max_length=1, choices=PET_CHOICES, blank=True, verbose_name='Mascota')
+    isSmoker = models.BooleanField(default=False, verbose_name='Fumador')
+    lookingIn = models.CharField(max_length=35, blank=True, verbose_name="Ciudad/zona en la que buscas piso")
+    iniEstancia = models.DateField(blank=True, null=True, verbose_name="Inicio de la estancia")
+    finEstancia = models.DateField(blank=True, null=True, verbose_name="Fin de la estancia")
+    Instrument = models.CharField(max_length=50, blank=True, verbose_name='Instrumento')
+    # photo = models.ImageField(upload_to='/data/photos/', verbose_name='Una foto tuya')
 
-    def cambiar_zonaBuscada(self, x):
-        self.zonaBuscada = x
+    #controlar que las fechas de estancia sean coherentes.
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.iniEstancia > self.finEstancia:
+            raise ValidationError(FECHAS_ESTANCIA_ERROR)
 
-    def cambiar_inicioEstancia(self, x):
-        self.inicioEstancia = x
+    def __str__(self):
+        return 'Perfil de ' + self.user.username
 
-    def cambiar_finEstancia(self, x):
-        self.finEstancia = x
+    class Meta:
+        verbose_name = 'Perfil'
+        verbose_name_plural = 'Perfiles'
 
-    def cambiar_instrumento(self, x):
-        self.instrumento = x
-
-    def obtener_tags_asociados(self):
-        return TagValue.objects.get(perfil=me)
 
 
 class TagValue(models.Model):
-    perfil = models.ForeignKey(Perfil,null=True, blank=True)
+    perfil = models.ForeignKey(Profile,null=True, blank=True)
     tag = models.ForeignKey("Tag",null=True, blank=True)
     value = models.TextField()
 
 
 class FotoPerfil(models.Model):
     foto = models.CharField(max_length=200) #path a las fotos
-    perfil = models.ForeignKey(Perfil)
+    perfil = models.ForeignKey(Profile)
 
 
 class Tag(models.Model):
@@ -137,7 +158,7 @@ class Log(models.Model):
 
 
 class Casa(models.Model):
-    dueno = models.ForeignKey(Persona,blank=True,null=True)
+    dueno = models.ForeignKey('auth.User', models.CASCADE,blank=True,null=True)
     ciudad = models.CharField(max_length=200)
     numHabitaciones = models.IntegerField()
     numHabitacionesDisponibles = models.IntegerField()

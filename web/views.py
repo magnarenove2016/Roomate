@@ -39,7 +39,9 @@ def register_new_user(request):
                 context = {
                     'no_email':request.POST.get('correo')
                 }
-                context.update(csrf(request))
+                con
+
+                text.update(csrf(request))
                 return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
             #guarda el usuario sii no existe un usuario con el mismo correo
@@ -47,7 +49,7 @@ def register_new_user(request):
                 usuario = form.save(commit=False)
 
                 #creamos un User de tipo Django
-                
+
                 userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
                 #asignar el usuario recien creado a nuestro usuario
                 usuario.user=userDjango
@@ -101,40 +103,50 @@ def register_new_user(request):
         form = UsuarioForm()
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
-#Registrar un arrendatario completando su perfil (requiere login)
+
+
+#Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
-def completar_perfil(request):
-    if request.method == "POST":
-        #creamos form
-        form = completarPerfilForm(request.POST)
-        if form.is_valid():
-            #obtener datos y guardar perfil
-            Perfil = completarPerfilForm(request.POST)
-            Perfil.persona=request.user.usuario.persona
-            Perfil.save()
-            return redirect('/',)
+def edit_profile(request):
+    # Comprobar si el usuario ya tiene un perfil creado
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid(): #comprobar los datos
+            form.save()
+            return redirect('main')
     else:
-        #generamos form
-        form = completarPerfilForm()
-    return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
+        form = ProfileForm(instance=profile)
+    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
+
 
 #Anadir una casa (requiere login)
 @login_required
 def add_house(request):
     if request.method == "POST":
-        #creamos form
-        form = CasaForm(request.POST,request.FILES)
-        if form.is_valid():
-            #obtener datos y guardar perfil
-            Casa = form.save(commit=False)
-            Casa.dueno=request.user.usuario.persona
-            Casa.save()
 
-            return redirect('/',)
+        #creamos form
+        formcasa = CasaForm(request.POST)
+        if formcasa.is_valid():
+            #obtener datos y guardar perfil
+            print("valid")
+            Casa = formcasa.save(commit=False)
+            Casa.dueno=request.user
+            Casa.save()
+            for f in request.FILES._itervalues():
+                newFoto=FotoCasa(foto=f)
+                newFoto.casa=Casa
+                newFoto.save()
+            return render_to_response('web/'+idioma+'/welcome.html', {})
     else:
         #generamos form
-        form = CasaForm()
-    return render(request, 'web/'+idioma+'/add_house.html', {'form':form})
+        formcasa = CasaForm()
+    return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
+
 
 #pagina generica para funciones sin desarrollar
 def undeveloped(request):
@@ -190,7 +202,8 @@ def getLocation(name):
     return localizacion
 
 def welcome(request):
-    return render(request, 'web/'+idioma+'/welcome.html', {})
+    return render(request, 'web/'+idioma+'/welcome.html',{})
+
 
 def distance_meters(lat1, long1, lat2, long2):
     #earth's radius in meters

@@ -1,6 +1,7 @@
 from django import forms
-from .models import Usuario, Casa, Perfil
-
+from django.forms.widgets import SelectDateWidget
+from .models import Usuario, Casa,Profile, FotoCasa
+from datetime import datetime
 from captcha.fields import ReCaptchaField
 
 #formulario para la creacion de nuevos usuarios
@@ -18,16 +19,30 @@ class CasaForm(forms.ModelForm):
          'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
          'gastosComplementarios')
 
+
+class FotoCasaForm(forms.ModelForm):
+    class Meta:
+        model = FotoCasa
+        fields = ('foto',)
+
+
 #formulario para la recuperacion de contrasenas
 class RecoverPasswordForm(forms.ModelForm):
 	class Meta:
 		model = Usuario
 		fields = ('correo',)
 
+
+
 #formulario para completar el perfil de arrendatario
-class completarPerfilForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
+
     class Meta:
-        model = Perfil
-        fields = ('fechaNacimiento', 'sexo', 'trabajadorEstudiante',
-         'campo', 'fumador', 'animalCompania', 'descripcion', 'zonaBuscada',
-          'inicioEstancia', 'finEstancia', 'instrumento')
+        model = Profile
+        fields = ('firstName', 'lastName','birthdate','telephone', 'gender',
+        'ocupation', 'pet','iniEstancia','finEstancia','Instrument', 'description', 'lookingIn', 'isSmoker')
+        widgets = {
+            'birthdate': SelectDateWidget(years = range(datetime.now().year, 1800, -1)),
+            'iniEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)),#generar 5 años más desde el año actual
+            'finEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)), #generar 5 años más desde el año actual
+        }

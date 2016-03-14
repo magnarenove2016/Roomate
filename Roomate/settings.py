@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'captcha',
     'web',
+	'bootstrap3',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -104,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'Europe/Madrid'
 
@@ -123,6 +124,8 @@ EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = False
