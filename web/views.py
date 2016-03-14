@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail #para el prototipo de enviar mail
 from django.template import Context, RequestContext #para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
+from django.http import *
 from django.db import IntegrityError
 import hashlib, datetime, random, math
 
@@ -42,7 +43,7 @@ def register_new_user(request):
                 context.update(csrf(request))
                 return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
-            #guarda el usuario sii no existe un usuario con el mismo correo
+            #guarda el usuario si no existe un usuario con el mismo correo
             elif b.count() == 0:
                 usuario = form.save(commit=False)
 
@@ -101,23 +102,6 @@ def register_new_user(request):
         form = UsuarioForm()
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
-#Registrar un arrendatario completando su perfil (requiere login)
-@login_required
-def completar_perfil(request):
-    if request.method == "POST":
-        #creamos form
-        form = completarPerfilForm(request.POST)
-        if form.is_valid():
-            #obtener datos y guardar perfil
-            Perfil = completarPerfilForm(request.POST)
-            Perfil.persona=request.user
-            Perfil.save()
-            return redirect('/',)
-    else:
-        #generamos form
-        form = completarPerfilForm()
-    return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
-
 
 #Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
@@ -128,15 +112,67 @@ def edit_profile(request):
     except Profile.DoesNotExist:
         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
 
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=profile)
-        if form.is_valid(): #comprobar los datos
-            form.save()
-            return redirect('main')
-    else:
-        form = ProfileForm(instance=profile)
-    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
+    tags = Tag.objects.filter(perfil=profile)  #obtener tags asociados al perfil
 
+    if request.method == 'POST':
+        formProfile = ProfileForm(request.POST, instance=profile,prefix='perfil') #extraemos el profile del POST
+
+        if formProfile.is_valid(): #comprobamos que el profile es valido
+            formProfile.save()  #y lo guardamos
+
+        i=0
+        for tag in tags:
+            tagForm=TagForm(request.POST, instance=tag, prefix='tag_%s' %i)
+            i=i+1
+            tagForm.perfil=profile
+            if tagForm.is_valid():
+                tagForm.save()   #TODO: comprobar si el tag ya existe?
+
+        return redirect('completar_perfil')
+    else:
+        form = ProfileForm(instance=profile, prefix='perfil')  #formulario con solo con los tags que ya tiene
+        tag_forms = []  #lista de formularios de tag vacia
+
+        i=0
+        for tag in tags:    #iterar los campos de tag asociados al perfil
+            tag_forms.append(TagForm(instance=tag, prefix='tag_%s' %i))   #anadir un campo tipo tag con un prefijo unico
+            i=i+1
+
+    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form, 'tag_forms' :tag_forms})
+
+#anadir tag al usuario
+@login_required
+def add_tag(request):
+    print("add tag")
+
+    try:   #obtenemos el perfil del usuario
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tag=Tag()
+
+    tag.perfil=profile              #asignamos el perfil
+    tag.text="Etiqueta en Blanco"   #y un texto generico
+    tag.save()                      #y lo guardamos
+    return redirect('/completar_perfil/',)
+
+#eliminar determinado tag del usuario
+@login_required
+def delete_tag(request, texto_del_tag):
+
+
+    print("delete tag")
+
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tag=Tag.objects.filter(perfil=profile, text=texto_del_tag) #obtenemos sus tags #TODO: buscamos el tag a eliminar
+
+    tag.delete()
+    return redirect('/completar_perfil/',)
 
 #Anadir una casa (requiere login)
 @login_required

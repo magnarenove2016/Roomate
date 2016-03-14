@@ -5,31 +5,55 @@
 {% block title %}Editar perfil{% endblock %}
 
 {% block contenido %}
+
+<script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+$('#add_tag_button').click(function() {
+    window.alert("tag pedido");
+    $.ajax('/add_tag/');
+});
+</script>
+
 <a name="contenido"></a>
 <div class="content-section-a">
-		<div class="container">
-				<div class="row">
-						<div class="col-lg-12">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <form method="POST" class="edit-profile-form container">
+
+                    {% csrf_token %}
+                    <h3>Edita tu perfil</h3><hr>
+
+                    {% bootstrap_form form layout='horizontal'%}
+
+                    {% for tag in tag_forms %}
+                        <div class="col-md-10">
+                            {% bootstrap_form tag class="form-control" placeholder=".col-xs-3"%}
+                        </div>
+                        <div class="col-md-2">
+                            </br>
+                            <button>
+                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este campo  </a>{# TODO: crear la url con el texto bien#}
+                            </button>
+                        </div>
+                    {% endfor %}
+                    </br>
+                    </br>
+                    <button>
+                        <a href="{% url 'add_tag' %}">A&ntilde;adir un campo personalizado</a>
+                    </button>
+                    <font size="3" color="red"> **(guarda los cambios antes de hacer esto o se borrar&aacute;n)</font>
 
 
-						<form method="POST" class="edit-profile-form container">
+                    <div class='text-right'>
+                        {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
+                        {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-default"%}
+                    </div>
 
-						  {% csrf_token %}
-						  <h3>Edita tu perfil</h3><hr>
-
-						  {% bootstrap_form form layout='horizontal'%}
-
-						  <div class='text-right'>
-						    {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
-						    {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-default"%}
-						  </div>
-
-						</form>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-<!-- /.container -->
-</div>
-<!-- /.container -->
 
 {% endblock %}
