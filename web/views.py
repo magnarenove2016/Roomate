@@ -143,6 +143,7 @@ def edit_profile(request):
 #anadir tag al usuario
 @login_required
 def add_tag(request):
+    print("add tag")
 
     try:   #obtenemos el perfil del usuario
         profile = request.user.profile
@@ -159,7 +160,10 @@ def add_tag(request):
 #eliminar determinado tag del usuario
 @login_required
 def delete_tag(request, texto_del_tag):
-    print("vamos a eliminar un tag")
+
+
+    print("delete tag")
+
     try:
         profile = request.user.profile
     except Profile.DoesNotExist:

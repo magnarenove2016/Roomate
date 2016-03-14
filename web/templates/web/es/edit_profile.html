@@ -32,13 +32,16 @@ $('#add_tag_button').click(function() {
                         </div>
                         <div class="col-md-2">
                             </br>
-                            <a href="{% url 'delete_tag' texto_del_tag=tag.text {#TODO: crear la url con el texto, pero bien#} %}"><button>Borrar &eacute;ste campo</button></a>
-
+                            <button>
+                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este campo  </a>{# TODO: crear la url con el texto bien#}
+                            </button>
                         </div>
                     {% endfor %}
                     </br>
                     </br>
-                    <a href="{% url 'add_tag' %}"><button>A&ntilde;adir un campo personalizado (guarda los cambios antes de hacer esto o se borrar&aacute;n)</button></a>
+                    <button>
+                        <a href="{% url 'add_tag' %}">A&ntilde;adir un campo personalizado (guarda los cambios antes de hacer esto o se borrar&aacute;n)</a>
+                    </button>
 
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
