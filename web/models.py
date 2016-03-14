@@ -14,6 +14,14 @@ FECHAS_ESTANCIA_INCOMPLT = _(u"revise las fechas de estancia. "u"Rellene las fec
     necesitamos saber de un usuario a parte de los que le pedimos
     cuando se registra. Hay un unico perfil por usuario.
 """
+class validation(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=False, blank=True
+    )
+    ash = models.TextField(null=False,max_length=200)
+    creation_date = models.DateField()
 
 
 class Profile(models.Model):

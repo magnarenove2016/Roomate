@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^accounts/logout/$', views.logout, name='logout'),  # cerrar sesion
     url(r'^accounts/invalid/$', views.invalid_login, name='invalid'), # mostrar el mensaje de error cuando el usuario falla los datos
     url(r'^database_backup/$', views.database_backup, name='database_backup'), # pagina para la gestion de backups
+    url(r'^accounts/confirm/(?P<codigo>.+)$',views.activar_cuenta, name = 'activarCuenta'),
     url(r'^database_backup/trigger_backup/$', views.trigger_backup, name='trigger_backup'), # pagina para disparar una copia de seguridad d ela base de datos
     url(r'^accounts/user/delete/$', views.delete_user, name='delete_user'),
     url(r'^register/$', views.register_new_user, name='register_new_user'), #registrar a un nuevo usuario
