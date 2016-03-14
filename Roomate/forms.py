@@ -10,14 +10,14 @@ DOBLE_EMAIL = _(u"Este correo ya está en uso. "u"Por favor utilice otro correo 
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
-
-    # Añadir al formulario un campo para el email, el captcha,
+    
+    # Anadir al formulario un campo para el email, el captcha,
     # y un checkbox para que el usuario acepte las condiciones de uso
     email = forms.EmailField(
         required = True
     )
 
-    #Añadir el campo de Captcha
+    #Anadir el campo de Captcha
     captcha = ReCaptchaField(
         label = 'Captcha'
     )
@@ -25,11 +25,11 @@ class RegistrationForm(UserCreationForm):
     #Checkbox de licencia el cual el usuario debe aceptar
     tos = forms.BooleanField(
         widget = forms.CheckboxInput,
-        label = 'He leído y acepto las condiciones de uso',
+        label = 'He le&iacute;do y acepto las condiciones de uso',
         error_messages={'required': 'Debes aceptar las condiciones de uso para continuar'}
     )
 
-    # Función que se encargar de mirar en la base de datos
+    # Funcion que se encargar de mirar en la base de datos
     # si existe el correo con el que intenta registrarse
     def clean_email(self):
             """

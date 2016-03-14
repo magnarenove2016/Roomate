@@ -8,30 +8,31 @@ from . import forms
 
 idioma = "es"
 
-# Iniciar sesión
+
+# Iniciar sesion
 def login(request):
 	c = {}
-	c.update(csrf(request)) # Actualizar la autenticidad de la redirección
+	c.update(csrf(request)) #actualizar la autenticidad de la redireccion
 	return render_to_response('accounts/login.html',c)
 
 # Comprobar si el usuario está registrado
 def auth_view(request):
-	username = request.POST.get('username','') # Almacenamos el nombre de usuario
-	password = request.POST.get('password','') # Almacenamos la contraseña
-	user = auth.authenticate(username=username,password=password) # Iniciamos sesión con dichos datos
-	if user is not None: # Si el usuario y la contraseña son válidos
+	username = request.POST.get('username','') #Almacenamos el nombre de usuario
+	password = request.POST.get('password','') #Almacenamos la password
+	user = auth.authenticate(username=username,password=password) # Iniciamos sesion con dichos datos
+	if user is not None: #Si el usuario y la password son validos
 		auth.login(request, user)
-		return redirect('main') # Le redirigimos a la página de Inicio
+		return redirect('main') # Le redirigimos a la pagina de Inicio
 	else:
-		return redirect('invalid') # Si no son válidos, se redirige al usuario a una página de error
+		return redirect('invalid') # Si no son válidos, se redirige al usuario a una pagina de error
 
-# Redirige al usuario a una página de error
+#Redirige al usuario a una pagina de error
 def invalid_login(request):
 	c = {}
 	c.update(csrf(request))
-	return render_to_response('web/'+idioma+'/invalid_login.html',c)
+	return redirect('main')
 
-# Cerrar sesión
+# Cerrar sesion
 def logout(request):
 	auth.logout(request)
 	c = {}
@@ -40,13 +41,13 @@ def logout(request):
 
 # Registrar un nuevo usuario
 def register_new_user(request):
-	if request.method == "POST": # Si el usuario le dio al boton de registrarse
+	if request.method == "POST": # Si el usuario le ha dado al boton de registrarse
 		form = forms.RegistrationForm(request.POST); # Generar un formulario con los datos introducidos por el usuario
-		if form.is_valid(): # Comprobar si son válidos dichos datos
+		if form.is_valid(): # Comprobar si los datos son validos
 			new_user = form.save(commit=True) # Si son validos, los guardamos
-			return redirect('register_success') # Redirección a una página que muestra un mensaje de usuario creado
+			return redirect('register_success') # Redireccion a una página que muestra un mensaje de usuario creado
 	else:
-		form = forms.RegistrationForm(); # Si el usuario está entrando en la página de registro, le mostramos un formulario vacío
+		form = forms.RegistrationForm(); #Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
 	return render(request, 'web/'+idioma+'/register.html', {'form': form})
 
 # Mostrar mensaje de usuario creado
