@@ -6,19 +6,12 @@
 
 {% block contenido %}
 
-{#<script>#}
-{#    function add_extra_tag()#}
-{#    {#}
-{#        $.ajax({#}
-{#            url: "/completar_perfil/",#}
-{#            type: "GET",#}
-{#            data: {'extra':'true',#}
-{#            success: function(response) {#}
-{#            },#}
-{##}
-{#        });#}
-{#    }#}
-{#</script>#}
+<script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+$('#add_tag_button').click(function() {
+    window.alert("tag pedido");
+    $.ajax('/add_tag/');
+});
+</script>
 
 <a name="contenido"></a>
 <div class="content-section-a">
@@ -34,11 +27,18 @@
                     {% bootstrap_form form layout='horizontal'%}
 
                     {% for tag in tag_forms %}
-                        {% bootstrap_form tag layout='horizontal'%}
+                        <div class="col-md-10">
+                            {% bootstrap_form tag class="form-control" placeholder=".col-xs-3"%}
+                        </div>
+                        <div class="col-md-2">
+                            </br>
+                            <a href="{% url 'delete_tag' texto_del_tag=tag.text {#TODO: crear la url con el texto, pero bien#} %}"><button>Borrar &eacute;ste campo</button></a>
 
+                        </div>
                     {% endfor %}
-
-{#                    <button id="add-another" onclick="add_extra_tag();">A&ntilde;adir un campo personalizado(tag)</button>#}
+                    </br>
+                    </br>
+                    <a href="{% url 'add_tag' %}"><button>A&ntilde;adir un campo personalizado (guarda los cambios antes de hacer esto o se borrar&aacute;n)</button></a>
 
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}

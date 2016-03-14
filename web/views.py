@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail #para el prototipo de enviar mail
 from django.template import Context, RequestContext #para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
+from django.http import *
 from django.db import IntegrityError
 import hashlib, datetime, random, math
 
@@ -101,59 +102,6 @@ def register_new_user(request):
         form = UsuarioForm()
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
-# #Registrar un arrendatario completando su perfil (requiere login)
-# @login_required
-# def completar_perfil(request):
-#     if request.method == "POST":
-#         #creamos form
-#         form = completarPerfilForm(request.POST)
-#         if form.is_valid():
-#             #obtener datos y guardar perfil
-#             Perfil = completarPerfilForm(request.POST)
-#             Perfil.persona=request.user
-#             Perfil.save()
-#             return redirect('/',)
-#     else:
-#         #generamos form
-#         form = completarPerfilForm()
-#     return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
-
-
-# #Registrar un arrendatario completando su perfil (requiere login) Eficiente
-# @login_required
-# def edit_profile(request):
-#     # Comprobar si el usuario ya tiene un perfil creado
-#     try:
-#         profile = request.user.profile
-#     except Profile.DoesNotExist:
-#         profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
-#     tags = 2    #TODO: coger cantidad de tags de manera dinamica
-#     if request.method == 'POST':
-#
-#         #TODO: if (add_tag)
-#             # guardar estado actual del formulario
-#             # obtener formulario con con los tags que ya tiene + 1
-#             # form = ProfileForm(instance=profile,num_tags=(tags+1)) #TODO: anadir instance=tags??
-#
-#         form = ProfileForm(request.POST, instance=profile)
-#         form.user=request.user
-#         # print(form)
-#         if form.is_valid(): #TODO: comprobar si los datos son validos
-#             print('valido')
-#         form.save()
-#
-#         # for tags in form.get_tags():           #TODO: iterar tags ONE?
-#         #     if name.startswith('tag_'):
-#         #         value=form[name].value           #TODO: obtener value DONE?
-#         #         tag = Tag()
-#         #         tag.perfil=profile
-#         #         tag.text=value
-#
-#         return redirect('main')
-#     else:
-#         form = ProfileForm(instance=profile,num_tags=tags)  #formulario con solo con los tags que ya tiene
-#     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
-
 
 #Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
@@ -178,10 +126,7 @@ def edit_profile(request):
             i=i+1
             tagForm.perfil=profile
             if tagForm.is_valid():
-                tagForm.save()
-
-        # if request.GET.get("extra")=="true": #TODO: esto es solo una prueba, ha de ser borrado
-        #     print("campo extra!!!")
+                tagForm.save()   #TODO: comprobar si el tag ya existe?
 
         return redirect('completar_perfil')
     else:
@@ -193,12 +138,37 @@ def edit_profile(request):
             tag_forms.append(TagForm(instance=tag, prefix='tag_%s' %i))   #anadir un campo tipo tag con un prefijo unico
             i=i+1
 
-        # if request.GET.get("extra")=="true":
-        #     print("campo extra!!!")
-        #     tag_forms.append(TagForm(prefix='tag'))     #anadir tag en blanco adicional #TODO: esto hacerlo en base a un boton
-
     return render(request,'web/'+idioma+'/edit_profile.html', {'form': form, 'tag_forms' :tag_forms})
 
+#anadir tag al usuario
+@login_required
+def add_tag(request):
+
+    try:   #obtenemos el perfil del usuario
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tag=Tag()
+
+    tag.perfil=profile              #asignamos el perfil
+    tag.text="Etiqueta en Blanco"   #y un texto generico
+    tag.save()                      #y lo guardamos
+    return redirect('/completar_perfil/',)
+
+#eliminar determinado tag del usuario
+@login_required
+def delete_tag(request, texto_del_tag):
+    print("vamos a eliminar un tag")
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tag=Tag.objects.filter(perfil=profile, text=texto_del_tag) #obtenemos sus tags #TODO: buscamos el tag a eliminar
+
+    tag.delete()
+    return redirect('/completar_perfil/',)
 
 #Anadir una casa (requiere login)
 @login_required
