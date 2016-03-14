@@ -1,15 +1,9 @@
-from django import forms
-from django.forms.widgets import SelectDateWidget
-from .models import Usuario, Casa, Perfil,Profile, Tag
-from captcha.fields import ReCaptchaField
 from datetime import datetime
 
-#formulario para la creacion de nuevos usuarios
-class UsuarioForm(forms.ModelForm):
-    captcha = ReCaptchaField()
-    class Meta:
-        model = Usuario
-        fields = ('correo', 'contrasena','alias',)
+from django import forms
+from django.forms.widgets import SelectDateWidget
+from .models import Casa, Profile, Tag
+
 
 #formulario para la creacion de casas
 class CasaForm(forms.ModelForm):
@@ -19,15 +13,8 @@ class CasaForm(forms.ModelForm):
          'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
          'gastosComplementarios')
 
-#formulario para la recuperacion de contrasenas
-class RecoverPasswordForm(forms.ModelForm):
-	class Meta:
-		model = Usuario
-		fields = ('correo',)
-
 #formulario para completar el perfil de arrendatario
 class ProfileForm(forms.ModelForm):
-
     class Meta:
         model = Profile
         fields = ('firstName', 'lastName','birthdate','telephone', 'gender',
