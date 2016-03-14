@@ -4,7 +4,6 @@ from .models import *
 #mapeamos todos nuestros objetos para poder administrarlos desde /admin
 admin.site.register(Usuario)
 admin.site.register(Persona)
-admin.site.register(Perfil)
 admin.site.register(FotoPerfil)
 admin.site.register(Tag)
 admin.site.register(Conversacion)
