@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^register/$', views.register_new_user, name='register_new_user'), #registrar a un nuevo usuario
     url(r'^accounts/invalid/$', views.invalid_login, name='invalid'), #mostrar el mensaje de error cuando el usuario falla los datos
     url(r'^register/success/$', views.user_created, name='register_success'), #mensaje que se muestra cuando se creó bien el nuevo usuario
+    url(r'^accounts/confirm/(?P<codigo>.+)$',views.activar_cuenta, name = 'activarCuenta'),
     #url(r'^completar_perfil/$', views.completar_perfil, name='completar_perfil'),
     #url(r'^accounts/logout/$', views.logout, {'next_page': '/'}), #logout provisto por Django
     url(r'^accounts/password/reset/$',auth_views.password_reset, {'template_name' : 'web/es/password_reset.html', 'post_reset_redirect' : 'password_reset_done'},

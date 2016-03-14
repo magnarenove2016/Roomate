@@ -4,7 +4,9 @@ from django.core.context_processors import csrf
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib import auth
+from datetime import datetime,timedelta
 from . import forms
+from web.models import *
 
 idioma = "es"
 
@@ -19,7 +21,7 @@ def auth_view(request):
 	username = request.POST.get('username','') # Almacenamos el nombre de usuario
 	password = request.POST.get('password','') # Almacenamos la contraseña
 	user = auth.authenticate(username=username,password=password) # Iniciamos sesión con dichos datos
-	if user is not None: # Si el usuario y la contraseña son válidos
+	if user is not None and user.is_active: # Si el usuario y la contraseña son válidos y esta activo
 		auth.login(request, user)
 		return redirect('main') # Le redirigimos a la página de Inicio
 	else:
@@ -70,3 +72,52 @@ def delete_user(request):
 			messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
 
 	return render(request, 'web/' + idioma + '/delete_user.html')
+
+def cuentaactivada(request):
+	#c = {}
+	#c.update(csrf(request))
+	return render_to_response('web/'+idioma+'/activacion_complete.html')
+
+
+def error_activacion(request):
+	#c = {}
+	#c.update(csrf(request))
+	return render_to_response('web/'+idioma+'/activacionerror.html')
+
+
+#metodo que va ha recibir el link de confirmacion
+
+def activar_cuenta(request,codigo):
+    try:
+        u = validation.objects.get(ash=codigo)
+    except:
+        print('error al buscar la validacion')
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('web/'+idioma+'/activation_link_error.html',c)
+
+    if u is None:
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('web/'+idioma+'/activacionerror.html',c)
+        #return redirect('ErrorActivacion')
+    else:
+        expired_date = u.creation_date - timedelta(days=2)
+        print(expired_date)
+        if expired_date > u.creation_date :
+            u.user.delete()
+            u.delete()
+            c = {}
+            c.update(csrf(request))
+            return render_to_response('web/'+idioma+'/activation_link_error.html',c)
+            #return Null
+        u.user.is_active = True
+        u.user.save()
+        u.delete()
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('web/'+idioma+'/activacion_complete.html',c)
+        #return redirect('cuentaActivada')
+
+
+

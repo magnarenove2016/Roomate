@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import RegexValidator  #utilizando una expresion regular valida un determinado campo
 from django.utils.translation import ugettext_lazy as _  #traduccion de los formatos de texto de errores
+from datetime import datetime
 
 #formato de mensaje para controlar que no se meta mal las fechas
 FECHAS_ESTANCIA_ERROR = _(u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
@@ -103,6 +104,16 @@ class Perfil(models.Model):
     a parte de los que le pedimos cuando se registra.
     hay un unico perfil por usuario.
 """
+class validation(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=False, blank=True
+    )
+    ash = models.TextField(null=False,max_length=200)
+    creation_date = models.DateField()
+
+
 class Profile(models.Model):
     #las elecciones posibles de la opción de sexo. del usuario
     GENDER_CHOICES = (
