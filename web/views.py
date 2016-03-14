@@ -25,7 +25,7 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             #si existe un usuario con el mismo correo se guarda en b
-            #b = Usuario.objects.filter(correo=request.POST.get('correo'))
+            b = Usuario.objects.filter(correo=request.POST.get('correo'))
 
             #verificar seguridad del password
             if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
@@ -71,7 +71,7 @@ def register_new_user(request):
                         'exist':request.POST.get('correo')
                     }
                     context.update(csrf(request))
-                    return render_to_response('web/register_new_user.html', context)
+                    return render_to_response('web/'+idioma+'/register_new_user.html', context)
                 userDjango.save()
 
                 #crear el mail y enviarlo
@@ -101,6 +101,7 @@ def register_new_user(request):
         #generar formulario
         form = UsuarioForm()
     return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
+
 
 
 #Registrar un arrendatario completando su perfil (requiere login) Eficiente
@@ -183,18 +184,24 @@ def delete_tag(request, texto_del_tag):
 @login_required
 def add_house(request):
     if request.method == "POST":
+
         #creamos form
-        form = CasaForm(request.POST)
+        form = CasaForm(request.POST,request.FILES)
         if form.is_valid():
             #obtener datos y guardar perfil
             Casa = form.save(commit=False)
             Casa.dueno=request.user
             Casa.save()
-            return redirect('/',)
+            for f in request.FILES._itervalues():
+                newFoto=FotoCasa(foto=f)
+                newFoto.casa=Casa
+                newFoto.save()
+            return render_to_response('web/'+idioma+'/welcome.html', {})
     else:
         #generamos form
-        form = CasaForm()
-    return render(request, 'web/'+idioma+'/add_house.html', {'form':form})
+        formcasa = CasaForm()
+    return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
+
 
 #pagina generica para funciones sin desarrollar
 def undeveloped(request):
@@ -286,7 +293,7 @@ def get_location_search(request):
             dist=metersToKm(dist)
         else:
             #Nothing found
-            return render(request, 'web/es/error.html', {})
+            return render(request, 'web/'+idioma+'/error.html', {})
     else:
         #used url /search/ with no parameters
         return render(request, 'web/'+idioma+'/error.html', {})
