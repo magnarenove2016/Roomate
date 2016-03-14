@@ -40,8 +40,10 @@ $('#add_tag_button').click(function() {
                     </br>
                     </br>
                     <button>
-                        <a href="{% url 'add_tag' %}">A&ntilde;adir un campo personalizado (guarda los cambios antes de hacer esto o se borrar&aacute;n)</a>
+                        <a href="{% url 'add_tag' %}">A&ntilde;adir un campo personalizado</a>
                     </button>
+                    <font size="3" color="red"> **(guarda los cambios antes de hacer esto o se borrar&aacute;n)</font>
+
 
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary"%}
