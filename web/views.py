@@ -5,13 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail #para el prototipo de enviar mail
 from django.template import Context, RequestContext #para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
-
+from django.http import *
+from django.db import IntegrityError
 import hashlib, datetime, random, math
 
 import re #for regex expresions
 
 from .forms import *
 from .models import *
+
+castellano = "es"
+euskera = "es"
+idioma = "es"
 
 # Registrar nuevo usuario (Version Jon).
 def register_new_user(request):
@@ -20,7 +25,7 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             #si existe un usuario con el mismo correo se guarda en b
-            b = Usuario.objects.filter(correo=request.POST.get('correo'))
+            #b = Usuario.objects.filter(correo=request.POST.get('correo'))
 
             #verificar seguridad del password
             if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
@@ -28,7 +33,7 @@ def register_new_user(request):
                     'insecure':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
             #verificar seguridad del password
             if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ):
@@ -36,26 +41,37 @@ def register_new_user(request):
                     'no_email':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
 
-            #guarda el usuario sii no existe un usuario con el mismo correo
+            #guarda el usuario si no existe un usuario con el mismo correo
             elif b.count() == 0:
                 usuario = form.save(commit=False)
 
                 #creamos un User de tipo Django
-                userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
 
+                userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
                 #asignar el usuario recien creado a nuestro usuario
                 usuario.user=userDjango
 
                 #generar hash para la verificacion por mail y asignar
-                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-                activation_key = hashlib.sha1(salt+usuario.correo).hexdigest()
+                salt_str=str(random.random())
+                salt = hashlib.sha1(salt_str.encode('utf_8')).hexdigest()[:5]
+                salt_bytes = salt.encode('utf-8')
+                correo_bytes=usuario.correo.encode('utf-8')
+                activation_key = hashlib.sha1(salt_bytes+correo_bytes).hexdigest()
                 usuario.activation_key= activation_key
 
                 #marcar como no verificado y guardar ambos
                 usuario.verificado=False
-                usuario.save()
+                try:
+                    usuario.save()
+                except IntegrityError as e:
+                    print("Correo existente")
+                    context = {
+                        'exist':request.POST.get('correo')
+                    }
+                    context.update(csrf(request))
+                    return render_to_response('web/register_new_user.html', context)
                 userDjango.save()
 
                 #crear el mail y enviarlo
@@ -73,35 +89,90 @@ def register_new_user(request):
 
                 #render
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
             else: #existe un usuario con ese correo
                 context = {
                     'exist':request.POST.get('correo')
                 }
                 context.update(csrf(request))
-                return render_to_response('web/register_new_user.html', context)
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
             return redirect('/',)
     else:
         #generar formulario
         form = UsuarioForm()
-    return render(request, 'web/register_new_user.html', {'form':form})
+    return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
 
-#Registrar un arrendatario completando su perfil (requiere login)
+
+#Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
-def completar_perfil(request):
-    if request.method == "POST":
-        #creamos form
-        form = completarPerfilForm(request.POST)
-        if form.is_valid():
-            #obtener datos y guardar perfil
-            Perfil = completarPerfilForm(request.POST)
-            Perfil.persona=request.user
-            Perfil.save()
-            return redirect('/',)
+def edit_profile(request):
+    # Comprobar si el usuario ya tiene un perfil creado
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tags = Tag.objects.filter(perfil=profile)  #obtener tags asociados al perfil
+
+    if request.method == 'POST':
+        formProfile = ProfileForm(request.POST, instance=profile,prefix='perfil') #extraemos el profile del POST
+
+        if formProfile.is_valid(): #comprobamos que el profile es valido
+            formProfile.save()  #y lo guardamos
+
+        i=0
+        for tag in tags:
+            tagForm=TagForm(request.POST, instance=tag, prefix='tag_%s' %i)
+            i=i+1
+            tagForm.perfil=profile
+            if tagForm.is_valid():
+                tagForm.save()   #TODO: comprobar si el tag ya existe?
+
+        return redirect('completar_perfil')
     else:
-        #generamos form
-        form = completarPerfilForm()
-    return render(request, 'web/completar_perfil.html', {'form':form})
+        form = ProfileForm(instance=profile, prefix='perfil')  #formulario con solo con los tags que ya tiene
+        tag_forms = []  #lista de formularios de tag vacia
+
+        i=0
+        for tag in tags:    #iterar los campos de tag asociados al perfil
+            tag_forms.append(TagForm(instance=tag, prefix='tag_%s' %i))   #anadir un campo tipo tag con un prefijo unico
+            i=i+1
+
+    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form, 'tag_forms' :tag_forms})
+
+#anadir tag al usuario
+@login_required
+def add_tag(request):
+    print("add tag")
+
+    try:   #obtenemos el perfil del usuario
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tag=Tag()
+
+    tag.perfil=profile              #asignamos el perfil
+    tag.text="Etiqueta en Blanco"   #y un texto generico
+    tag.save()                      #y lo guardamos
+    return redirect('/completar_perfil/',)
+
+#eliminar determinado tag del usuario
+@login_required
+def delete_tag(request, texto_del_tag):
+
+
+    print("delete tag")
+
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
+
+    tag=Tag.objects.filter(perfil=profile, text=texto_del_tag) #obtenemos sus tags #TODO: buscamos el tag a eliminar
+
+    tag.delete()
+    return redirect('/completar_perfil/',)
 
 #Anadir una casa (requiere login)
 @login_required
@@ -118,11 +189,11 @@ def add_house(request):
     else:
         #generamos form
         form = CasaForm()
-    return render(request, 'web/add_house.html', {'form':form})
+    return render(request, 'web/'+idioma+'/add_house.html', {'form':form})
 
 #pagina generica para funciones sin desarrollar
 def undeveloped(request):
-    return render(request, 'web/undeveloped.html', {})
+    return render(request, 'web/'+idioma+'/undeveloped.html', {})
 
 #----------------------------------- Funciones experimentales sin documentar -----------------------------------------
 
@@ -138,7 +209,7 @@ def recover_password(request):
 			return redirect('recover_password_done',mail=user_mail)
 	else:
 		form = RecoverPasswordForm()
-	return render(request, 'web/recover_password.html', {'form':form})
+	return render(request, 'web/'+idioma+'/recover_password.html', {'form':form})
 '''
 
 #funcion para la recuperacion de la password
@@ -152,7 +223,7 @@ def recover_password(request):
     else:
         #creamos form
         form = RecoverPasswordForm()
-    return render(request, 'web/recover_password.html', {'form' : form})
+    return render(request, 'web/'+idioma+'/recover_password.html', {'form' : form})
 
 def recover_password_done(request, mail):
     #creamos variable de contexto "mail"
@@ -164,7 +235,7 @@ def recover_password_done(request, mail):
     b = Usuario.objects.filter(correo=mail)
     if b.count() > 0:
         send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'magnasis.grupo1@gmail.com', [mail], fail_silently=False)
-    return render_to_response('web/recover_password_done.html', context)
+    return render_to_response('web/'+idioma+'/recover_password_done.html', context)
 
 #----------------------------------- Funciones adicionales -----------------------------------------
 
@@ -174,7 +245,8 @@ def getLocation(name):
     return localizacion
 
 def welcome(request):
-    return render(request, 'web/welcome.html', {})
+    return render(request, 'web/'+idioma+'/welcome.html',{})
+
 
 def distance_meters(lat1, long1, lat2, long2):
     #earth's radius in meters
@@ -209,9 +281,11 @@ def get_location_search(request):
             dist=metersToKm(dist)
         else:
             #Nothing found
-            return render(request, 'web/error.html', {})
+            return render(request, 'web/es/error.html', {})
     else:
         #used url /search/ with no parameters
-        return render(request, 'web/error.html', {})
-    return render_to_response('web/search_result.html',{'latitude': search.latitude, 'longitude': search.longitude,'distance':dist},context_instance=RequestContext(request))
+        return render(request, 'web/'+idioma+'/error.html', {})
+    return render_to_response('web/'+idioma+'/search_result.html', {'latitude': search.latitude, 'longitude': search.longitude, 'distance':dist}, context_instance=RequestContext(request))
 
+def cambairIdioma(nuevo_idioma):
+    idioma=nuevo_idioma
