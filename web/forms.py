@@ -26,15 +26,6 @@ class RecoverPasswordForm(forms.ModelForm):
 		fields = ('correo',)
 
 #formulario para completar el perfil de arrendatario
-# class completarPerfilForm(forms.ModelForm):
-#     class Meta:
-#         model = Perfil
-#         fields = ('fechaNacimiento', 'sexo', 'trabajadorEstudiante',
-#          'campo', 'fumador', 'animalCompania', 'descripcion', 'zonaBuscada',
-#           'inicioEstancia', 'finEstancia', 'instrumento')
-
-
-#formulario para completar el perfil de arrendatario
 class ProfileForm(forms.ModelForm):
 
     class Meta:
@@ -46,24 +37,6 @@ class ProfileForm(forms.ModelForm):
             'iniEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)),#generar 5 years mas desde el year actual
             'finEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)), #generar 5 years mas desde el year actual
         }
-
-
-    # def __init__(self, *args, **kwargs):
-    #     num_tags = kwargs.get('num_tags')
-    #     #print(num_tags)
-    #     super(ProfileForm, self).__init__() #extender el constructor original
-    #
-    #     if not (num_tags is None):
-    #
-    #         for i in range(num_tags): #iterar los campos de tag necesarios
-    #             self.fields['tag_%s' % (i+1)] = forms.CharField(label='Etiqueta %s' % (i+1),required=False) #crear campo
-    #
-    # #TODO: codigo sin completar, quiero obtener todos lo tags
-    # def get_tags(self):
-    #     for name, value in self.cleaned_data.items():
-    #         if name.startswith('tag_'):
-    #             yield (self.fields[name].label, value)
-
 
 class TagForm(forms.ModelForm):
 	class Meta:
