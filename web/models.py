@@ -76,7 +76,7 @@ class Profile(models.Model):
 
 
 class FotoPerfil(models.Model):
-    foto = models.CharField(max_length=200)  # path a las fotos
+    foto = models.CharField(max_length=200) #path a las fotos
     perfil = models.ForeignKey(Profile)
 
 
