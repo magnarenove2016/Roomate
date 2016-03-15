@@ -210,3 +210,46 @@ footer {
 p.copyright {
     margin: 15px 0 0;
 }
+
+#login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+}
+
+#login-dp .btn {
+    margin-top: 10px;
+}
+
+#login-dp .btn-primary {
+    width: 80px;
+    margin-right: 4px;
+}
+
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+#logo {
+    position: relative;
+    top: -5px;
+    width: 107px;
+    height: 37px;
+}
+
+.about-us {
+    color: black;
+    background-color: #f8f8f8;
+    text-align: left;
+    padding: 20px 40px 20px 40px;
+    margin: 20px;
+}
+
+.about-us > .list {
+    margin: 20px 0px 20px 20px;
+}
+
+.about-us > .list > li {
+    list-style: square;
+    margin-left: 30px;
+}
