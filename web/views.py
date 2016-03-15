@@ -1,21 +1,22 @@
 import math
-
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail  # para contactar con el support
 from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext  # para mostrar el mail en el .html
+
+from Roomate.views import castellano, euskera
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
-from Roomate.views import castellano, euskera
-from django.core.mail import send_mail #para contactar con el support
 
-# Registrar un arrendatario completando su perfil (requiere login) Eficiente
+
+# Registrar un arrendatario completando su perfil
 @login_required
 def edit_profile(request):
     # Comprobar si el usuario ya tiene un perfil creado
     try:
         profile = request.user.profile
-    except Profile.DoesNotExist:
+    except:
         profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
 
     tags = Tag.objects.filter(perfil=profile)  # obtener tags asociados al perfil
@@ -34,9 +35,9 @@ def edit_profile(request):
             if tagForm.is_valid():
                 tagForm.save()  # TODO: comprobar si el tag ya existe?
 
-        for file in request.FILES._itervalues(): # TODO: in development
-            newFoto=FotoPerfil(foto=file)
-            newFoto.perfil=profile
+        for file in request.FILES._itervalues():  # TODO: in development
+            newFoto = FotoPerfil(foto=file)
+            newFoto.perfil = profile
             newFoto.save()
 
         return redirect('completar_perfil')
@@ -51,13 +52,13 @@ def edit_profile(request):
                     TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
                 i = i + 1
 
-    return render(request, 'web/' + request.session['lang'] + '/edit_profile.html', {'form': form, 'tag_forms': tag_forms})
+    return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
+                  {'form': form, 'tag_forms': tag_forms})
 
 
 # anadir tag al usuario
 @login_required
 def add_tag(request):
-
     try:  # obtenemos el perfil del usuario
         profile = request.user.profile
     except Profile.DoesNotExist:
@@ -75,7 +76,6 @@ def add_tag(request):
 # eliminar determinado tag del usuario
 @login_required
 def delete_tag(request, texto_del_tag):
-
     try:
         profile = request.user.profile
     except Profile.DoesNotExist:
@@ -88,28 +88,29 @@ def delete_tag(request, texto_del_tag):
     tag.delete()
     return redirect('/completar_perfil/', )
 
-#Anadir una casa (requiere login)
+
+# Anadir una casa (requiere login)
 @login_required
 def add_house(request):
     if request.method == "POST":
-        #creamos form
-        formcasa = CasaForm(request.POST,request.FILES)
+        # creamos form
+        formcasa = CasaForm(request.POST, request.FILES)
         if formcasa.is_valid():
-            #obtener datos y guardar perfil
+            # obtener datos y guardar perfil
             Casa = formcasa.save(commit=False)
-            Casa.dueno=request.user
+            Casa.dueno = request.user
             Casa.save()
             for file in request.FILES._itervalues():
-                newFoto=FotoCasa(foto=file)
-                newFoto.casa=Casa
+                newFoto = FotoCasa(foto=file)
+                newFoto.casa = Casa
                 newFoto.save()
             return redirect("/");
         else:
-            return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+            return render(request, 'web/' + request.session['lang'] + '/add_house.html', {'formCasa': formcasa})
     else:
-        #generamos form
+        # generamos form
         formcasa = CasaForm()
-    return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+    return render(request, 'web/' + request.session['lang'] + '/add_house.html', {'formCasa': formcasa})
 
 
 # pagina generica para funciones sin desarrollar
@@ -124,7 +125,8 @@ def change_language(request, language):
         request.session['lang'] = euskera
     return redirect("/");
 
-# pagina generica para funciones sin desarrollar
+
+# pagina sobre los desarrolladores
 def about_us(request):
     return render(request, 'web/' + request.session['lang'] + '/about_us.html', {})
 
@@ -133,6 +135,8 @@ def welcome(request):
     if 'lang' not in request.session:
         request.session['lang'] = castellano
     return render(request, 'web/' + request.session['lang'] + '/welcome.html', {})
+
+
 # ----------------------------------- Funciones adicionales --------------------------------------------------
 
 def getLocation(name):
@@ -182,7 +186,8 @@ def get_location_search(request):
                               {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
                               context_instance=RequestContext(request))
 
-#para contactar con la web
+
+# para contactar con la web
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
@@ -190,16 +195,18 @@ def contact(request):
             contact_name = request.POST.get('contact_name', '')
             contact_email = request.POST.get('contact_email', '')
             form_content = request.POST.get('content', '')
-            #crear el mail y enviarlo
-            email_subject = 'Soporte de RooMate, nuevo mensaje de '+contact_email
-            email_body = "Nuevo mensaje de %s desde RooMate.\n\nCorreo al que responder: %s\nMensaje:\n%s.\n\nUn cordial saludo de RooMate." % (contact_name, contact_email, form_content)
+            # crear el mail y enviarlo
+            email_subject = 'Soporte de RooMate, nuevo mensaje de ' + contact_email
+            email_body = "Nuevo mensaje de %s desde RooMate.\n\nCorreo al que responder: %s\nMensaje:\n%s.\n\nUn cordial saludo de RooMate." % (
+            contact_name, contact_email, form_content)
             send_mail(email_subject, email_body, 'no-reply@magnasis.com', ['support@magnasis.com'], fail_silently=False)
             return redirect('contact_done')
         else:
-            return render(request, 'web/'+request.session['lang']+'/contact.html', {'form': form,})
-    return render(request, 'web/'+request.session['lang']+'/contact.html', {
+            return render(request, 'web/' + request.session['lang'] + '/contact.html', {'form': form,})
+    return render(request, 'web/' + request.session['lang'] + '/contact.html', {
         'form': ContactForm,
     })
 
+
 def contact_done(request):
-    return render(request, 'web/'+request.session['lang']+'/contact_submitted.html', {})
+    return render(request, 'web/' + request.session['lang'] + '/contact_submitted.html', {})
