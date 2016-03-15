@@ -125,7 +125,7 @@ def change_language(request, language):
 
 # pagina generica para funciones sin desarrollar
 def about_us(request):
-    return render(request, 'web/' + idioma + '/about_us.html', {})
+    return render(request, 'web/' + request.session['lang'] + '/about_us.html', {})
 
 
 def welcome(request):
