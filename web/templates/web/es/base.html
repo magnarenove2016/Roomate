@@ -12,7 +12,6 @@
 
     <title>Roomate</title>
 
-
     <!-- jQuery -->
     <script src="{% static 'js/jquery-1.11.2.min.js' %}" type="text/javascript"></script>
 
@@ -58,7 +57,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand topnav" href="{% url 'main' %}">
-                <img src="{% static 'img/roomate-logo.jpg' %}" alt="Roomate_logo" height="30" width="110">
+                <img src="{% static 'img/roomate-logo-small.png' %}" alt="Roomate_logo" id="logo">
             </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -68,12 +67,12 @@
                     <!-- selector de idiomas--> <!-- TODO: rework a esta seccion para que no se solape con el resto -->
                     <li>
                         <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
-                            <img src="{% static 'img/lang/es_ES.jpg' %}"/>Espa&ntilde;ol
+                            <img src="{% static 'img/lang/es_ES.jpg' %}"/> ES
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
-                            <img src="{% static 'img/lang/eu_EU.jpg' %}"/>Euskera
+                            <img src="{% static 'img/lang/eu_EU.jpg' %}"/> EU
                         </a>
                     </li>
                 </li>
@@ -98,9 +97,9 @@
                             <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
                         </form>
                     </li>
-                    <li>
+                    <!---<li>
                         <a href="{% url 'undeveloped' %}">Buscar compa&ntilde;ero</a>
-                    </li>
+                    </li>--->
                     {% if user.is_authenticated %}
 
                         <li>
@@ -113,7 +112,7 @@
                 {% endif %}
                 <li>
                     {% block login %}
-                        {% include "web/es/../../trash/login.html" %}
+                        {% include "web/es/login.html" %}
                     {% endblock %}
                 </li>
                 <!-- Menú desplegable para acceder a los caso de uso
