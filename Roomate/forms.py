@@ -69,7 +69,7 @@ class RegistrationForm(UserCreationForm):
             en el siguiente link para confirmar tu correo y disfrutar \
             plenamente de tu cuenta:<br> \
            <a href='http://127.0.0.1:8000/accounts/confirm/%s'>Confirmar cuenta</a>" % (user.username, Activation_key)
-            subject, from_email = 'hello', 'magnasis.grupo1@gmail.com'
+            subject, from_email = 'hello', 'no-reply@magnasis.com'
             text_content = 'Correo de confirmación.'
             #html_content = '<p>This is an <strong>important</strong> message.</p>'
             msg = EmailMultiAlternatives(email_subject, text_content, from_email, [user.email])

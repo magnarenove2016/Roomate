@@ -116,9 +116,9 @@ USE_L10N = True
 USE_TZ = True
 
 #A continuacion esta la config. para usar una cuenta gmail, con la clave especifica para aplicaciones
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'magnasis.grupo1@gmail.com'
-EMAIL_HOST_PASSWORD = 'M4gn4sis'
+EMAIL_HOST = 'mail.gandi.net'
+EMAIL_HOST_USER = 'no-reply@magnasis.com'
+EMAIL_HOST_PASSWORD = 'magnarenove2016'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
