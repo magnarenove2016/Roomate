@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'captcha',
     'web',
 	'bootstrap3',
+    'dbbackup',  # django-dbbackup
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -105,6 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
+DBBACKUP_STORAGE = 'dbbackup.storage.filesystem_storage'
+DBBACKUP_STORAGE_OPTIONS = {'location': 'backups'}
+
 LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'Europe/Madrid'
@@ -130,7 +134,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 #Clave publica para usar en ReCaptcha
 RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'
