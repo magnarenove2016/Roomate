@@ -71,3 +71,10 @@ def delete_user(request):
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
 
     return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
+
+
+def database_backup(request):
+    if request.user.is_superuser:
+        return render(request, 'web/' + request.session['lang'] + '/database_backup.html', {})
+    else:
+        redirect('main')
