@@ -1,6 +1,8 @@
+import re
+
 from captcha.fields import ReCaptchaField
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -9,7 +11,7 @@ DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro c
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
-    
+
     # Anadir al formulario un campo para el email, el captcha,
     # y un checkbox para que el usuario acepte las condiciones de uso
     email = forms.EmailField(
@@ -40,6 +42,22 @@ class RegistrationForm(UserCreationForm):
                 raise forms.ValidationError(DOBLE_EMAIL)
             return self.cleaned_data['email']
 
+    def clean_password2(self):
+        password2 = super().clean_password2()
+
+        # Expresion regular que comprueba si la password tiene al menos 8 caracteres,
+        # entre los cuales debe haber como minimo un digito y una letra
+        valid = re.match(r'^(?=.*[A-Za-zñÑ])(?=.*\d).{8,}$', password2)
+
+        # Si la password no cumple estos requisitos, se eleva un error
+        if not valid:
+            raise forms.ValidationError(
+                "La contraseña debe tener una longitud mínima de 8 caracteres y contener, al menos, una letra y un número",
+                code='invalid_password',
+            )
+
+        return password2
+
     # Ampliar la funcion de guardado para que tambien guarde el email
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
@@ -47,3 +65,39 @@ class RegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class ValidatedPasswordChangeForm(PasswordChangeForm):
+    def clean_new_password2(self):
+        password2 = super().clean_new_password2()
+
+        # Expresion regular que comprueba si la password tiene al menos 8 caracteres,
+        # entre los cuales debe haber como minimo un digito y una letra
+        valid = re.match(r'^(?=.*[A-Za-zñÑ])(?=.*\d).{8,}$', password2)
+
+        # Si la password no cumple estos requisitos, se eleva un error
+        if not valid:
+            raise forms.ValidationError(
+                "La contraseña debe tener una longitud mínima de 8 caracteres y contener, al menos, una letra y un número",
+                code='invalid_password',
+            )
+
+        return password2
+
+
+class ValidatedSetPasswordForm(SetPasswordForm):
+    def clean_new_password2(self):
+        password2 = super().clean_new_password2()
+
+        # Expresion regular que comprueba si la password tiene al menos 8 caracteres,
+        # entre los cuales debe haber como minimo un digito y una letra
+        valid = re.match(r'^(?=.*[A-Za-zñÑ])(?=.*\d).{8,}$', password2)
+
+        # Si la password no cumple estos requisitos, se eleva un error
+        if not valid:
+            raise forms.ValidationError(
+                "La contraseña debe tener una longitud mínima de 8 caracteres y contener, al menos, una letra y un número",
+                code='invalid_password',
+            )
+
+        return password2
