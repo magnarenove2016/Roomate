@@ -46,14 +46,14 @@ def register_new_user(request):
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
-    return render(request, 'web/' + idioma + '/register.html', {'form': form})
+    return render(request, 'web/' + request.session['lang'] + '/register.html', {'form': form})
 
 
 # Mostrar mensaje de usuario creado
 def user_created(request):
     c = {}
     c.update(csrf(request))
-    return render_to_response('web/' + idioma + '/register_complete.html', c)
+    return render_to_response('web/' + request.session['lang'] + '/register_complete.html', c)
 
 
 # Borrar un usuario
@@ -70,4 +70,4 @@ def delete_user(request):
         else:
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
 
-    return render(request, 'web/' + idioma + '/delete_user.html')
+    return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
