@@ -116,6 +116,14 @@ def undeveloped(request):
     return render(request, 'web/' + idioma + '/undeveloped.html', {})
 
 
+def cambiarIdioma(request, language):
+    if language == castellano:
+        idioma = castellano
+    elif language == euskera:
+        idioma = euskera
+
+    return redirect("/");
+
 # ----------------------------------- Funciones adicionales --------------------------------------------------
 
 def getLocation(name):
@@ -169,6 +177,3 @@ def get_location_search(request):
                               {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
                               context_instance=RequestContext(request))
 
-
-def cambiarIdioma(nuevo_idioma):
-    idioma = nuevo_idioma
