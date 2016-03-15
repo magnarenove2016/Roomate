@@ -3,7 +3,6 @@ from time import time
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator  # utilizando una expresion regular valida un determinado campo
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _  # traduccion de los formatos de texto de errores
 
 # formato de mensaje para controlar que no se meta mal las fechas
@@ -86,7 +85,7 @@ class FotoPerfil(models.Model):
 
 class Tag(models.Model):
     perfil = models.ForeignKey(Profile, null=True, blank=True)
-    text = models.CharField(max_length=200, verbose_name='Etiqueta')
+    text = models.CharField(max_length=25, verbose_name='Etiqueta')
 
 
 class Casa(models.Model):
