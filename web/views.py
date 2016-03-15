@@ -102,7 +102,7 @@ def add_house(request):
                 newFoto=FotoCasa(foto=file)
                 newFoto.casa=Casa
                 newFoto.save()
-            return redirect("/");
+            return redirect('main');
         else:
             return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
     else:
@@ -121,7 +121,7 @@ def change_language(request, language):
         request.session['lang'] = castellano
     elif language == euskera:
         request.session['lang'] = euskera
-    return redirect("/");
+    return redirect('main');
 
 # pagina generica para funciones sin desarrollar
 def about_us(request):
