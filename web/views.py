@@ -11,7 +11,7 @@ import hashlib, datetime, random, math
 # imports para contact
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
-from django.template import Context
+from django.template import Template
 
 import re #for regex expresions
 
@@ -301,40 +301,22 @@ def cambairIdioma(nuevo_idioma):
 
 #para contactar con la web
 def contact(request):
-    form_class = ContactForm
-    # new logic!
     if request.method == 'POST':
-        form = form_class(data=request.POST)
-
+        form = ContactForm(data=request.POST)
         if form.is_valid():
-            contact_name = request.POST.get(
-                'contact_name'
-            , '')
-            contact_email = request.POST.get(
-                'contact_email'
-            , '')
+            contact_name = request.POST.get('contact_name', '')
+            contact_email = request.POST.get('contact_email', '')
             form_content = request.POST.get('content', '')
-
-            # Email the profile with the
-            # contact information
-            template = get_template('contact_template.txt')
-            context = Context({
-                'contact_name': contact_name,
-                'contact_email': contact_email,
-                'form_content': form_content,
-            })
-            content = template.render(context)
-
-            email = EmailMessage(
-                "New contact form submission",
-                content,
-                "RooMate" +'',
-                ['support@magnasis.com'],
-                headers = {'Reply-To': contact_email }
-            )
-            email.send()
-            return redirect('contact')
-
+            #crear el mail y enviarlo
+            email_subject = 'Soporte de RooMate, nuevo mensaje de '+contact_email
+            email_body = "Nuevo mensaje de %s desde RooMate.\n\nCorreo al que responder: %s\nMensaje:\n%s.\n\nUn cordial saludo de RooMate." % (contact_name, contact_email, form_content)
+            send_mail(email_subject, email_body, 'no-reply@magnasis.com', ['support@magnasis.com'], fail_silently=False)
+            return redirect('contact_done')
+        else:
+            return render(request, 'web/'+idioma+'/contact.html', {'form': form,})
     return render(request, 'web/'+idioma+'/contact.html', {
-        'form': form_class,
+        'form': ContactForm,
     })
+
+def contact_done(request):
+    return render(request, 'web/'+idioma+'/contact_submitted.html', {})

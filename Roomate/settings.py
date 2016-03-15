@@ -116,11 +116,13 @@ USE_L10N = True
 USE_TZ = True
 
 #A continuacion esta la config. para usar una cuenta de correo
-EMAIL_HOST = 'gandi.mail.com'
+EMAIL_HOST = 'mail.gandi.net'
 EMAIL_HOST_USER = 'no-reply@magnasis.com'
 EMAIL_HOST_PASSWORD = 'magnarenove2016'
-EMAIL_PORT = 993
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'no-reply@magnasis.com'
+SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'

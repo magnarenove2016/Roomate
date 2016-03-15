@@ -17,4 +17,5 @@ urlpatterns = [
     #url(r'^recover-password/sent=(?P<mail>\w+)/$', views.recover_password_done, name='recover_password_done'),
     url(r'^recoverPassword/sendTo=(?P<mail>\w+[@]\w+[.]\w+)$', views.recover_password_done, name='recover_password_done'),
     url(r'^contact/$', views.contact, name='contact'),
+    url(r'^contact/done/$', views.contact_done, name='contact_done'),
 ]
