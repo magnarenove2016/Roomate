@@ -88,28 +88,29 @@ def delete_tag(request, texto_del_tag):
     tag.delete()
     return redirect('/completar_perfil/', )
 
-
-# Anadir una casa (requiere login)
+#Anadir una casa (requiere login)
 @login_required
 def add_house(request):
     if request.method == "POST":
-
-        # creamos form
-        form = CasaForm(request.POST, request.FILES)
-        if form.is_valid():
-            # obtener datos y guardar perfil
-            Casa = form.save(commit=False)
-            Casa.dueno = request.user
+        #creamos form
+        formcasa = CasaForm(request.POST,request.FILES)
+        if formcasa.is_valid():
+            #obtener datos y guardar perfil
+            Casa = formcasa.save(commit=False)
+            Casa.dueno=request.user
             Casa.save()
             for f in request.FILES._itervalues():
-                newFoto = FotoCasa(foto=f)
-                newFoto.casa = Casa
+                newFoto=FotoCasa(foto=f)
+                newFoto.casa=Casa
                 newFoto.save()
-            return render_to_response('web/' + idioma + '/welcome.html', {})
+            print("added")
+            return redirect("/");
+        else:
+            return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
     else:
-        # generamos form
+        #generamos form
         formcasa = CasaForm()
-    return render(request, 'web/' + idioma + '/add_house.html', {'formCasa': formcasa})
+    return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
 
 
 # pagina generica para funciones sin desarrollar
