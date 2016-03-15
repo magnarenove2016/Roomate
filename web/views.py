@@ -123,6 +123,10 @@ def change_language(request, language):
         request.session['lang'] = euskera
     return redirect("/");
 
+# pagina generica para funciones sin desarrollar
+def about_us(request):
+    return render(request, 'web/' + idioma + '/about_us.html', {})
+
 
 def welcome(request):
     if 'lang' not in request.session:
