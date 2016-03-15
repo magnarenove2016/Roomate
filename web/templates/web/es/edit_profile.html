@@ -71,7 +71,46 @@
                         <h3>Edita tu perfil</h3>
                         <hr>
 
-                        {% bootstrap_form form layout='horizontal' %} <!-- formulario del perfil -->
+                        <!-- formulario del perfil -->
+
+                    {% bootstrap_label "Nombre:" %}
+                    {% bootstrap_field form.firstName show_label=false show_help=false%}
+
+                    {% bootstrap_label "Apellidos:" %}
+                    {% bootstrap_field form.lastName show_label=false show_help=false%}
+
+                    {% bootstrap_label "Fecha de nacimiento:" %}
+                    {% bootstrap_field form.birthdate show_label=false show_help=false%}
+
+                    {% bootstrap_label "Número de teléfono:" %}
+                    {% bootstrap_field form.telephone show_label=false show_help=false%}
+
+                    {% bootstrap_label "Sexo:" %}
+                    {% bootstrap_field form.gender show_label=false show_help=false%}
+
+                    {% bootstrap_label "Ocupación:" %}
+                    {% bootstrap_field form.ocupation show_label=false show_help=false%}
+
+                    {% bootstrap_label "Mascota:" %}
+                    {% bootstrap_field form.pet show_label=false show_help=false%}
+
+                    {% bootstrap_label "Inicio de la estancia:" %}
+                    {% bootstrap_field form.iniEstancia show_label=false show_help=false%}
+
+                    {% bootstrap_label "Fin de la estancia:" %}
+                    {% bootstrap_field form.finEstancia show_label=false show_help=false%}
+
+                    {% bootstrap_label "Instrumento musical que toques:" %}
+                    {% bootstrap_field form.Instrument show_label=false show_help=false%}
+
+                    {% bootstrap_label "Descripción:" %}
+                    {% bootstrap_field form.description show_label=false show_help=false%}
+
+                    {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
+                    {% bootstrap_field form.lookingIn show_label=false show_help=false%}
+
+                    {% bootstrap_label "¿Eres fumador?" %}
+                    {% bootstrap_field form.isSmoker show_label=false show_help=false%}
 
                         {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
                             <div class="container-fluid">

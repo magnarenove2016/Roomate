@@ -67,9 +67,29 @@
 ​
                     {% csrf_token %}
                     <h3>Crea tu casa</h3>
-                    <hr>
+
+                    <hr>  <!-- Formulario de aniadir casa -->
 ​
-                    {% bootstrap_form formCasa layout='horizontal'%}
+                    {% bootstrap_label "Ciudad:" %}
+                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false%}
+
+                    {% bootstrap_label "Número de habitaciones a alquilar:" %}
+                    {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false%}
+
+                    {% bootstrap_label "Número de habitaciones disponibles:" %}
+                    {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false%}
+
+                    {% bootstrap_label "Descipción de la casa / del piso:" %}
+                    {% bootstrap_field formCasa.descripcion show_label=false show_help=false%}
+
+                    {% bootstrap_label "¿Se alquila la casa / el piso por habitaciones?" %}
+                    {% bootstrap_field formCasa.alquilerPorHabitaciones show_label=false show_help=false%}
+
+                    {% bootstrap_label "Precio del alquiler:" %}
+                    {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false%}
+
+                    {% bootstrap_label "Gastos adicionales:" %}
+                    {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false%}
 
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove"%}
