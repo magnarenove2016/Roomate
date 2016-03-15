@@ -75,40 +75,18 @@ class Profile(models.Model):
         verbose_name_plural = 'Perfiles'
 
 
+def generar_ruta_image(instance, filename):
+    return "%s_%s" % (str(time()).replace('.', '_'), filename)
+
+
 class FotoPerfil(models.Model):
-    foto = models.CharField(max_length=200) #path a las fotos
-    perfil = models.ForeignKey(Profile)
+    foto = models.FileField(upload_to=generar_ruta_image)
+    perfil = models.ForeignKey(Profile, blank=True, null=True)
 
 
 class Tag(models.Model):
     perfil = models.ForeignKey(Profile, null=True, blank=True)
     text = models.CharField(max_length=200, verbose_name='Etiqueta')
-
-
-class Conversacion(models.Model):
-    emisor = models.ForeignKey(User, related_name='conversacion_emisor', null=True, blank=True)
-    receptor = models.ForeignKey(User, related_name='conversacion_receptor', null=True, blank=True)
-    inicioConv = models.DateTimeField(default=timezone.now)
-
-    def obtener_mensajes(self):
-        return Mensaje.objects.get(conversacion=self)
-
-
-class Mensaje(models.Model):
-    conversacion = models.ForeignKey(Conversacion, null=True, blank=True)
-    emisor = models.ForeignKey(User, related_name='mensaje_emisor', null=True, blank=True)
-    # u2.mensaje_emisor.all()
-    # obtener todos los mensajes en los que u2 es emisor
-    receptor = models.ForeignKey(User, related_name='mensaje_receptor', null=True, blank=True)
-    # u2.mensaje_receptor.all()
-    # obtener todos los mensajes en los que u2 es receptor
-    fechaEnvio = models.DateTimeField(default=timezone.now)
-    mensaje = models.TextField()
-
-
-class Log(models.Model):
-    fecha = models.DateTimeField(default=timezone.now)
-    evento = models.TextField()
 
 
 class Casa(models.Model):
@@ -123,10 +101,6 @@ class Casa(models.Model):
 
     def obtener_habitaciones(self):
         return Habitacion.objects.get(casa=self)
-
-
-def generar_ruta_image(instance, filename):
-    return "%s_%s" % (str(time()).replace('.', '_'), filename)
 
 
 class FotoCasa(models.Model):

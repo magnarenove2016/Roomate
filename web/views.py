@@ -33,6 +33,11 @@ def edit_profile(request):
             if tagForm.is_valid():
                 tagForm.save()  # TODO: comprobar si el tag ya existe?
 
+        for file in request.FILES._itervalues(): # TODO: in development
+            newFoto=FotoPerfil(foto=file)
+            newFoto.perfil=profile
+            newFoto.save()
+
         return redirect('completar_perfil')
     else:
         form = ProfileForm(instance=profile, prefix='perfil')  # formulario con solo con los tags que ya tiene
@@ -93,11 +98,10 @@ def add_house(request):
             Casa = formcasa.save(commit=False)
             Casa.dueno=request.user
             Casa.save()
-            for f in request.FILES._itervalues():
-                newFoto=FotoCasa(foto=f)
+            for file in request.FILES._itervalues():
+                newFoto=FotoCasa(foto=file)
                 newFoto.casa=Casa
                 newFoto.save()
-            print("added")
             return redirect("/");
         else:
             return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
