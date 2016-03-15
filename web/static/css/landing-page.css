@@ -211,6 +211,25 @@ p.copyright {
     margin: 15px 0 0;
 }
 
+/* ------------------------ Formularios -----------------------*/
+
+.description {
+    text-align: center;
+}
+
+.form-category {
+    background-color: white;
+    border: solid 1px rgb(200, 200, 200);
+    padding: 20px;
+    margin: 0px 40px 30px 40px;
+}
+
+.form-category > h4 {
+    margin: 0px 0px 20px 0px;
+}
+
+/* --------------------------- Login --------------------------*/
+
 #login-dp {
     min-width: 250px;
     padding: 14px 14px 0;
@@ -237,6 +256,8 @@ p.copyright {
     height: 37px;
 }
 
+/*----------------------- Página "Sobre nosotros" --------------------------*/
+
 .about-us {
     color: black;
     background-color: #f8f8f8;
@@ -252,4 +273,33 @@ p.copyright {
 .about-us > .list > li {
     list-style: square;
     margin-left: 30px;
+}
+
+/*----------------------------- TAGS -----------------------------*/
+
+.tag, .add-tag {
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+.tag > input {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.tag > a, .add-tag > a {
+    text-decoration: none;
+}
+
+.tag > a:hover, .add-tag > a:hover {
+    cursor: pointer;
+}
+
+.add-tag > a {
+    color: rgb(45, 134, 45);
+}
+
+.add-tag > a:hover {
+    color: rgb(32, 96, 32);
 }

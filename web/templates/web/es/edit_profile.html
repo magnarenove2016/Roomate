@@ -65,86 +65,97 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    <div class="description">
+                        <h3>Tu perfil</h3>
+                        <p class="text-info">Completa tu perfil para poder realizar búsquedas personalizadas, <br>
+                            y facilitar que otros usuarios puedan ponerse en contacto contigo.</p>
+                        <p class="text-muted">Todos los campos <strong>son opcionales</strong>.</p>
+                    </div>
+
                     <form method="POST" class="edit-profile-form container dropzone" id="myDropzone"
                           enctype="multipart/form-data">
 
                         {% csrf_token %}
-                        <h3>Edita tu perfil</h3>
-                        <hr>
 
                         <!-- formulario del perfil -->
+                        <div class="form-category">
+                            <h4>Información básica</h4>
 
-                        {% bootstrap_label "Nombre:" %}
-                        {% bootstrap_field form.firstName show_label=false show_help=false %}
+                            {% bootstrap_label "Nombre:" %}
+                            {% bootstrap_field form.firstName show_label=false show_help=false %}
 
-                        {% bootstrap_label "Apellidos:" %}
-                        {% bootstrap_field form.lastName show_label=false show_help=false %}
+                            {% bootstrap_label "Apellidos:" %}
+                            {% bootstrap_field form.lastName show_label=false show_help=false %}
 
-                        {% bootstrap_label "Fecha de nacimiento:" %}
-                        {% bootstrap_field form.birthdate show_label=false show_help=false %}
+                            {% bootstrap_label "Fecha de nacimiento:" %}
+                            {% bootstrap_field form.birthdate show_label=false show_help=false %}
 
-                        {% bootstrap_label "Número de teléfono:" %}
-                        {% bootstrap_field form.telephone show_label=false show_help=false %}
+                            {% bootstrap_label "Sexo:" %}
+                            {% bootstrap_field form.gender show_label=false show_help=false %}
 
-                        {% bootstrap_label "Sexo:" %}
-                        {% bootstrap_field form.gender show_label=false show_help=false %}
+                            {% bootstrap_label "Número de teléfono:" %}
+                            {% bootstrap_field form.telephone show_label=false show_help=false %}
 
-                        {% bootstrap_label "Ocupación:" %}
-                        {% bootstrap_field form.ocupation show_label=false show_help=false %}
-
-                        {% bootstrap_label "Mascota:" %}
-                        {% bootstrap_field form.pet show_label=false show_help=false %}
-
-                        {% bootstrap_label "Inicio de la estancia:" %}
-                        {% bootstrap_field form.iniEstancia show_label=false show_help=false %}
-
-                        {% bootstrap_label "Fin de la estancia:" %}
-                        {% bootstrap_field form.finEstancia show_label=false show_help=false %}
-
-                        {% bootstrap_label "Instrumento musical que toques:" %}
-                        {% bootstrap_field form.Instrument show_label=false show_help=false %}
-
-                        {% bootstrap_label "Descripción:" %}
-                        {% bootstrap_field form.description show_label=false show_help=false %}
-
-                        {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
-                        {% bootstrap_field form.lookingIn show_label=false show_help=false %}
-
-                        {% bootstrap_label "¿Eres fumador?" %}
-                        {% bootstrap_field form.isSmoker show_label=false show_help=false %}
-
-                        {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
-                            <div class="container-fluid">
-                                <div class="col-md-10">
-                                    {% bootstrap_form tag class="form-control" placeholder=".col-xs-3" %}
-                                    <!-- cada tag se muestra aqui -->
-                                </div>
-                                <div class="col-md-2">
-                                    </br>
-                                    <button>
-                                        <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este
-                                            campo </a> <!-- boton para borrar este tag en concreto -->
-                                    </button>
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                        <div class='text-left'>
-                            {% bootstrap_button "A&ntilde;adir un campo personalizado" button_type="link" href='/add_tag/' button_class="btn-info" %}
-                            <!-- boton para anadir tag -->
                         </div>
 
-                        </br>
-                        </br>
+                        <div class="form-category">
+                            <h4>Preferencias</h4>
+                            {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
+                            {% bootstrap_field form.lookingIn show_label=false show_help=false %}
+
+                            {% bootstrap_label "Inicio de la estancia:" %}
+                            {% bootstrap_field form.iniEstancia show_label=false show_help=false %}
+
+                            {% bootstrap_label "Fin de la estancia:" %}
+                            {% bootstrap_field form.finEstancia show_label=false show_help=false %}
+                        </div>
+
+                        <div class="form-category">
+                            <h4>Otra informaci&oacute;n</h4>
+
+                            {% bootstrap_label "Ocupación:" %}
+                            {% bootstrap_field form.ocupation show_label=false show_help=false %}
+
+                            {% bootstrap_label "Mascota:" %}
+                            {% bootstrap_field form.pet show_label=false show_help=false %}
+
+                            {% bootstrap_label "Instrumento musical que toques:" %}
+                            {% bootstrap_field form.Instrument show_label=false show_help=false %}
+
+                            {% bootstrap_label "Descripción:" %}
+                            {% bootstrap_field form.description show_label=false show_help=false %}
+
+                            <div class="form-group">
+                                <label class="control-label">¿Fumador?</label>
+                                {{ form.isSmoker }}
+                            </div>
+                        </div>
+
+                        <div class="form-category">
+                            <h4>Etiquetas
+                                <small>¡Descr&iacute;bete a ti mismo!</small>
+                            </h4>
+
+                            {% for tag in tag_forms %} <!-- Iterar por todos los tags asociados a este usuario -->
+                                <span class="tag label label-info">{{ tag.text }}
+                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"
+                                   class="glyphicon glyphicon-remove"></a>
+                            </span>
+                            {% endfor %}
+
+                            <!-- Boton para anadir tag -->
+                        <span class="add-tag label label-success">
+                            <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
+                        </span>
+                        </div>
+
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
                             {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
-
                         </div>
                         <font size="3" color="red"> **(guarda los cambios antes de a&ntilde;adir un campo o se borrar&aacute;
-                            lo que
-                            has escrito)</font>  <!-- mensaje de alerta -->
+                            lo que has escrito)</font>  <!-- mensaje de alerta -->
 
 
                     </form>
