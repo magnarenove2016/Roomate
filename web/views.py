@@ -29,7 +29,7 @@ def register_new_user(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             #si existe un usuario con el mismo correo se guarda en b
-            #b = Usuario.objects.filter(correo=request.POST.get('correo'))
+            b = Usuario.objects.filter(correo=request.POST.get('correo'))
 
             #verificar seguridad del password
             if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
