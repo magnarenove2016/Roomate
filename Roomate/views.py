@@ -4,6 +4,10 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template.context_processors import csrf
 from . import forms
 
+
+
+castellano = "es"
+euskera = "eu"
 idioma = "es"
 
 # Comprobar si el usuario esta registrado
