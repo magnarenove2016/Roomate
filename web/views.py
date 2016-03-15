@@ -115,6 +115,10 @@ def add_house(request):
 def undeveloped(request):
     return render(request, 'web/' + idioma + '/undeveloped.html', {})
 
+# pagina generica para funciones sin desarrollar
+def about_us(request):
+    return render(request, 'web/' + idioma + '/about_us.html', {})
+
 
 # ----------------------------------- Funciones adicionales --------------------------------------------------
 

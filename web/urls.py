@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^add_tag/$', views.add_tag, name='add_tag'),
     url(r'^delete_tag/(?P<texto_del_tag>.+)/$', views.delete_tag, name='delete_tag'),
     url(r'^undeveloped/$', views.undeveloped, name='undeveloped'),
+    url(r'^about_us/$', views.about_us, name='about_us'),
 ]

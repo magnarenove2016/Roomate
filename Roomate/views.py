@@ -22,7 +22,7 @@ def auth_view(request):
 def invalid_login(request):
     c = {}
     c.update(csrf(request))
-    return redirect('main')
+    return redirect('main') #TODO: mostrar mensaje de error
 
 
 # Cerrar sesion
@@ -49,7 +49,7 @@ def register_new_user(request):
 def user_created(request):
     c = {}
     c.update(csrf(request))
-    return render_to_response('web/' + idioma + '/registro_completado.html', c)
+    return render_to_response('web/' + idioma + '/register_complete.html', c)
 
 
 # Borrar un usuario
