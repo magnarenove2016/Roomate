@@ -7,6 +7,7 @@ from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
 from Roomate.views import castellano, euskera
+from django.core.mail import send_mail #para contactar con el support
 
 # Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
@@ -181,3 +182,24 @@ def get_location_search(request):
                               {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
                               context_instance=RequestContext(request))
 
+#para contactar con la web
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(data=request.POST)
+        if form.is_valid():
+            contact_name = request.POST.get('contact_name', '')
+            contact_email = request.POST.get('contact_email', '')
+            form_content = request.POST.get('content', '')
+            #crear el mail y enviarlo
+            email_subject = 'Soporte de RooMate, nuevo mensaje de '+contact_email
+            email_body = "Nuevo mensaje de %s desde RooMate.\n\nCorreo al que responder: %s\nMensaje:\n%s.\n\nUn cordial saludo de RooMate." % (contact_name, contact_email, form_content)
+            send_mail(email_subject, email_body, 'no-reply@magnasis.com', ['support@magnasis.com'], fail_silently=False)
+            return redirect('contact_done')
+        else:
+            return render(request, 'web/'+request.session['lang']+'/contact.html', {'form': form,})
+    return render(request, 'web/'+request.session['lang']+'/contact.html', {
+        'form': ContactForm,
+    })
+
+def contact_done(request):
+    return render(request, 'web/'+request.session['lang']+'/contact_submitted.html', {})
