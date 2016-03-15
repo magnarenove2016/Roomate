@@ -320,4 +320,3 @@ def contact(request):
 
 def contact_done(request):
     return render(request, 'web/'+idioma+'/contact_submitted.html', {})
-
