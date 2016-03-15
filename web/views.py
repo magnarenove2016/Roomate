@@ -6,11 +6,7 @@ from django.template import RequestContext  # para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
-
-castellano = "es"
-euskera = "es"
-idioma = "es"
-
+from Roomate.views import castellano, euskera
 
 # Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
@@ -49,7 +45,7 @@ def edit_profile(request):
                     TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
                 i = i + 1
 
-    return render(request, 'web/' + idioma + '/edit_profile.html', {'form': form, 'tag_forms': tag_forms})
+    return render(request, 'web/' + request.session['lang'] + '/edit_profile.html', {'form': form, 'tag_forms': tag_forms})
 
 
 # anadir tag al usuario
@@ -86,45 +82,54 @@ def delete_tag(request, texto_del_tag):
     tag.delete()
     return redirect('/completar_perfil/', )
 
-
-# Anadir una casa (requiere login)
+#Anadir una casa (requiere login)
 @login_required
 def add_house(request):
     if request.method == "POST":
-
-        # creamos form
-        form = CasaForm(request.POST, request.FILES)
-        if form.is_valid():
-            # obtener datos y guardar perfil
-            Casa = form.save(commit=False)
-            Casa.dueno = request.user
+        #creamos form
+        formcasa = CasaForm(request.POST,request.FILES)
+        if formcasa.is_valid():
+            #obtener datos y guardar perfil
+            Casa = formcasa.save(commit=False)
+            Casa.dueno=request.user
             Casa.save()
             for f in request.FILES._itervalues():
-                newFoto = FotoCasa(foto=f)
-                newFoto.casa = Casa
+                newFoto=FotoCasa(foto=f)
+                newFoto.casa=Casa
                 newFoto.save()
-            return render_to_response('web/' + idioma + '/welcome.html', {})
+            print("added")
+            return redirect("/");
+        else:
+            return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
     else:
-        # generamos form
+        #generamos form
         formcasa = CasaForm()
-    return render(request, 'web/' + idioma + '/add_house.html', {'formCasa': formcasa})
+    return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
 
 
 # pagina generica para funciones sin desarrollar
 def undeveloped(request):
-    return render(request, 'web/' + idioma + '/undeveloped.html', {})
+    return render(request, 'web/' + request.session['lang'] + '/undeveloped.html', {})
 
 
+def change_language(request, language):
+    if language == castellano:
+        request.session['lang'] = castellano
+    elif language == euskera:
+        request.session['lang'] = euskera
+    return redirect("/");
+
+
+def welcome(request):
+    if 'lang' not in request.session:
+        request.session['lang'] = castellano
+    return render(request, 'web/' + request.session['lang'] + '/welcome.html', {})
 # ----------------------------------- Funciones adicionales --------------------------------------------------
 
 def getLocation(name):
     geolocator = Nominatim()
     localizacion = geolocator.geocode(name, exactly_one='False')
     return localizacion
-
-
-def welcome(request):
-    return render(request, 'web/' + idioma + '/welcome.html', {})
 
 
 def distance_meters(lat1, long1, lat2, long2):
@@ -160,14 +165,11 @@ def get_location_search(request):
             dist = metersToKm(dist)
         else:
             # Nothing found
-            return render(request, 'web/' + idioma + '/error.html', {})
+            return render(request, 'web/' + request.session['lang'] + '/error.html', {})
     else:
         # used url /search/ with no parameters
-        return render(request, 'web/' + idioma + '/error.html', {})
-    return render_to_response('web/' + idioma + '/search_result.html',
+        return render(request, 'web/' + request.session['lang'] + '/error.html', {})
+    return render_to_response('web/' + request.session['lang'] + '/search_result.html',
                               {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
                               context_instance=RequestContext(request))
 
-
-def cambiarIdioma(nuevo_idioma):
-    idioma = nuevo_idioma
