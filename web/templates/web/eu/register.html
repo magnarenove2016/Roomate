@@ -1,0 +1,55 @@
+{% extends 'web/eu/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}Erregistratu{% endblock %}
+
+{% block contenido %}
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Zure datuak bete eta batu zaitez pisukideetara!</h1>
+
+
+                    <form method="POST" class="register-form">
+                        {% csrf_token %}
+                        <h4><strong>Erregistratu</strong></h4>
+
+                        <p><br>
+                            Gogoratu <a href="">Erabilpen baldintzak</a> irakurri eta onartzeaz jarraitu ahal izateko</p>
+
+                        <hr>
+
+                        {% bootstrap_label "1. Erabiltzaile izena" %}
+                        {% bootstrap_field form.username show_label=false show_help=false %}
+
+                        {% bootstrap_label "2. Posta elektroniko helbidea" %}
+                        {% bootstrap_field form.email show_label=false show_help=false %}
+
+                        {% bootstrap_label "3. pasahitza" %}
+                        {% bootstrap_field form.password1 show_label=false show_help=false %}
+
+                        {% bootstrap_label "4. Pasahitz baieztapena" %}
+                        {% bootstrap_field form.password2 show_label=false show_help=false %}
+
+                        {% bootstrap_label "5. Kaptcha" %}
+                        {% bootstrap_field form.captcha show_label=false %}
+
+                        <div class="form-buttons">
+                            {% bootstrap_field form.tos show_label=false %}
+                            {% bootstrap_button "Kontua sortu" button_type="submit" button_class="btn-primary" %}
+                            {% bootstrap_button "Sartu" button_type="link" href="/accounts/login" button_class="btn-default" %}
+                        </div>
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.container -->
+{% endblock %}
