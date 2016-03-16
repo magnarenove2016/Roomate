@@ -44,7 +44,6 @@ def edit_profile(request):
 
     tag_forms = []  # lista de formularios de tag vacia
     for i, tag in enumerate(tags):  # iterar los campos de tag asociados al perfil
-         print(i)
          tag_forms.append(
               TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
 
