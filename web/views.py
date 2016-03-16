@@ -76,12 +76,11 @@ def delete_tag(request, texto_del_tag):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
-
         profile.save()
 
     tag = Tag.objects.filter(perfil=profile, text=texto_del_tag)  # obtenemos sus tags #TODO: buscamos el tag a eliminar
+    tag[0].delete()
 
-    tag.delete()
     return redirect('/completar_perfil/', )
 
 
