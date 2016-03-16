@@ -24,13 +24,8 @@ def edit_profile(request):
     if request.method == 'POST':
         formProfile = ProfileForm(request.POST, instance=profile, prefix='perfil')  # extraemos el profile del POST
 
-        if formProfile.is_valid():  # comprobamos que el profile es valido
-            formProfile.save()  # y lo guardamos
-
-        i = 0
-        for tag in tags:
+        for i, tag in enumerate(tags):
             tagForm = TagForm(request.POST, instance=tag, prefix='tag_%s' % i)
-            i = i + 1
             tagForm.perfil = profile
             if tagForm.is_valid():
                 tagForm.save()  # TODO: comprobar si el tag ya existe?
@@ -40,20 +35,21 @@ def edit_profile(request):
             newFoto.perfil = profile
             newFoto.save()
 
-        return redirect('completar_perfil')
-    else:
-        form = ProfileForm(instance=profile, prefix='perfil')  # formulario con solo con los tags que ya tiene
-        tag_forms = []  # lista de formularios de tag vacia
+        if formProfile.is_valid():  # comprobamos que el profile es valido
+            formProfile.save()  # y lo guardamos
+            return redirect('completar_perfil')
 
-        if tags:
-            i = 0
-            for tag in tags:  # iterar los campos de tag asociados al perfil
-                tag_forms.append(
-                    TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
-                i = i + 1
+    else:
+        formProfile = ProfileForm(instance=profile, prefix='perfil')  # formulario con solo con los tags que ya tiene
+
+    tag_forms = []  # lista de formularios de tag vacia
+    for i, tag in enumerate(tags):  # iterar los campos de tag asociados al perfil
+         print(i)
+         tag_forms.append(
+              TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
 
     return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
-                  {'form': form, 'tag_forms': tag_forms})
+                  {'form': formProfile, 'tag_forms': tag_forms})
 
 
 # anadir tag al usuario
