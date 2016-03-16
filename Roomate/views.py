@@ -9,7 +9,6 @@ from django.core import management
 
 castellano = "es"
 euskera = "eu"
-idioma = "es"
 
 # Comprobar si el usuario esta registrado
 def auth_view(request):
@@ -90,7 +89,7 @@ def database_backup(request):
 @login_required
 def trigger_backup(request):
     if request.user.is_superuser:
-        # management.call_command('dbbackup')  # Copia de la base de datos
+        management.call_command('dbbackup')  # Copia de la base de datos
         management.call_command('mediabackup')  # Copia de Media
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:

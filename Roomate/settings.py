@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'web',
 	'bootstrap3',
     'dbbackup',  # django-dbbackup
+    'dropbox',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -106,8 +107,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-DBBACKUP_STORAGE = 'dbbackup.storage.filesystem_storage'
-DBBACKUP_STORAGE_OPTIONS = {'location': 'backups'}
+DBBACKUP_STORAGE = 'dbbackup.storage.dropbox_storage'
+DBBACKUP_TOKENS_FILEPATH = 'tokens'
+DBBACKUP_DROPBOX_APP_KEY = 'tnbo7trh24hk32a'
+DBBACKUP_DROPBOX_APP_SECRET = 'tuuljgl8x38hau4'
+DBBACKUP_DROPBOX_DIRECTORY ='Roomate_Backups'
 
 LANGUAGE_CODE = 'es'
 
