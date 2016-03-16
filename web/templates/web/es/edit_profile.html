@@ -136,7 +136,8 @@
                                 <small>¡Descr&iacute;bete a ti mismo!</small>
                             </h4>
 
-                            {% for tag in tag_forms %} <!-- Iterar por todos los tags asociados a este usuario -->
+                            <!-- Iterar por todos los tags asociados a este usuario -->
+                            {% for tag in tag_forms %}
                                 <span class="tag label label-info">{{ tag.text }}
                                 <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"
                                    class="glyphicon glyphicon-remove"></a>
@@ -144,11 +145,10 @@
                             {% endfor %}
 
                             <!-- Boton para anadir tag -->
-                        <span class="add-tag label label-success">
-                            <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
-                        </span>
+                            <span class="add-tag label label-success">
+                                <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
+                            </span>
                         </div>
-
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
