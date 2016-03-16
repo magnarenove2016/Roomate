@@ -3,12 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response, redirect
 from django.template.context_processors import csrf
 from . import forms
+from django.core import management
 
 
 
 castellano = "es"
 euskera = "eu"
-idioma = "es"
 
 # Comprobar si el usuario esta registrado
 def auth_view(request):
@@ -71,3 +71,26 @@ def delete_user(request):
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
 
     return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
+
+# Gestionar backups de la base de datos
+@login_required
+def database_backup(request):
+    if request.user.is_superuser:
+        if request.method == "POST":
+            a=1
+            # TODO: descargar backups
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/database_backup.html', {})
+    else:
+        return redirect('main')
+
+
+# Ejecutar copia d ela base de datos y ficheros
+@login_required
+def trigger_backup(request):
+    if request.user.is_superuser:
+        management.call_command('dbbackup')  # Copia de la base de datos
+        management.call_command('mediabackup')  # Copia de Media
+        return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
+    else:
+        return redirect('main')

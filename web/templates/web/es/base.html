@@ -88,7 +88,7 @@
                         <a href="{% url 'undeveloped' %}">Gestiona logs</a>
                     </li>
                     <li>
-                        <a href="{% url 'undeveloped' %}">Gestionar copias de seguridad</a>
+                        <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
                     </li>
                 {% else %}
                     <li>
@@ -113,7 +113,7 @@
                 {% endif %}
                 <li>
                     {% block login %}
-                        {% include "web/es/../../trash/login.html" %}
+                        {% include "web/es/login.html" %}
                     {% endblock %}
                 </li>
                 <!-- Menú desplegable para acceder a los caso de uso
