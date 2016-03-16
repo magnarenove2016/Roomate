@@ -15,12 +15,22 @@ urlpatterns = [
     url(r'^database_backup/trigger_backup/$', views.trigger_backup, name='trigger_backup'), # pagina para disparar una copia de seguridad d ela base de datos
     url(r'^accounts/user/delete/$', views.delete_user, name='delete_user'),
     url(r'^register/$', views.register_new_user, name='register_new_user'), #registrar a un nuevo usuario
+<<<<<<< HEAD
     url(r'^register/success/$', views.user_created, name='register_success'), #mensaje que se muestra cuando se ha creado bien el nuevo usuario
 
     url(r'^accounts/password/reset/$', auth_views.password_reset,
         {'template_name': 'web/es/password_reset.html',
          'post_reset_redirect': 'password_reset_done'},
         name='password_reset'),
+=======
+    url(r'^accounts/invalid/$', views.invalid_login, name='invalid'), #mostrar el mensaje de error cuando el usuario falla los datos
+    url(r'^register/success/$', views.user_created, name='register_success'), #mensaje que se muestra cuando se creó bien el nuevo usuario
+    url(r'^accounts/confirm/(?P<codigo>.+)$',views.activar_cuenta, name = 'activarCuenta'),
+    #url(r'^completar_perfil/$', views.completar_perfil, name='completar_perfil'),
+    #url(r'^accounts/logout/$', views.logout, {'next_page': '/'}), #logout provisto por Django
+    url(r'^accounts/password/reset/$',auth_views.password_reset, {'template_name' : 'web/es/password_reset.html', 'post_reset_redirect' : 'password_reset_done'},
+    name='password_reset'),
+>>>>>>> origin/djbienve
 
     url(r'^accounts/password/reset/done/$',
     auth_views.password_reset_done,
@@ -41,7 +51,10 @@ urlpatterns = [
     url(r'^accounts/password/change/$',
     auth_views.password_change,
     {'template_name' : 'web/es/password_change.html',
+<<<<<<< HEAD
      'password_change_form': ValidatedPasswordChangeForm,
+=======
+>>>>>>> origin/djbienve
      'post_change_redirect' : 'password_change_done'},
     name='password_change'),
 
@@ -50,6 +63,13 @@ urlpatterns = [
     {'template_name' : 'web/es/password_change_done.html'},
     name='password_change_done'),
 
+<<<<<<< HEAD
     url(r'', include('web.urls')), #todas las urls de web/urls.py
+=======
+    url(r'^accounts/user/delete/$', views.delete_user, name='delete_user'),
+
+    url(r'^accounts/logout/$', views.logout, name='logout'), #cerrar sesión
+    url(r'', include('web.urls')),  #todas las urls de web/urls.py
+>>>>>>> origin/djbienve
 ]
 

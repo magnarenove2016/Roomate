@@ -3,6 +3,7 @@ __pycache__
 myvenv
 db.sqlite3
 .DS_Store
+<<<<<<< HEAD
 .idea/
 idea/
 /backups
@@ -10,3 +11,7 @@ web/migrations
 .requirements
 /.pydevproject
 /.project
+=======
+idea/
+.idea/
+>>>>>>> origin/djbienve

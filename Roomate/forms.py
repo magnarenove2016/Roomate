@@ -10,41 +10,67 @@ from web.models import *
 import hashlib,random
 
 # Formato de mensaje para controlar correos duplicados en el registro
+<<<<<<< HEAD
 DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro correo o inicie sesi&oacte;n")
+=======
+DOBLE_EMAIL = _(u"Este correo ya está en uso. "u"Por favor utilice otro correo o inicie sesión")
+>>>>>>> origin/djbienve
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
 
+<<<<<<< HEAD
     # Anadir al formulario un campo para el email, el captcha,
+=======
+    # Añadir al formulario un campo para el email, el captcha,
+>>>>>>> origin/djbienve
     # y un checkbox para que el usuario acepte las condiciones de uso
     email = forms.EmailField(
         required = True
     )
 
+<<<<<<< HEAD
     # Anadir el campo de Captcha
+=======
+    #Añadir el campo de Captcha
+>>>>>>> origin/djbienve
     captcha = ReCaptchaField(
         label = 'Captcha'
     )
 
+<<<<<<< HEAD
     # Checkbox para las condiciones de uso que el usuario debe aceptar
+=======
+    #Checkbox de licencia el cual el usuario debe aceptar
+>>>>>>> origin/djbienve
     tos = forms.BooleanField(
         widget = forms.CheckboxInput,
         label = 'He le&iacute;do y acepto las condiciones de uso',
         error_messages={'required': 'Debes aceptar las condiciones de uso para continuar'}
     )
 
+<<<<<<< HEAD
     # Funcion que se encargar de mirar en la base de datos
     # si existe el correo con el que intenta registrarse
     def clean_email(self):
             """
             Ya que Django solo nos ofrece el formulario de registro, pero no controla que el campo de correo electronico
             no sea doble, asi que con esta funcion cada vez que el usuario le da al boton de registrar verificamos que su correo
+=======
+    # Función que se encargar de mirar en la base de datos
+    # si existe el correo con el que intenta registrarse
+    def clean_email(self):
+            """
+            Ya que Django solo nos ofrece el formulario de registro, pero no controla que el campo de correo electrónico
+            no sea doble, así que con esta funcion cada vez que el usuario le da al botón de registrar verificamos que su correo
+>>>>>>> origin/djbienve
             no exista previamente en la base de datos.
             """
             if User.objects.filter(email__iexact=self.cleaned_data['email']): # Buscar en la base de datos el correo introducido
                 raise forms.ValidationError(DOBLE_EMAIL)
             return self.cleaned_data['email']
 
+<<<<<<< HEAD
     def clean_password2(self):
         password2 = super().clean_password2()
 
@@ -62,6 +88,11 @@ class RegistrationForm(UserCreationForm):
         return password2
 
     # Ampliar la funcion de guardado para que tambien guarde el email
+=======
+
+
+    # Ampliar la función de guardado para que también guarde el email
+>>>>>>> origin/djbienve
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]
@@ -93,6 +124,7 @@ class RegistrationForm(UserCreationForm):
             #send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com', [user.email], fail_silently=False)
         return user
 
+<<<<<<< HEAD
 
 class ValidatedPasswordChangeForm(PasswordChangeForm):
     def clean_new_password2(self):
@@ -128,3 +160,5 @@ class ValidatedSetPasswordForm(SetPasswordForm):
             )
 
         return password2
+=======
+>>>>>>> origin/djbienve
