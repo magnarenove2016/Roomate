@@ -125,10 +125,14 @@
                             {% bootstrap_label "Descripción:" %}
                             {% bootstrap_field form.description show_label=false show_help=false %}
 
+
                             <div class="form-group">
-                                <label class="control-label">¿Fumador?</label>
-                                {{ form.isSmoker }}
+                                <div class="checkbox"><label for="id_perfil-isSmoker">
+                                    {{form.isSmoker}}
+                                    Fumador</label>
+                                </div>
                             </div>
+
                         </div>
 
                         <div class="form-category">
@@ -148,15 +152,15 @@
                             <span class="add-tag label label-success">
                                 <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
                             </span>
+
+                            <p class="aviso"><em>Aviso! Guarda tu perfil antes de a&ntilde;adir una etiqueta o se perder&aacute;n
+                            los cambios que hayas realizado.</em></p>
                         </div>
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
                             {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
                         </div>
-                        <font size="3" color="red"> **(guarda los cambios antes de a&ntilde;adir un campo o se borrar&aacute;
-                            lo que has escrito)</font>  <!-- mensaje de alerta -->
-
 
                     </form>
                 </div>
