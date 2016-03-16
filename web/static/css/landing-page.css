@@ -221,11 +221,16 @@ p.copyright {
     background-color: white;
     border: solid 1px rgb(200, 200, 200);
     padding: 20px;
-    margin: 0px 40px 30px 40px;
+    margin-bottom: 30px;
 }
 
 .form-category > h4 {
     margin: 0px 0px 20px 0px;
+}
+
+.aviso {
+    color: dimgrey;
+    margin: 10px 0px 0px 0px;
 }
 
 /* --------------------------- Login --------------------------*/
@@ -252,8 +257,8 @@ p.copyright {
 #logo {
     position: relative;
     top: -5px;
-    width: 107px;
-    height: 37px;
+    width: 98px;
+    height: 30px;
 }
 
 /*----------------------- Página "Sobre nosotros" --------------------------*/
@@ -278,8 +283,10 @@ p.copyright {
 /*----------------------------- TAGS -----------------------------*/
 
 .tag, .add-tag {
+    display: inline-block;
     font-size: 13px;
-    margin-left: 10px;
+    margin-left: 8px;
+    margin-bottom: 8px;
 }
 
 .tag > input {
