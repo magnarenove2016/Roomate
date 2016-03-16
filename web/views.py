@@ -1,212 +1,255 @@
-import math
+from django.shortcuts import render_to_response, render, redirect, get_object_or_404
+from django.template.context_processors import csrf #para verificar la integridad de render_to_response (cookies) https://docs.djangoproject.com/en/1.8/ref/csrf/
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail  # para contactar con el support
-from django.shortcuts import render_to_response, render, redirect
-from django.template import RequestContext  # para mostrar el mail en el .html
-
-from Roomate.views import castellano, euskera
+from django.core.mail import send_mail #para el prototipo de enviar mail
+from django.template import Context, RequestContext #para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
+from django.db import IntegrityError
+import hashlib, datetime, random, math
+
+import re #for regex expresions
+
 from .forms import *
 from .models import *
 
+castellano = "es"
+euskera = "es"
+idioma = "es"
 
-# Registrar un arrendatario completando su perfil
+# Registrar nuevo usuario (Version Jon).
+def register_new_user(request):
+    if request.method == "POST":
+        #obtener formulario
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            #si existe un usuario con el mismo correo se guarda en b
+            #b = Usuario.objects.filter(correo=request.POST.get('correo'))
+
+            #verificar seguridad del password
+            if not re.match(r'^(?=.*\d)(?=.*[a-z]).{8,20}$', form.cleaned_data['contrasena'] ):
+                context = {
+                    'insecure':request.POST.get('correo')
+                }
+                context.update(csrf(request))
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
+
+            #verificar seguridad del password
+            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", form.cleaned_data['correo'] ):
+                context = {
+                    'no_email':request.POST.get('correo')
+                }
+                context.update(csrf(request))
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
+
+            #guarda el usuario sii no existe un usuario con el mismo correo
+            elif b.count() == 0:
+                usuario = form.save(commit=False)
+
+                #creamos un User de tipo Django
+
+                userDjango = User.objects.create_user(usuario.alias, usuario.correo, usuario.contrasena)
+                #asignar el usuario recien creado a nuestro usuario
+                usuario.user=userDjango
+
+                #generar hash para la verificacion por mail y asignar
+                salt_str=str(random.random())
+                salt = hashlib.sha1(salt_str.encode('utf_8')).hexdigest()[:5]
+                salt_bytes = salt.encode('utf-8')
+                correo_bytes=usuario.correo.encode('utf-8')
+                activation_key = hashlib.sha1(salt_bytes+correo_bytes).hexdigest()
+                usuario.activation_key= activation_key
+
+                #marcar como no verificado y guardar ambos
+                usuario.verificado=False
+                try:
+                    usuario.save()
+                except IntegrityError as e:
+                    print("Correo existente")
+                    context = {
+                        'exist':request.POST.get('correo')
+                    }
+                    context.update(csrf(request))
+                    return render_to_response('web/register_new_user.html', context)
+                userDjango.save()
+
+                #crear el mail y enviarlo
+                email_subject = 'Confirmacion de cuenta'
+                email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
+                en el siguiente link para confirmar tu correo y disfrutar \
+                plenamente de tu cuenta: \
+                http://localhost:8080/accounts/confirm/%s" % (usuario.alias, activation_key)
+                send_mail(email_subject, email_body, 'magnasis.grupo1@gmail.com', [usuario.correo], fail_silently=False)
+
+                #crear variable de contexto "created" (para el render de la HTML)
+                context = {
+                    'created':request.POST.get('correo')
+                }
+
+                #render
+                context.update(csrf(request))
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
+            else: #existe un usuario con ese correo
+                context = {
+                    'exist':request.POST.get('correo')
+                }
+                context.update(csrf(request))
+                return render_to_response('web/'+idioma+'/register_new_user.html', context)
+            return redirect('/',)
+    else:
+        #generar formulario
+        form = UsuarioForm()
+    return render(request, 'web/'+idioma+'/register_new_user.html', {'form':form})
+
+#Registrar un arrendatario completando su perfil (requiere login)
+@login_required
+def completar_perfil(request):
+    if request.method == "POST":
+        #creamos form
+        form = completarPerfilForm(request.POST)
+        if form.is_valid():
+            #obtener datos y guardar perfil
+            Perfil = completarPerfilForm(request.POST)
+            Perfil.persona=request.user
+            Perfil.save()
+            return redirect('/',)
+    else:
+        #generamos form
+        form = completarPerfilForm()
+    return render(request, 'web/'+idioma+'/completar_perfil.html', {'form':form})
+
+
+#Registrar un arrendatario completando su perfil (requiere login) Eficiente
 @login_required
 def edit_profile(request):
     # Comprobar si el usuario ya tiene un perfil creado
     try:
         profile = request.user.profile
-    except:
-        profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
-
-    tags = Tag.objects.filter(perfil=profile)  # obtener tags asociados al perfil
+    except Profile.DoesNotExist:
+        profile = Profile(user=request.user) #si no tiene perfil, se lo creamos
 
     if request.method == 'POST':
-        formProfile = ProfileForm(request.POST, instance=profile, prefix='perfil')  # extraemos el profile del POST
-
-        if formProfile.is_valid():  # comprobamos que el profile es valido
-            formProfile.save()  # y lo guardamos
-
-        i = 0
-        for tag in tags:
-            tagForm = TagForm(request.POST, instance=tag, prefix='tag_%s' % i)
-            i = i + 1
-            tagForm.perfil = profile
-            if tagForm.is_valid():
-                tagForm.save()  # TODO: comprobar si el tag ya existe?
-
-        for file in request.FILES._itervalues():  # TODO: in development
-            newFoto = FotoPerfil(foto=file)
-            newFoto.perfil = profile
-            newFoto.save()
-
-        return redirect('completar_perfil')
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid(): #comprobar los datos
+            form.save()
+            return redirect('main')
     else:
-        form = ProfileForm(instance=profile, prefix='perfil')  # formulario con solo con los tags que ya tiene
-        tag_forms = []  # lista de formularios de tag vacia
-
-        if tags:
-            i = 0
-            for tag in tags:  # iterar los campos de tag asociados al perfil
-                tag_forms.append(
-                    TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
-                i = i + 1
-
-    return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
-                  {'form': form, 'tag_forms': tag_forms})
+        form = ProfileForm(instance=profile)
+    return render(request,'web/'+idioma+'/edit_profile.html', {'form': form})
 
 
-# anadir tag al usuario
-@login_required
-def add_tag(request):
-    try:  # obtenemos el perfil del usuario
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
-        profile.save()
-
-    tag = Tag()
-
-    tag.perfil = profile  # asignamos el perfil
-    tag.text = "Etiqueta en Blanco"  # y un texto generico
-    tag.save()  # y lo guardamos
-    return redirect('/completar_perfil/', )
-
-
-# eliminar determinado tag del usuario
-@login_required
-def delete_tag(request, texto_del_tag):
-    try:
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
-
-        profile.save()
-
-    tag = Tag.objects.filter(perfil=profile, text=texto_del_tag)  # obtenemos sus tags #TODO: buscamos el tag a eliminar
-
-    tag.delete()
-    return redirect('/completar_perfil/', )
-
-
-# Anadir una casa (requiere login)
+#Anadir una casa (requiere login)
 @login_required
 def add_house(request):
     if request.method == "POST":
-        # creamos form
-        formcasa = CasaForm(request.POST, request.FILES)
-        if formcasa.is_valid():
-            # obtener datos y guardar perfil
-            Casa = formcasa.save(commit=False)
-            Casa.dueno = request.user
+        #creamos form
+        form = CasaForm(request.POST)
+        if form.is_valid():
+            #obtener datos y guardar perfil
+            Casa = form.save(commit=False)
+            Casa.dueno=request.user
             Casa.save()
-            for file in request.FILES._itervalues():
-                newFoto = FotoCasa(foto=file)
-                newFoto.casa = Casa
-                newFoto.save()
-            return redirect('main');
-        else:
-            return render(request, 'web/' + request.session['lang'] + '/add_house.html', {'formCasa': formcasa})
+            return redirect('/',)
     else:
-        # generamos form
-        formcasa = CasaForm()
-    return render(request, 'web/' + request.session['lang'] + '/add_house.html', {'formCasa': formcasa})
+        #generamos form
+        form = CasaForm()
+    return render(request, 'web/'+idioma+'/add_house.html', {'form':form})
 
-
-# pagina generica para funciones sin desarrollar
+#pagina generica para funciones sin desarrollar
 def undeveloped(request):
-    return render(request, 'web/' + request.session['lang'] + '/undeveloped.html', {})
+    return render(request, 'web/'+idioma+'/undeveloped.html', {})
 
+#----------------------------------- Funciones experimentales sin documentar -----------------------------------------
 
-def change_language(request, language):
-    if language == castellano:
-        request.session['lang'] = castellano
-    elif language == euskera:
-        request.session['lang'] = euskera
-    return redirect('main');
+'''
+def recover_password(request):
+	if request.method == "POST":
+		form = RecoverPasswordForm(request.POST)
+		if form.is_valid():
+			Usuario = form.save(commit=False)
+			Usuario.save()
+			user_mail = request.POST.get('correo', '')
+			#send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'admin@roomate.com', [user_mail], fail_silently=False)
+			return redirect('recover_password_done',mail=user_mail)
+	else:
+		form = RecoverPasswordForm()
+	return render(request, 'web/'+idioma+'/recover_password.html', {'form':form})
+'''
 
+#funcion para la recuperacion de la password
+def recover_password(request):
+    if request.method == "POST":
+        #obtenemos form
+        user_mail = request.POST.get('correo')
+        #TODO: envio de mail desactivado
+        #send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'admin@roomate.com', [user_mail], fail_silently=False)
+        return redirect('recover_password_done', mail=user_mail)
+    else:
+        #creamos form
+        form = RecoverPasswordForm()
+    return render(request, 'web/'+idioma+'/recover_password.html', {'form' : form})
 
-# pagina sobre los desarrolladores
-def about_us(request):
-    return render(request, 'web/' + request.session['lang'] + '/about_us.html', {})
+def recover_password_done(request, mail):
+    #creamos variable de contexto "mail"
+    context = {
+        'mail': mail
+    }
+    #b = Usuario.objects.get(correo=mail) #es otra manera de conseguir los objetos deseados de la base de datos
+    #obtenemos el mail
+    b = Usuario.objects.filter(correo=mail)
+    if b.count() > 0:
+        send_mail('Password reset', 'Hello: please click the link below to reset your password.', 'magnasis.grupo1@gmail.com', [mail], fail_silently=False)
+    return render_to_response('web/'+idioma+'/recover_password_done.html', context)
 
-
-def welcome(request):
-    if 'lang' not in request.session:
-        request.session['lang'] = castellano
-    return render(request, 'web/' + request.session['lang'] + '/welcome.html', {})
-
-
-# ----------------------------------- Funciones adicionales --------------------------------------------------
+#----------------------------------- Funciones adicionales -----------------------------------------
 
 def getLocation(name):
     geolocator = Nominatim()
     localizacion = geolocator.geocode(name, exactly_one='False')
     return localizacion
 
+def welcome(request):
+    return render(request, 'web/'+idioma+'/welcome.html',{})
+
 
 def distance_meters(lat1, long1, lat2, long2):
-    # earth's radius in meters
-    R = 6371000
-    alfa1 = math.radians(lat1)
-    alfa2 = math.radians(lat2)
-    betaLat = math.radians(lat2 - lat1)
-    betaLong = math.radians(long2 - long1)
+    #earth's radius in meters
+    R=6371000
+    alfa1=math.radians(lat1)
+    alfa2=math.radians(lat2)
+    betaLat=math.radians(lat2-lat1)
+    betaLong=math.radians(long2-long1)
 
-    a = math.sin(betaLat / 2) * math.sin(betaLat / 2) + math.cos(alfa1) * math.cos(alfa2) * math.sin(
-        betaLong / 2) * math.sin(betaLong / 2)
+    a=math.sin(betaLat/2) * math.sin(betaLat/2) + math.cos(alfa1) * math.cos(alfa2) * math.sin(betaLong/2)*math.sin(betaLong/2)
 
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    dist = R * c
+    c=2*math.atan2(math.sqrt(a), math.sqrt(1-a))
+    dist=R*c
     return dist
 
-
 def metersToKm(dist):
-    return round(dist / 1000, 2)
+    return round(dist/1000,2)
 
 
 def get_location_search(request):
     if 's' in request.GET:
-        search_str = request.GET['s']
-        loc = getLocation(search_str)
+        search_str=request.GET['s']
+        print(search_str)
+        loc=getLocation(search_str)
         if loc is not None:
-            search = loc[0]
-            # Punto en donostia
-            latitude = 43.3224219
-            longitude = -1.9838888
-            dist = distance_meters(search.latitude, search.longitude, latitude, longitude)
-            dist = metersToKm(dist)
+            search=loc[0]
+            print (search.latitude)
+            #Punto en donostia
+            latitude=43.3224219
+            longitude=-1.9838888
+            dist=distance_meters(search.latitude, search.longitude, latitude, longitude)
+            dist=metersToKm(dist)
         else:
-            # Nothing found
-            return render(request, 'web/' + request.session['lang'] + '/error.html', {})
+            #Nothing found
+            return render(request, 'web/es/error.html', {})
     else:
-        # used url /search/ with no parameters
-        return render(request, 'web/' + request.session['lang'] + '/error.html', {})
-    return render_to_response('web/' + request.session['lang'] + '/search_result.html',
-                              {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
-                              context_instance=RequestContext(request))
+        #used url /search/ with no parameters
+        return render(request, 'web/'+idioma+'/error.html', {})
+    return render_to_response('web/'+idioma+'/search_result.html', {'latitude': search.latitude, 'longitude': search.longitude, 'distance':dist}, context_instance=RequestContext(request))
 
-
-# para contactar con la web
-def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(data=request.POST)
-        if form.is_valid():
-            contact_name = request.POST.get('contact_name', '')
-            contact_email = request.POST.get('contact_email', '')
-            form_content = request.POST.get('content', '')
-            # crear el mail y enviarlo
-            email_subject = 'Soporte de RooMate, nuevo mensaje de ' + contact_email
-            email_body = "Nuevo mensaje de %s desde RooMate.\n\nCorreo al que responder: %s\nMensaje:\n%s.\n\nUn cordial saludo de RooMate." % (
-            contact_name, contact_email, form_content)
-            send_mail(email_subject, email_body, 'no-reply@magnasis.com', ['support@magnasis.com'], fail_silently=False)
-            return redirect('contact_done')
-        else:
-            return render(request, 'web/' + request.session['lang'] + '/contact.html', {'form': form,})
-    return render(request, 'web/' + request.session['lang'] + '/contact.html', {
-        'form': ContactForm,
-    })
-
-
-def contact_done(request):
-    return render(request, 'web/' + request.session['lang'] + '/contact_submitted.html', {})
+def cambairIdioma(nuevo_idioma):
+    idioma=nuevo_idioma

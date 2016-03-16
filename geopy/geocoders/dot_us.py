@@ -115,7 +115,7 @@ class GeocoderDotUS(Geocoder):  # pylint: disable=W0223
             return self._parse_result(places[0])
         else:
             result = [self._parse_result(res) for res in places]
-            if None in result:
+            if None in result: # todo
                 return None
             return result
 

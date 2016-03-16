@@ -209,7 +209,7 @@ class YahooPlaceFinder(Geocoder): # pylint: disable=W0223
         """
         query = self._coerce_point_to_string(query)
         if isinstance(query, string_compare):
-            query = query.replace(" ", "") # oauth signature failure;
+            query = query.replace(" ", "") # oauth signature failure; todo
         return self.geocode(
             query,
             exactly_one=exactly_one,

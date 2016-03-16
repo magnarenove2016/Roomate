@@ -1,19 +1,23 @@
 {% load staticfiles %}
+<!-- Modulo con el menu desplegable del login [para meter en base.html]-->
+<!-- Script para que salte un mensaje al usar un checkbox -->
+<script type="text/javascript">
+    function notificar(clickedid) {
+        alert("Esto es una demo, por el momento no podemos recordarte, disculpa las molestias.");
+        return true;
+    }
+</script>
 
 <!-- Si el usuario ya ha hecho login -->
 {% if user.is_authenticated %}
     <li>
         <p class="navbar-text">
             ¡Hola {{ user.username }}! (<a href="{% url 'views.logout' %}">Cerrar
-<<<<<<< HEAD
-            sesi&oacute;n</a>)
-=======
         sesi&oacute;n</a>)
->>>>>>> origin/djbienve
         </p>
     </li>
 
-    <!-- el usuario no se ha logeado -->
+<!-- el usuario no se ha logeado -->
 {% else %}
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
@@ -24,37 +28,36 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        {% if form.errors %}
-                            <p class="text-danger">Los datos introducidos son err&oacute;neos</p>
+                      {% if form.errors %}
+                      <p class="text-danger">Los datos introducidos son erróneos</p>
 
-                        {% endif %}
+                      {% endif %}
 
-                        <form class="navbar-form navbar-center" role="form" action="/accounts/login/" method="post"
-                              id="login-nav">{% csrf_token %}
-                            <div class="form-group">
-                                <span class="glyphicon glyphicon-user"></span>
-                                <label class="control-label">Usuario</label>
-                                <input type="text" name="username" id="username" class="form-control"
-                                       placeholder="Nombre de usuario">
-                            </div>
+                      <form  class="navbar-form navbar-center" role="form" action="/accounts/login/" method="post" >{% csrf_token %}
+                        <div class="form-group">
+                          <span class="glyphicon glyphicon-user"></span>
+                          <label class="control-label">Usuario</label>
+                          <input type="text" name="username" id="username" class="form-control" placeholder="Nombre de usuario">
+                        </div>
 
-                            <div class="form-group">
-                                <span class="glyphicon glyphicon-lock"></span>
-                                <label class="control-label">Contrase&ntilde;a</label>
-                                <input type="password" name="password" id="password" class="form-control"
-                                       placeholder="Contraseña">
-                            </div>
+                        <div class="form-group">
+                          <span class="glyphicon glyphicon-lock"></span>
+                          <label class="control-label">Contraseña</label>
+                          <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña">
+                        </div>
 
-                            <a href="/accounts/password/reset/">¿Has olvidado tu contrase&ntilde;a?</a>
+                        <a href="/accounts/password/reset/">¿contraseña olvidada?</a>
 
-                            <div class="form-group text-center buttons">
-                                <input type="submit" value="Entrar" class="btn btn-primary">
-                                <a href="/register/" class="btn btn-default">Registrarse</a>
-                            </div>
+                        <div class="form-group text-center">
+                          <input type="submit" value="Entrar" class="btn btn-primary">
+                          <a href="/register/" class="btn btn-default">Registrarse</a>
+                        </div>
 
-                        </form>
+                      </form>
 
-                    </div>
+
+
+                </div>
             </li>
         </ul>
     </li>
