@@ -14,7 +14,6 @@ FECHAS_ESTANCIA_ERROR = _(
     cuando se registra. Hay un unico perfil por usuario.
 """
 
-
 class Profile(models.Model):
     # Las elecciones posibles de la opcion de sexo. del usuario
     GENDER_CHOICES = (
@@ -38,7 +37,7 @@ class Profile(models.Model):
 
     # Expresion regular para validar el numero de telefono
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
-                                 message="N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)")
+                                 message=u'Número de teléfono inválido (debe tener de 9 a 15 dígitos)')
 
     # Usuario asociado al perfil (un perfil por usuario)
     user = models.OneToOneField('auth.User', models.CASCADE, related_name='profile')
@@ -65,7 +64,9 @@ class Profile(models.Model):
     # Controlar que las fechas de estancia sean coherentes
     def clean(self):
         from django.core.exceptions import ValidationError
-        if self.iniEstancia > self.finEstancia:
+        if (self.iniEstancia is None): return
+        if (self.finEstancia is None): return
+        if (self.iniEstancia > self.finEstancia):
             raise ValidationError(FECHAS_ESTANCIA_ERROR)
 
     def __str__(self):
