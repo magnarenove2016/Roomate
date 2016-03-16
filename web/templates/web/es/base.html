@@ -66,16 +66,16 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <!-- selector de idiomas--> <!-- TODO: rework a esta seccion para que no se solape con el resto -->
-                    <li>
-                        <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
-                            <img src="{% static 'img/lang/es_ES.jpg' %}"/>Espa&ntilde;ol
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
-                            <img src="{% static 'img/lang/eu_EU.jpg' %}"/>Euskera
-                        </a>
-                    </li>
+                <li>
+                    <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
+                        <img src="{% static 'img/lang/es_ES.jpg' %}"/>Espa&ntilde;ol
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
+                        <img src="{% static 'img/lang/eu_EU.jpg' %}"/>Euskera
+                    </a>
+                </li>
                 </li>
                 {% if request.user.is_superuser %}
                     <li>
@@ -88,7 +88,7 @@
                         <a href="{% url 'undeveloped' %}">Gestiona logs</a>
                     </li>
                     <li>
-                        <a href="{% url 'undeveloped' %}">Gestionar copias de seguridad</a>
+                        <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
                     </li>
                 {% else %}
                     <li>
@@ -113,7 +113,7 @@
                 {% endif %}
                 <li>
                     {% block login %}
-                        {% include "web/es/../../trash/login.html" %}
+                        {% include "web/es/login.html" %}
                     {% endblock %}
                 </li>
                 <!-- Menú desplegable para acceder a los caso de uso

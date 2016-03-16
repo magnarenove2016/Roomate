@@ -1,19 +1,20 @@
-from time import time
-
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator  # utilizando una expresion regular valida un determinado campo
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _  # traduccion de los formatos de texto de errores
+from time import time
 
 # formato de mensaje para controlar que no se meta mal las fechas
-FECHAS_ESTANCIA_ERROR = _(u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
+FECHAS_ESTANCIA_ERROR = _(
+    u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
 
 """
     Perfil del usuario que contiene todos los datos extra que
     necesitamos saber de un usuario a parte de los que le pedimos
     cuando se registra. Hay un unico perfil por usuario.
 """
+
+
 class Profile(models.Model):
     # Las elecciones posibles de la opcion de sexo. del usuario
     GENDER_CHOICES = (
@@ -40,7 +41,7 @@ class Profile(models.Model):
                                  message="N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)")
 
     # Usuario asociado al perfil (un perfil por usuario)
-    user = models.OneToOneField('auth.User', models.CASCADE)
+    user = models.OneToOneField('auth.User', models.CASCADE, related_name='profile')
 
     # Campos del perfil
     firstName = models.CharField(max_length=35, blank=True, verbose_name='Nombre')

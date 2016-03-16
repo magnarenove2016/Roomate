@@ -7,17 +7,17 @@
 {% block contenido %}
     <a name="contenido"></a>
     <div class="contact-header">
-                    <h1>Contacto</h1>
-                    <form role="form" action="" method="post">
-                        {% csrf_token %}
-                        {% bootstrap_label "Nombre de usuario: " %}
-                        {% bootstrap_field form.contact_name show_label=false show_help=false set_required=true %}
-                        {% bootstrap_label "Correo electrónico: " %}
-                        {% bootstrap_field form.contact_email show_label=false show_help=false set_required=true %}
-                        {% bootstrap_label "Mensaje para el soporte: " %}
-                        {% bootstrap_field form.content show_label=false show_help=false set_required=true %}
-                        <!-- <button type="submit">Submit</button>-->
-                        {% bootstrap_button "Submit" button_type="submit" button_class="btn-primary" %}
-                    </form>
-                    </div>
+        <h1>Contacto</h1>
+        <form role="form" action="" method="post">
+            {% csrf_token %}
+            {% bootstrap_label "Nombre de usuario: " %}
+            {% bootstrap_field form.contact_name show_label=false show_help=false set_required=true %}
+            {% bootstrap_label "Correo electrónico: " %}
+            {% bootstrap_field form.contact_email show_label=false show_help=false set_required=true %}
+            {% bootstrap_label "Mensaje para el soporte: " %}
+            {% bootstrap_field form.content show_label=false show_help=false set_required=true %}
+            <!-- <button type="submit">Submit</button>-->
+            {% bootstrap_button "Submit" button_type="submit" button_class="btn-primary" %}
+        </form>
+    </div>
 {% endblock %}

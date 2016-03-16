@@ -1,10 +1,10 @@
 # coding: latin1
-from unittest import skip
-
 from django.contrib.auth.models import User
 from django.test import TestCase
+from unittest import skip
 
-#-------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
 
 class DefaultTestCase(TestCase):
     # Inicializar la base de datos que se va a utilizar en las pruebas
@@ -14,7 +14,8 @@ class DefaultTestCase(TestCase):
         self.email = "false@email.com"
         User.objects.create_user(self.username, self.email, self.password)
 
-#-------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
 
 class LoginTest(DefaultTestCase):
     def test_login_success(self):
@@ -26,27 +27,28 @@ class LoginTest(DefaultTestCase):
         self.assertRedirects(response, '/')
 
     def test_login_incorrect_username(self):
-        #Iniciar sesion con nombre de usuario incorrecto
+        # Iniciar sesion con nombre de usuario incorrecto
         response = self.client.post('/accounts/login/', {'username': 'incorrect_username', 'password': self.password})
         self.assertNotIn('_auth_user_id', self.client.session)
 
     def test_login_incorrect_password(self):
-        #Iniciar sesion con password incorrecta
+        # Iniciar sesion con password incorrecta
         response = self.client.post('/accounts/login/', {'username': self.username, 'password': 'incorrect_pass'})
         self.assertNotIn('_auth_user_id', self.client.session)
 
     @skip("Ignorado por el momento\n")
     def test_login_logged_user(self):
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         response = self.client.get('/accounts/login/')
         self.assertRedirects(response, '/')
 
-#-------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
 
 class LogoutTest(DefaultTestCase):
     def test_logout_logged_user(self):
         # Iniciar sesion
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
         # Cerrar sesion
@@ -64,7 +66,8 @@ class LogoutTest(DefaultTestCase):
         # El usuario es redirigido a la pagina principal
         self.assertRedirects(response, '/')
 
-#-------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
 
 class PasswordChangeTest(DefaultTestCase):
     def test_password_change_not_logged_user(self):
@@ -74,7 +77,7 @@ class PasswordChangeTest(DefaultTestCase):
 
     def test_password_change_logged_user(self):
         # Iniciar sesion
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
         # Comprobar que se usa el template adecuado
@@ -85,41 +88,43 @@ class PasswordChangeTest(DefaultTestCase):
         self.new_password = "new_password123"
 
         # Iniciar sesion
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
         # Cambiar la password
         response = self.client.post('/accounts/password/change/',
-        {'old_password' : self.password,
-         'new_password1' : self.new_password,
-         'new_password2' : self.new_password})
+                                    {'old_password': self.password,
+                                     'new_password1': self.new_password,
+                                     'new_password2': self.new_password})
 
         # Comprobar que el cambio se ha guardado en la base de datos
-        user = User.objects.get(username = self.username)
+        user = User.objects.get(username=self.username)
         self.assertTrue(user.check_password(self.new_password))
 
         self.assertRedirects(response, '/accounts/password/change/done/')
 
     def test_password_change_failure(self):
         # Iniciar sesion
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
         # Cambiar la password con datos incorrectos
         response = self.client.post('/accounts/password/change/',
-        {'old_password' : 'incorrect_old_pass',
-         'new_password1' : 'incorrect_new_pass1',
-         'new_password2' : 'incorrect_new_pass2'})
+                                    {'old_password': 'incorrect_old_pass',
+                                     'new_password1': 'incorrect_new_pass1',
+                                     'new_password2': 'incorrect_new_pass2'})
 
         # Comprobar que no se ha realizado ningun cambio
-        user = User.objects.get(username = self.username)
+        user = User.objects.get(username=self.username)
         self.assertTrue(user.check_password(self.password))
 
         # Comprobar que se muestran los mensajes de error correspondientes
-        self.assertFormError(response, 'form', 'old_password', 'Su contraseña antigua es incorrecta. Por favor, vuelva a introducirla. ')
+        self.assertFormError(response, 'form', 'old_password',
+                             'Su contraseña antigua es incorrecta. Por favor, vuelva a introducirla. ')
         self.assertFormError(response, 'form', 'new_password2', 'Los dos campos de contraseña no coinciden.')
 
-#-------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
 
 class DeleteUserTest(DefaultTestCase):
     def test_delete_user_not_logged_user(self):
@@ -138,14 +143,14 @@ class DeleteUserTest(DefaultTestCase):
 
     def test_delete_user_success(self):
         # Iniciar sesion
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
         # Enviar peticion de borrado con confirmacion correcta
-        response = self.client.post('/accounts/user/delete/', {'username' : self.username})
+        response = self.client.post('/accounts/user/delete/', {'username': self.username})
 
         # Comprobar que el usuario ha sido eliminado de la base de datos
-        query = User.objects.filter(username = self.username)
+        query = User.objects.filter(username=self.username)
         self.assertFalse(query.exists())
 
         # Comprobar que se ha cerrado la sesion del usuario
@@ -153,14 +158,14 @@ class DeleteUserTest(DefaultTestCase):
 
     def test_delete_user_failure(self):
         # Iniciar sesion
-        self.client.login(username = self.username, password = self.password)
+        self.client.login(username=self.username, password=self.password)
         self.assertIn('_auth_user_id', self.client.session)
 
         # Enviar peticion de borrado con confirmacion incorrecta
-        response = self.client.post('/accounts/user/delete/', {'username' : 'incorrect_username'})
+        response = self.client.post('/accounts/user/delete/', {'username': 'incorrect_username'})
 
         # Comprobar que el usuario NO ha sido eliminado de la base de datos
-        query = User.objects.filter(username = self.username)
+        query = User.objects.filter(username=self.username)
         self.assertTrue(query.exists())
 
         # Comprobar que se muestra el mensaje de error correspondiente

@@ -9,7 +9,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
-            url:"#",
+            url: "#",
             // Prevents Dropzone from uploading dropped files immediately
             autoProcessQueue: false,
             addRemoveLinks: true,
@@ -22,19 +22,19 @@
             uploadMultiple: true,
 
 
-            init : function() {
-                myDropzone=this;
+            init: function () {
+                myDropzone = this;
                 // You might want to show the submit button only when
                 // files are dropped here:
-                this.on("addedfile", function(file) {
-                    if (document.querySelectorAll(".btremove").length>0){
-                    var sub = document.querySelector(".btremove");
-                    sub.parentNode.removeChild(sub);
-                    var textright = document.querySelector(".text-right");
-                    var cancel = document.querySelector(".btn-default");
-                    var element = document.createElement("button");
-                    element.className = "btn btn-primary";
-                    element.type = "button";
+                this.on("addedfile", function (file) {
+                    if (document.querySelectorAll(".btremove").length > 0) {
+                        var sub = document.querySelector(".btremove");
+                        sub.parentNode.removeChild(sub);
+                        var textright = document.querySelector(".text-right");
+                        var cancel = document.querySelector(".btn-default");
+                        var element = document.createElement("button");
+                        element.className = "btn btn-primary";
+                        element.type = "button";
 
                         var data = document.createTextNode("Guardar cambios");
                         element.appendChild(data);
@@ -44,8 +44,8 @@
                         submitButton.addEventListener("click", function () {
                             var files = myDropzone.getAcceptedFiles();
                             myDropzone.processFiles(files);
-                            var filesqueue=myDropzone.getQueuedFiles();
-                            for(var file in filesqueue){
+                            var filesqueue = myDropzone.getQueuedFiles();
+                            for (var file in filesqueue) {
                                 myDropzone.processFile(file);
                             }
                             //myDropzone.processQueue();
@@ -64,39 +64,39 @@
     <div class="content-section-a">
         <div class="container">
             <h1>Por favor, completa el siguiente formulario</h1>
-                <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data" >
-​
-                    {% csrf_token %}
-                    <h3>Crea tu casa</h3>
+            <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data">
+                ​
+                {% csrf_token %}
+                <h3>Crea tu casa</h3>
 
-                    <hr>  <!-- Formulario de aniadir casa -->
-​
-                    {% bootstrap_label "Ciudad:" %}
-                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false%}
+                <hr>  <!-- Formulario de aniadir casa -->
+                ​
+                {% bootstrap_label "Ciudad:" %}
+                {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
-                    {% bootstrap_label "Número de habitaciones a alquilar:" %}
-                    {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false%}
+                {% bootstrap_label "Número de habitaciones a alquilar:" %}
+                {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
 
-                    {% bootstrap_label "Número de habitaciones disponibles:" %}
-                    {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false%}
+                {% bootstrap_label "Número de habitaciones disponibles:" %}
+                {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
 
-                    {% bootstrap_label "Descipción de la casa / del piso:" %}
-                    {% bootstrap_field formCasa.descripcion show_label=false show_help=false%}
+                {% bootstrap_label "Descipción de la casa / del piso:" %}
+                {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
 
-                    {% bootstrap_label "¿Se alquila la casa / el piso por habitaciones?" %}
-                    {% bootstrap_field formCasa.alquilerPorHabitaciones show_label=false show_help=false%}
+                {% bootstrap_label "¿Se alquila la casa / el piso por habitaciones?" %}
+                {% bootstrap_field formCasa.alquilerPorHabitaciones show_label=false show_help=false %}
 
-                    {% bootstrap_label "Precio del alquiler:" %}
-                    {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false%}
+                {% bootstrap_label "Precio del alquiler:" %}
+                {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
 
-                    {% bootstrap_label "Gastos adicionales:" %}
-                    {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false%}
+                {% bootstrap_label "Gastos adicionales:" %}
+                {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
 
-                    <div class='text-right'>
-                        {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove"%}
-                        {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-default"%}
-                    </div>
-                </form>
+                <div class='text-right'>
+                    {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
+                    {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-default" %}
+                </div>
+            </form>
 
 
         </div>

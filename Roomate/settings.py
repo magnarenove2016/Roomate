@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'captcha',
     'web',
 	'bootstrap3',
+    'dbbackup',  # django-dbbackup
+    'dropbox',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -105,6 +107,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
+DBBACKUP_STORAGE = 'dbbackup.storage.dropbox_storage'
+DBBACKUP_TOKENS_FILEPATH = 'tokens'
+DBBACKUP_DROPBOX_APP_KEY = 'tnbo7trh24hk32a'
+DBBACKUP_DROPBOX_APP_SECRET = 'tuuljgl8x38hau4'
+DBBACKUP_DROPBOX_DIRECTORY ='Roomate_Backups'
+
 LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'Europe/Madrid'
@@ -130,7 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 #Clave publica para usar en ReCaptcha
 RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'

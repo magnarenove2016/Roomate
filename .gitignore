@@ -5,6 +5,7 @@ db.sqlite3
 .DS_Store
 .idea/
 idea/
+/backups
 web/migrations
 .requirements
 /.pydevproject

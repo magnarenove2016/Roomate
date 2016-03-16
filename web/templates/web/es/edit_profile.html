@@ -11,7 +11,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
-            url:"#",
+            url: "#",
             // Prevents Dropzone from uploading dropped files immediately
             autoProcessQueue: false,
             addRemoveLinks: true,
@@ -23,19 +23,19 @@
             parallelUploads: 10000,
             uploadMultiple: true,
 
-            init : function() {
-                myDropzone=this;
+            init: function () {
+                myDropzone = this;
                 // You might want to show the submit button only when
                 // files are dropped here:
-                this.on("addedfile", function(file) {
-                    if (document.querySelectorAll(".btremove").length>0){
-                    var sub = document.querySelector(".btremove");
-                    sub.parentNode.removeChild(sub);
-                    var textright = document.querySelector(".text-right");
-                    var cancel = document.querySelector(".btn-default");
-                    var element = document.createElement("button");
-                    element.className = "btn btn-primary";
-                    element.type = "button";
+                this.on("addedfile", function (file) {
+                    if (document.querySelectorAll(".btremove").length > 0) {
+                        var sub = document.querySelector(".btremove");
+                        sub.parentNode.removeChild(sub);
+                        var textright = document.querySelector(".text-right");
+                        var cancel = document.querySelector(".btn-default");
+                        var element = document.createElement("button");
+                        element.className = "btn btn-primary";
+                        element.type = "button";
 
                         var data = document.createTextNode("Guardar cambios");
                         element.appendChild(data);
@@ -45,8 +45,8 @@
                         submitButton.addEventListener("click", function () {
                             var files = myDropzone.getAcceptedFiles();
                             myDropzone.processFiles(files);
-                            var filesqueue=myDropzone.getQueuedFiles();
-                            for(var file in filesqueue){
+                            var filesqueue = myDropzone.getQueuedFiles();
+                            for (var file in filesqueue) {
                                 myDropzone.processFile(file);
                             }
                             //myDropzone.processQueue();
@@ -65,7 +65,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form method="POST" class="edit-profile-form container dropzone" id="myDropzone" enctype="multipart/form-data" >
+                    <form method="POST" class="edit-profile-form container dropzone" id="myDropzone"
+                          enctype="multipart/form-data">
 
                         {% csrf_token %}
                         <h3>Edita tu perfil</h3>
@@ -73,44 +74,44 @@
 
                         <!-- formulario del perfil -->
 
-                    {% bootstrap_label "Nombre:" %}
-                    {% bootstrap_field form.firstName show_label=false show_help=false%}
+                        {% bootstrap_label "Nombre:" %}
+                        {% bootstrap_field form.firstName show_label=false show_help=false %}
 
-                    {% bootstrap_label "Apellidos:" %}
-                    {% bootstrap_field form.lastName show_label=false show_help=false%}
+                        {% bootstrap_label "Apellidos:" %}
+                        {% bootstrap_field form.lastName show_label=false show_help=false %}
 
-                    {% bootstrap_label "Fecha de nacimiento:" %}
-                    {% bootstrap_field form.birthdate show_label=false show_help=false%}
+                        {% bootstrap_label "Fecha de nacimiento:" %}
+                        {% bootstrap_field form.birthdate show_label=false show_help=false %}
 
-                    {% bootstrap_label "Número de teléfono:" %}
-                    {% bootstrap_field form.telephone show_label=false show_help=false%}
+                        {% bootstrap_label "Número de teléfono:" %}
+                        {% bootstrap_field form.telephone show_label=false show_help=false %}
 
-                    {% bootstrap_label "Sexo:" %}
-                    {% bootstrap_field form.gender show_label=false show_help=false%}
+                        {% bootstrap_label "Sexo:" %}
+                        {% bootstrap_field form.gender show_label=false show_help=false %}
 
-                    {% bootstrap_label "Ocupación:" %}
-                    {% bootstrap_field form.ocupation show_label=false show_help=false%}
+                        {% bootstrap_label "Ocupación:" %}
+                        {% bootstrap_field form.ocupation show_label=false show_help=false %}
 
-                    {% bootstrap_label "Mascota:" %}
-                    {% bootstrap_field form.pet show_label=false show_help=false%}
+                        {% bootstrap_label "Mascota:" %}
+                        {% bootstrap_field form.pet show_label=false show_help=false %}
 
-                    {% bootstrap_label "Inicio de la estancia:" %}
-                    {% bootstrap_field form.iniEstancia show_label=false show_help=false%}
+                        {% bootstrap_label "Inicio de la estancia:" %}
+                        {% bootstrap_field form.iniEstancia show_label=false show_help=false %}
 
-                    {% bootstrap_label "Fin de la estancia:" %}
-                    {% bootstrap_field form.finEstancia show_label=false show_help=false%}
+                        {% bootstrap_label "Fin de la estancia:" %}
+                        {% bootstrap_field form.finEstancia show_label=false show_help=false %}
 
-                    {% bootstrap_label "Instrumento musical que toques:" %}
-                    {% bootstrap_field form.Instrument show_label=false show_help=false%}
+                        {% bootstrap_label "Instrumento musical que toques:" %}
+                        {% bootstrap_field form.Instrument show_label=false show_help=false %}
 
-                    {% bootstrap_label "Descripción:" %}
-                    {% bootstrap_field form.description show_label=false show_help=false%}
+                        {% bootstrap_label "Descripción:" %}
+                        {% bootstrap_field form.description show_label=false show_help=false %}
 
-                    {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
-                    {% bootstrap_field form.lookingIn show_label=false show_help=false%}
+                        {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
+                        {% bootstrap_field form.lookingIn show_label=false show_help=false %}
 
-                    {% bootstrap_label "¿Eres fumador?" %}
-                    {% bootstrap_field form.isSmoker show_label=false show_help=false%}
+                        {% bootstrap_label "¿Eres fumador?" %}
+                        {% bootstrap_field form.isSmoker show_label=false show_help=false %}
 
                         {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
                             <div class="container-fluid">
@@ -141,7 +142,8 @@
                             {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
 
                         </div>
-                        <font size="3" color="red"> **(guarda los cambios antes de a&ntilde;adir un campo o se borrar&aacute; lo que
+                        <font size="3" color="red"> **(guarda los cambios antes de a&ntilde;adir un campo o se borrar&aacute;
+                            lo que
                             has escrito)</font>  <!-- mensaje de alerta -->
 
 

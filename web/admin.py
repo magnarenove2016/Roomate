@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import *
 
 # Mapeamos todos nuestros objetos para poder administrarlos desde /admin
