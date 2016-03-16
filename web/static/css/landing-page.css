@@ -213,6 +213,17 @@ p.copyright {
 
 /* ------------------------ Formularios -----------------------*/
 
+.registration-form {
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.registration-form .btn-primary {
+    width: 120px;
+    margin-top: -10px;
+}
+
 .description {
     text-align: center;
 }
