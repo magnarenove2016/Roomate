@@ -87,7 +87,7 @@ class FotoPerfil(models.Model):
 
 class Tag(models.Model):
     perfil = models.ForeignKey(Profile, null=True, blank=True)
-    text = models.CharField(max_length=200, verbose_name='Etiqueta')
+    text = models.CharField(max_length=25, verbose_name='Etiqueta')
 
 
 class Casa(models.Model):
