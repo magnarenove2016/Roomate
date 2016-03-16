@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^about_us/$', views.about_us, name='about_us'),
     url(r'^contact/$', views.contact, name='contact'),
     url(r'^contact/done/$', views.contact_done, name='contact_done'),
+    url(r'^legal/$', views.legal, name='legal'),
 ]

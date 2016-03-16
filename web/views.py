@@ -210,3 +210,6 @@ def contact(request):
 
 def contact_done(request):
     return render(request, 'web/' + request.session['lang'] + '/contact_submitted.html', {})
+
+def legal(request):
+    return render(request, 'web/'+request.session['lang'] + '/legal.html', {})
