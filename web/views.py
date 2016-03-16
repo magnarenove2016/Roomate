@@ -55,7 +55,7 @@ def edit_profile(request):
                   {'form': formProfile, 'tag_forms': tag_forms, 'images': images})
 
 
-"""" eliminar determinada imagen del usuario"""
+# eliminar determinada imagen del usuario
 @login_required
 def delete_profile_image(request, path_image):
     fc=FotoPerfil.objects.filter(foto=path_image, perfil=request.user.profile)
