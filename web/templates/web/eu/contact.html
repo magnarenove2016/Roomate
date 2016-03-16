@@ -1,24 +1,24 @@
-{% extends 'web/es/base.html' %}
+{% extends 'web/eu/base.html' %}
 
 {% load bootstrap3 %}
 
-{% block title %}Contacto{% endblock %}
+{% block title %}Harremanetan jarri{% endblock %}
 
 {% block contenido %}
     <a name="contenido"></a>
     <div class="container">
         <div class="contact-header">
-            <h1>Contacto</h1>
+            <h1>Harremanetan jarri</h1>
             <form role="form" action="" method="post">
                 {% csrf_token %}
-                {% bootstrap_label "Nombre y apellidos / usuario: " %}
+                {% bootstrap_label "Izen abizenak / erabiltzailea: " %}
                 {% bootstrap_field form.contact_name show_label=false show_help=false set_required=true %}
-                {% bootstrap_label "Correo electrónico: " %}
+                {% bootstrap_label "Posta elektroniko helbidea: " %}
                 {% bootstrap_field form.contact_email show_label=false show_help=false set_required=true %}
-                {% bootstrap_label "Mensaje para el soporte: " %}
+                {% bootstrap_label "Teknikarientzako mezua: " %}
                 {% bootstrap_field form.content show_label=false show_help=false set_required=true %}
                 <!-- <button type="submit">Submit</button>-->
-                {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+                {% bootstrap_button "Bidali" button_type="submit" button_class="btn-primary" %}
             </form>
         </div>
     </div>
