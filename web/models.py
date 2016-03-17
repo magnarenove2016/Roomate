@@ -84,7 +84,7 @@ def generar_ruta_image(instance, filename):
 class FotoPerfil(models.Model):
     id = models.AutoField(primary_key=True)
     foto = models.FileField(upload_to=generar_ruta_image)
-    casa = models.ForeignKey(Profile, blank=True, null=True, related_name="fotos")
+    perfil = models.ForeignKey(Profile, blank=True, null=True, related_name="fotos")
 
 
 class Tag(models.Model):

@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^search/$', views.get_location_search, name='get_location_search'),
     url(r'^add_house/$', views.add_house, name='add_house'),
     url(r'^completar_perfil/$', views.edit_profile, name='completar_perfil'),
+    url(r'^delete_profile_image/(?P<path_image>.+)/$', views.delete_profile_image, name='delete_profile_image'),
     url(r'^add_tag/$', views.add_tag, name='add_tag'),
     url(r'^delete_tag/(?P<texto_del_tag>.+)/$', views.delete_tag, name='delete_tag'),
     url(r'^change_language/(?P<language>.+)/$', views.change_language, name='change_language'),

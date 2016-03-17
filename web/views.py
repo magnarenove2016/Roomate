@@ -29,9 +29,9 @@ def edit_profile(request):
             tagForm = TagForm(request.POST, instance=tag, prefix='tag_%s' % i)
             tagForm.perfil = profile
             if tagForm.is_valid():
-                tagForm.save()  # TODO: comprobar si el tag ya existe?
+                tagForm.save()
 
-        for file in request.FILES._itervalues():  # TODO: in development
+        for file in request.FILES._itervalues():
             newFoto = FotoPerfil(foto=file)
             newFoto.perfil = profile
             newFoto.save()
@@ -48,7 +48,8 @@ def edit_profile(request):
          tag_forms.append(
               TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
 
-    images=profile.fotos
+    # images=profile.fotos
+    images=FotoPerfil.objects.filter(perfil=profile)
 
     return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
                   {'form': formProfile, 'tag_forms': tag_forms, 'images': images})
@@ -57,7 +58,7 @@ def edit_profile(request):
 """" eliminar determinada imagen del usuario"""
 @login_required
 def delete_profile_image(request, path_image):
-    fc=FotoPerfil.objects.filter(foto=path_image, profile=request.user.profile)
+    fc=FotoPerfil.objects.filter(foto=path_image, perfil=request.user.profile)
     fc.all().delete()
     return edit_profile(request) #
 
