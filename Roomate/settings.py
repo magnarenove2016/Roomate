@@ -153,7 +153,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = True
+DEBUG = False
 
 LOGGING = {
     'version': 1,
@@ -211,10 +211,12 @@ LOGGING = {
             'handlers': ['DBQfile'],
             'level': 'INFO',
         },
-        # Este Logger solo se usa si la variable DEBUG de settings.py esta en True. Enviara un Record por cada sentencia SQL.
+        # Este Logger se activara solo enviando un Record por cada sentencia SQL, y solo lo hara si la variable DEBUG de settings.py esta en True.
+        # Todos los Records que envie seran de nivel DEBUG (el mas bajo) y por tanto, si se quiere poner en debug pero que no se hagan logs de las
+        # instrucciones sql (pues tienen un gran coste), se puede cambiar el nivel del logger a uno superior (como INFO o ERROR).
         'django.db.backends': {
             'handlers': ['DBQfile'],
-            'level': 'DEBUG'
+            'level': 'INFO'
        }
     }
 }
