@@ -51,7 +51,7 @@ def edit_profile(request):
     # images=profile.fotos
     images=FotoPerfil.objects.filter(perfil=profile)
 
-    return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
+    return render(request, 'prueba/' + request.session['lang'] + '/edit_profile.html',
                   {'form': formProfile, 'tag_forms': tag_forms, 'images': images})
 
 
@@ -127,32 +127,32 @@ def add_house(request):
                         return redirect("/show_location/")
                     else:
                         request.session['refreshing_vcs']=False
-                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+                        return render(request, 'prueba/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
                 else:
                     request.session['refreshing_vcs']=False
-                    return render(request, 'web/'+request.session['lang']+'/error_casa.html', {})
+                    return render(request, 'prueba/'+request.session['lang']+'/error_casa.html', {})
             else:
                 request.session['refreshing_vcs']=False
-                return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+                return render(request, 'prueba/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
         else:
             #generamos form
             formcasa = CasaForm()
         request.session['refreshing_vcs']=False
-        return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+        return render(request, 'prueba/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
 
 #Anadir una casa (requiere login)
 
 @login_required
 def show_my_houses(request):
-    return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casas': request.user.casas.all()})
+    return render(request, 'prueba/' + request.session['lang'] + '/view_house.html', {'casas': request.user.casas.all()})
 
 
 def show_house(request, dir, ciudad):
     casa=Casa.objects.filter(direccion=dir,ciudad=ciudad).first()
     if casa is not None:
-        return render(request, 'web/' + request.session['lang'] + '/show_house.html', {'casa': casa})
+        return render(request, 'prueba/' + request.session['lang'] + '/show_house.html', {'casa': casa})
     else:
-        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+        return render(request, 'prueba/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
 #Anadir una casa (requiere login)
 
 @login_required
@@ -186,16 +186,16 @@ def edit_house(request, dir, ciudad):
                         return redirect("/show_location/")
                     else:
                         request.session['refreshing_vcs']=False
-                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+                        return render(request, 'prueba/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
 
                 else:
                     request.session['refreshing_vcs']=False
-                    return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+                    return render(request, 'prueba/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
             else:
                 #generamos form
                 formcasa = CasaForm(instance=casa.first())
             request.session['refreshing_vcs']=False
-            return render(request, 'web/'+request.session['lang']+'/edit_house.html', {'formCasa': formcasa,'casa': casa.first()})
+            return render(request, 'prueba/'+request.session['lang']+'/edit_house.html', {'formCasa': formcasa,'casa': casa.first()})
 
 
 """" eliminar determinado tag del usuario"""
@@ -220,7 +220,7 @@ def show_location(request):
     casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
     if(request.method=="POST"):
         if 'accept' in request.POST:
-            return render(request, 'web/' + request.session['lang'] + '/casa_creada.html', {})
+            return render(request, 'prueba/' + request.session['lang'] + '/casa_creada.html', {})
         else:
             #case that he clicks cancel
             for c in casa:
@@ -230,12 +230,12 @@ def show_location(request):
             #return one renderized view
             return redirect("/")
     else:
-        return render(request, 'web/'+request.session['lang']+'/show_loc.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
+        return render(request, 'prueba/'+request.session['lang']+'/show_loc.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
 
 
 # pagina generica para funciones sin desarrollar
 def undeveloped(request):
-    return render(request, 'web/' + request.session['lang'] + '/undeveloped.html', {})
+    return render(request, 'prueba/' + request.session['lang'] + '/undeveloped.html', {})
 
 
 def change_language(request, language):
@@ -248,13 +248,13 @@ def change_language(request, language):
 
 # pagina sobre los desarrolladores
 def about_us(request):
-    return render(request, 'web/' + request.session['lang'] + '/about_us.html', {})
+    return render(request, 'prueba/' + request.session['lang'] + '/about_us.html', {})
 
 
 def welcome(request):
     if 'lang' not in request.session:
         request.session['lang'] = castellano
-    return render(request, 'web/' + request.session['lang'] + '/welcome.html', {})
+    return render(request, 'prueba/' + request.session['lang'] + '/welcome.html', {})
 
 
 # ----------------------------------- Funciones adicionales --------------------------------------------------
@@ -297,22 +297,22 @@ def get_location_search(request):
                 for casa in casas:
                     if distance_meters(search.latitude, search.longitude,casa.latitude,casa.longitude)< 1500:
                         searched.append(casa)
-                return render(request, 'web/' + request.session['lang'] + '/search_result.html', {'casas':searched})
+                return render(request, 'prueba/' + request.session['lang'] + '/search_result.html', {'casas':searched})
             else:
                 #No houses in that range
-                return render(request, 'web/' + request.session['lang'] + '/info.html', {})
+                return render(request, 'prueba/' + request.session['lang'] + '/info.html', {})
         else:
             # Loc not found
-            return render(request, 'web/' + request.session['lang'] + '/info_no_loc.html', {})
+            return render(request, 'prueba/' + request.session['lang'] + '/info_no_loc.html', {})
     else:
         # used url /search/ with no parameters
-        return render(request, 'web/' + request.session['lang'] + '/error.html', {})
-    return render_to_response('web/' + request.session['lang'] + '/search_result.html',
+        return render(request, 'prueba/' + request.session['lang'] + '/error.html', {})
+    return render_to_response('prueba/' + request.session['lang'] + '/search_result.html',
                               {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
                               context_instance=RequestContext(request))
 
 
-# para contactar con la web
+# para contactar con la prueba
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(data=request.POST)
@@ -327,14 +327,14 @@ def contact(request):
             send_mail(email_subject, email_body, 'no-reply@magnasis.com', ['support@magnasis.com'], fail_silently=False)
             return redirect('contact_done')
         else:
-            return render(request, 'web/' + request.session['lang'] + '/contact.html', {'form': form,})
-    return render(request, 'web/' + request.session['lang'] + '/contact.html', {
+            return render(request, 'prueba/' + request.session['lang'] + '/contact.html', {'form': form,})
+    return render(request, 'prueba/' + request.session['lang'] + '/contact.html', {
         'form': ContactForm,
     })
 
 
 def contact_done(request):
-    return render(request, 'web/' + request.session['lang'] + '/contact_submitted.html', {})
+    return render(request, 'prueba/' + request.session['lang'] + '/contact_submitted.html', {})
 
 def legal(request):
-    return render(request, 'web/'+request.session['lang'] + '/legal.html', {})
+    return render(request, 'prueba/'+request.session['lang'] + '/legal.html', {})

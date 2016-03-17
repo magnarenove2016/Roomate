@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from web import views
+from prueba import views
 
 urlpatterns = [
     url(r'^$', views.welcome, name='main'),
