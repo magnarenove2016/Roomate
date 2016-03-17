@@ -2,7 +2,7 @@ from datetime import datetime
 from django import forms
 from django.forms.widgets import SelectDateWidget
 
-from .models import Casa, Profile, Tag
+from .models import Casa, Profile, Tag,Busqueda
 
 
 # formulario para la creacion de casas
@@ -54,3 +54,18 @@ class ContactForm(forms.Form):
     #     self.fields['contact_name'].label = "Your name:"
     #     self.fields['contact_email'].label = "Your email:"
     #     self.fields['content'].label = "What do you want to say?"
+
+#formulario para Buscar compañero
+class BusquedaForm(forms.ModelForm):
+    class Meta:
+        model = Busqueda
+        fields = ('gender','isSmoker','lookingIn')
+
+#formulario de visualizacion parcial de los datos de la persona
+class ProfileForm2(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ('firstName', 'lastName','telephone', 'gender',
+        'ocupation', 'pet','Instrument', 'description', 'lookingIn', 'isSmoker')
+

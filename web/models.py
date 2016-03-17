@@ -84,7 +84,7 @@ def generar_ruta_image(instance, filename):
 class FotoPerfil(models.Model):
     id = models.AutoField(primary_key=True)
     foto = models.FileField(upload_to=generar_ruta_image)
-    casa = models.ForeignKey(Profile, blank=True, null=True, related_name="fotos")
+    perfil = models.ForeignKey(Profile, blank=True, null=True, related_name="fotos")
 
 
 class Tag(models.Model):
@@ -131,3 +131,28 @@ class FotoHabitacion(models.Model):
     id = models.AutoField(primary_key=True)
     foto = models.CharField(max_length=200)  # path a las fotos
     habitacion = models.ForeignKey(Habitacion, blank=True, null=True)
+
+
+#esta clase solo sirve para realizar busquedas. Nada más
+class Busqueda(models.Model):
+    #las elecciones posibles de la opción de sexo. del usuario
+    GENDER_CHOICES = (
+        ('', 'Ambos'),
+        ('H', 'Hombre'),
+        ('M', 'Mujer'),
+    )
+
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name="Sexo")
+
+    isSmoker = models.BooleanField(default=False, verbose_name='Fumador')
+    lookingIn = models.CharField(max_length=35, blank=True, verbose_name="Ciudad/zona en la que buscas piso")
+#clase para mantener registro de gente que esta o no registrada
+class validation(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=False, blank=True
+    )
+    ash = models.TextField(null=False,max_length=200)
+    creation_date = models.DateField()
+
