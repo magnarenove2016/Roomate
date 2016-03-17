@@ -6,8 +6,8 @@ from . import forms
 from django.core import management
 import logging
 
-sessionLogger = logging.getLogger('web') ##Logging
-dbLogger = logging.getLogger('database') ##Logging
+sessionLogger = logging.getLogger('web')
+dbLogger = logging.getLogget('database')
 
 castellano = "es"
 euskera = "eu"
@@ -47,7 +47,7 @@ def register_new_user(request):
         form = forms.RegistrationForm(request.POST);  # Generar un formulario con los datos introducidos por el usuario
         if form.is_valid():  # Comprobar si los datos son validos
             new_user = form.save(commit=True)  # Si son validos, los guardamos
-            dbLogger.info("CREADO  USER \'"+request.POST.get('username','') +"\'")##Logging
+            dbLogger.info("CREADO USER \'"+request.user.username+"\'")##Logging
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
@@ -70,9 +70,10 @@ def delete_user(request):
         username = request.POST.get('username', '')
         if (request.user.username == username):
             request.user.delete()
-            dbLogger.info("BORRADO USER \'"+username+"\'")                  ##Logging
+            dbLogger.info("CREADO USER \'"+request.user.username+"\'")                  ##Logging
+            sessionLogger.info('CIERRE de sesion USUARIO:\''+request.user.username+'\'')##Logging
+
             auth.logout(request)
-            sessionLogger.info('CIERRE de sesion USUARIO:\''+username+'\'') ##Logging
             return redirect('main')
         else:
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
