@@ -95,12 +95,14 @@ def database_backup(request):
         return redirect('main')
 
 
-# Ejecutar copia d ela base de datos y ficheros
+# Ejecutar copia de la base de datos y ficheros
 @login_required
 def trigger_backup(request):
     if request.user.is_superuser:
-        management.call_command('dbbackup')  # Copia de la base de datos
+        management.call_command('dbbackup')  # Copia de la base de
+        dbLogger.info(logMessages.dbBackup_message+request.user.username+'\'')
         management.call_command('mediabackup')  # Copia de Media
+        dbLogger.info(logMessages.mediaBackup_message+request.user.username+'\'')
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
