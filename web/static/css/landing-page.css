@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1,
@@ -25,7 +25,52 @@ h6 {
 
 .topnav {
     font-size: 14px;
+
+
 }
+
+.first-nav {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+}
+
+.second-nav {
+    background-color: #a92222;
+    border-bottom: solid 2px #801919;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+    text-align: center;
+    top: 50px;
+}
+
+.second-nav .navbar-nav {
+    width: 100%;
+    text-align: center;
+}
+
+.second-nav .navbar-nav > li {
+    float: none;
+    display: inline-block;
+}
+
+.second-nav .navbar-nav > li > a:hover,
+.second-nav .navbar-nav > li > a:focus {
+    background-color: #d52a2a;
+}
+
+.second-nav a {
+    color: white;
+    font-weight: bold;
+}
+
+.navbar-nav > li > a {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+
+.navbar {
+    min-height: 32px !important
+}
+
+/* ------------------------------------------------------------------ */
 
 .lead {
     font-size: 18px;
@@ -50,18 +95,18 @@ h6 {
 
 .error-message > h1 {
     margin: 0;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
     font-size: 5em;
 }
 
 .error-divider {
     width: 400px;
     border-top: 1px solid #f8f8f8;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .error-message > h3 {
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
 .intro-header {
@@ -89,21 +134,21 @@ h6 {
 
 .intro-message > h1 {
     margin: 0;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
     font-size: 5em;
 }
 
 .intro-divider {
     width: 400px;
     border-top: 1px solid #f8f8f8;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .intro-message > h3 {
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .intro-message {
         padding-bottom: 15%;
     }
@@ -164,7 +209,7 @@ h6 {
 
 .banner h2 {
     margin: 0;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
     font-size: 3em;
 }
 
@@ -177,17 +222,17 @@ h6 {
     margin-top: 0;
 }
 
-@media(max-width:1199px) {
+@media (max-width: 1199px) {
     ul.banner-social-buttons {
         float: left;
         margin-top: 15px;
     }
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .banner h2 {
         margin: 0;
-        text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
         font-size: 3em;
     }
 
@@ -231,8 +276,14 @@ p.copyright {
 .form-category {
     background-color: white;
     border: solid 1px rgb(200, 200, 200);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
     padding: 20px;
     margin-bottom: 30px;
+}
+
+form .btn {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+    margin-right: 7px
 }
 
 .form-category > h4 {
@@ -243,6 +294,11 @@ p.copyright {
     color: dimgrey;
     margin: 10px 0px 0px 0px;
 }
+
+.add-house  {
+    padding-top: 0px;
+}
+
 
 /* --------------------------- Login --------------------------*/
 
