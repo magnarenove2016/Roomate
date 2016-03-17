@@ -74,17 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Roomate.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -141,24 +130,27 @@ LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = True
 
 #Clave publica para usar en ReCaptcha
-RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'
-RECAPTCHA_PRIVATE_KEY = '6LccDhkTAAAAAKwu3cOcPn3sW0x_oIcaSKjTzq19'
+RECAPTCHA_PUBLIC_KEY = '6LeuGRsTAAAAAH_mhWMchrE-CzOsUBJCndfyyeWu'
+RECAPTCHA_PRIVATE_KEY = '6LeuGRsTAAAAACz4b37EwdxeD4VX5VZ4RUcLL-yK'
 NOCAPTCHA = True
 
-
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
 
 
 #-----------------------------------------------------------------------------
 #------------------------------- Para Heroku ---------------------------------
 #-----------------------------------------------------------------------------
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 # Update database configuration with $DATABASE_URL.
 import dj_database_url
@@ -167,11 +159,6 @@ DATABASES['default'].update(db_from_env)
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-    }
-}
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
