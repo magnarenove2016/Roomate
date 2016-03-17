@@ -9,9 +9,9 @@ from .models import Casa, Profile, Tag
 class CasaForm(forms.ModelForm):
     class Meta:
         model = Casa
-        fields = ('ciudad', 'numHabitaciones', 'numHabitacionesDisponibles',
+        fields = ('ciudad','direccion', 'numHabitaciones', 'numHabitacionesDisponibles',
                   'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
-                  'gastosComplementarios')
+                  'gastosComplementarios',)
 
 
 # formulario para completar el perfil de arrendatario
@@ -28,6 +28,11 @@ class ProfileForm(forms.ModelForm):
             'finEstancia': SelectDateWidget(years=range(datetime.now().year, datetime.now().year + 5, 1)),
             # generar 5 years mas desde el year actual
         }
+class ConfirmationForm(forms.Form):
+     myBool = forms.BooleanField(
+        required=False,
+        initial=False
+     )
 
 
 class TagForm(forms.ModelForm):

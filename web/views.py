@@ -1,5 +1,6 @@
 import math
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.core.mail import send_mail  # para contactar con el support
 from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext  # para mostrar el mail en el .html
@@ -88,25 +89,142 @@ def delete_tag(request, texto_del_tag):
 # Anadir una casa (requiere login)
 @login_required
 def add_house(request):
-    if request.method == "POST":
-        # creamos form
-        formcasa = CasaForm(request.POST, request.FILES)
-        if formcasa.is_valid():
-            # obtener datos y guardar perfil
-            Casa = formcasa.save(commit=False)
-            Casa.dueno = request.user
-            Casa.save()
-            for file in request.FILES._itervalues():
-                newFoto = FotoCasa(foto=file)
-                newFoto.casa = Casa
-                newFoto.save()
-            return redirect('main');
+    if request.session.get('refreshing_vcs',False)==False:
+        request.session['refreshing_vcs']=True
+        if request.method == "POST":
+            #creamos form
+            formcasa = CasaForm(request.POST,request.FILES)
+            if formcasa.is_valid():
+                #obtener datos y guardar perfil
+                Cas = formcasa.save(commit=False)
+                casa=Casa.objects.filter(direccion=Cas.direccion,ciudad=Cas.ciudad, dueno=request.user)
+                if casa.count()==0:
+                    Cas.dueno=request.user
+                    loc = getLocation("España "+Cas.ciudad+" "+Cas.direccion)
+                    if loc is not None:
+                        location=loc[0]
+                        Cas.latitude=location.latitude
+                        Cas.longitude=location.longitude
+                        Cas.save()
+                        for f in request.FILES._itervalues():
+                            newFoto=FotoCasa(foto=f)
+                            newFoto.casa=Cas
+                            newFoto.save()
+                        print("added")
+
+                        request.session['direccion'] = Cas.direccion
+                        request.session['ciudad'] = Cas.ciudad
+                        request.session['refreshing_vcs']=False
+                        return redirect("/show_location/")
+                    else:
+                        request.session['refreshing_vcs']=False
+                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+                else:
+                    request.session['refreshing_vcs']=False
+                    return render(request, 'web/'+request.session['lang']+'/error_casa.html', {})
+            else:
+                request.session['refreshing_vcs']=False
+                return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
         else:
-            return render(request, 'web/' + request.session['lang'] + '/add_house.html', {'formCasa': formcasa})
+            #generamos form
+            formcasa = CasaForm()
+        request.session['refreshing_vcs']=False
+        return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+
+#Anadir una casa (requiere login)
+
+@login_required
+def show_my_houses(request):
+    return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casas': request.user.casas.all()})
+
+
+def show_house(request, dir, ciudad):
+    casa=Casa.objects.filter(direccion="dir").filter(ciudad=ciudad).first()
+    if casa is not None:
+        return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casa': casa})
     else:
-        # generamos form
-        formcasa = CasaForm()
-    return render(request, 'web/' + request.session['lang'] + '/add_house.html', {'formCasa': formcasa})
+        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+#Anadir una casa (requiere login)
+
+@login_required
+def edit_house(request, dir, ciudad):
+    if request.session.get('refreshing_vcs',False)==False:
+        request.session['refreshing_vcs']=True
+        casa = Casa.objects.filter(direccion=dir,ciudad=ciudad, dueno=request.user)
+        if casa is not None:
+            if request.method == "POST":
+                casa=Casa.objects.filter(direccion=dir,ciudad=ciudad, dueno=request.user)
+                #creamos form
+                formcasa = CasaForm(request.POST,request.FILES, instance=casa.first())
+                if formcasa.is_valid():
+                    #obtener datos y guardar perfil
+                    Cas = formcasa.save(commit=False)
+                    Cas.dueno=request.user
+                    loc = getLocation("España "+Cas.ciudad+" "+Cas.direccion)
+                    if loc is not None:
+                        location=loc[0]
+                        Cas.latitude=location.latitude
+                        Cas.longitude=location.longitude
+                        Cas.save()
+                        for f in request.FILES._itervalues():
+                            newFoto=FotoCasa(foto=f)
+                            newFoto.casa=Cas
+                            newFoto.save()
+                        print("added")
+
+                        request.session['direccion'] = Cas.direccion
+                        request.session['ciudad'] = Cas.ciudad
+                        request.session['refreshing_vcs']=False
+                        return redirect("/show_location/")
+                    else:
+                        request.session['refreshing_vcs']=False
+                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+
+                else:
+                    request.session['refreshing_vcs']=False
+                    return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+            else:
+                #generamos form
+                formcasa = CasaForm(instance=casa.first())
+            request.session['refreshing_vcs']=False
+            return render(request, 'web/'+request.session['lang']+'/edit_house.html', {'formCasa': formcasa,'casa': casa.first()})
+
+
+"""" eliminar determinado tag del usuario"""
+@login_required
+def delete_house_image(request, path_image):
+    print("delete house_image")
+    fc=FotoCasa.objects.filter(foto=path_image, casa__dueno=request.user)
+    cit=fc.first().casa.ciudad
+    dir=fc.first().casa.direccion
+    fc.all().delete()
+    return edit_house(request, dir, cit) #falta editar este y crear el boton que lo llame
+
+#Enseñar localizacion de casa y confirmar (requiere login)
+@login_required
+def show_location(request):
+    #creamos form
+    casaDir=request.session.get('direccion')
+    casaCi=request.session.get('ciudad')
+
+    request.session.delete('direccion')
+    request.session.delete('ciudad')
+
+    casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
+    if(request.method=="POST"):
+        if 'accept' in request.POST:
+            return render(request, 'web/' + request.session['lang'] + '/casa_creada.html', {})
+            print("added")
+        else:
+            #case that he clicks cancel
+            for c in casa:
+                for f in c.fotos.all():
+                    f.delete()
+                c.delete()
+            #return one renderized view
+            return redirect("/")
+    else:
+        return render(request, 'web/'+request.session['lang']+'/show_loc.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
 
 
 # pagina generica para funciones sin desarrollar
@@ -167,14 +285,19 @@ def get_location_search(request):
         loc = getLocation(search_str)
         if loc is not None:
             search = loc[0]
-            # Punto en donostia
-            latitude = 43.3224219
-            longitude = -1.9838888
-            dist = distance_meters(search.latitude, search.longitude, latitude, longitude)
-            dist = metersToKm(dist)
+            casas=Casa.objects.filter(latitude__gte=search.latitude-0.05).filter(latitude__lte=search.latitude+0.05)
+            if casas.count()!=0:
+                searched=[]
+                for casa in casas:
+                    if distance_meters(search.latitude, search.longitude,casa.latitude,casa.longitude)< 1500:
+                        searched.append(casa)
+                return render(request, 'web/' + request.session['lang'] + '/search_result.html', {'casas':searched})
+            else:
+                #No houses in that range
+                return render(request, 'web/' + request.session['lang'] + '/info.html', {})
         else:
-            # Nothing found
-            return render(request, 'web/' + request.session['lang'] + '/error.html', {})
+            # Loc not found
+            return render(request, 'web/' + request.session['lang'] + '/info_no_loc.html', {})
     else:
         # used url /search/ with no parameters
         return render(request, 'web/' + request.session['lang'] + '/error.html', {})
