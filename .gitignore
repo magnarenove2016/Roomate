@@ -10,3 +10,4 @@ web/migrations
 .requirements
 /.pydevproject
 /.project
+/Roomate/local_settings.py
