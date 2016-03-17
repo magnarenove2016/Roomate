@@ -87,7 +87,7 @@ class PasswordChangeTest(DefaultTestCase):
 
         # Comprobar que se usa el template adecuado
         response = self.client.get('/accounts/password/change/')
-        self.assertTemplateUsed(response, 'web/es/password_change.html')
+        self.assertTemplateUsed(response, 'prueba/es/password_change.html')
 
     def test_password_change_success(self):
         self.new_password = "new_password123"
@@ -144,7 +144,7 @@ class DeleteUserTest(DefaultTestCase):
 
         # Comprobar que se usa el template adecuado
         response = self.client.get('/accounts/user/delete/')
-        self.assertTemplateUsed(response, 'web/es/delete_user.html')
+        self.assertTemplateUsed(response, 'prueba/es/delete_user.html')
 
     def test_delete_user_success(self):
         # Iniciar sesion

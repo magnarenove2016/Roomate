@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
-    'web',
+    'prueba',
 	'bootstrap3',
     'dbbackup',  # django-dbbackup
     'dropbox',

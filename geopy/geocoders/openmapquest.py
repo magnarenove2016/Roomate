@@ -19,7 +19,7 @@ __all__ = ("OpenMapQuest", )
 class OpenMapQuest(Geocoder): # pylint: disable=W0223
     """
     Geocoder using MapQuest Open Platform Web Services. Documentation at:
-        http://developer.mapquest.com/web/products/open/geocoding-service
+        http://developer.mapquest.com/prueba/products/open/geocoding-service
     """
 
     def __init__(

@@ -46,14 +46,14 @@ def register_new_user(request):
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
-    return render(request, 'web/' + request.session['lang'] + '/register.html', {'form': form})
+    return render(request, 'prueba/' + request.session['lang'] + '/register.html', {'form': form})
 
 
 # Mostrar mensaje de usuario creado
 def user_created(request):
     c = {}
     c.update(csrf(request))
-    return render_to_response('web/' + request.session['lang'] + '/register_complete.html', c)
+    return render_to_response('prueba/' + request.session['lang'] + '/register_complete.html', c)
 
 
 # Borrar un usuario
@@ -70,7 +70,7 @@ def delete_user(request):
         else:
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
 
-    return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
+    return render(request, 'prueba/' + request.session['lang'] + '/delete_user.html')
 
 # Gestionar backups de la base de datos
 @login_required
@@ -80,7 +80,7 @@ def database_backup(request):
             a=1
             # TODO: descargar backups
         else:
-            return render(request, 'web/' + request.session['lang'] + '/database_backup.html', {})
+            return render(request, 'prueba/' + request.session['lang'] + '/database_backup.html', {})
     else:
         return redirect('main')
 
@@ -91,6 +91,6 @@ def trigger_backup(request):
     if request.user.is_superuser:
         management.call_command('dbbackup')  # Copia de la base de datos
         management.call_command('mediabackup')  # Copia de Media
-        return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
+        return render(request, 'prueba/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
