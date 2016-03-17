@@ -40,26 +40,6 @@
                         element.appendChild(data);
                         textright.insertBefore(element, textright.firstChild);
                         submitButton = element;
-                        submitButton.addEventListener("click", function () {
-                            var files = myDropzone.getAcceptedFiles();
-                            myDropzone.processFiles(files);
-                            var filesqueue=myDropzone.getQueuedFiles();
-                            for(var file in filesqueue){
-                                myDropzone.processFile(file);
-                            }
-                            //myDropzone.processQueue();
-                            document.getElementById("myDropzone").submit();
-                            // Tell Dropzone to process all queued files.
-
-
-
-                        });
-                    }
-                });
-                        var data = document.createTextNode("Guardar cambios");
-                        element.appendChild(data);
-                        textright.insertBefore(element, textright.firstChild);
-                        submitButton = element;
 
                         submitButton.addEventListener("click", function () {
                             var files = myDropzone.getAcceptedFiles();
@@ -74,10 +54,6 @@
                         });
                     }
                 });
-
-                }
-            };
-        </script>
 
             }
         };
@@ -100,9 +76,6 @@
                 ​<div class="form-category">
                     {% bootstrap_label "Ciudad:" %}
                     {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
-
-                    {% bootstrap_label "Direccion:" %}
-                    {% bootstrap_field formCasa.direccion show_label=false show_help=false %}
 
                     {% bootstrap_label "Número de habitaciones a alquilar:" %}
                     {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
