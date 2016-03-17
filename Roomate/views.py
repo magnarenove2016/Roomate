@@ -106,12 +106,18 @@ def trigger_backup(request):
         return redirect('main')
 
 @login_required
-def gest_logging(request):
+def gest_logging(request,log_file):
     if request.user.is_superuser:
-        log=open('roomate.log','r+').read()
-        if request.method == "POST":
-            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
-        else:
+        if (log_file=='1'):
+            log=open('roomate.log','r+').read()
             return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+        elif (log_file=='2'):
+            log=open('session.log','r+').read()
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+        elif (log_file=='3'):
+            log=open('dbAccess.log','r+').read()
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
     else:
         return redirect('main')
