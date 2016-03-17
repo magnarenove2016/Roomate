@@ -1,0 +1,38 @@
+{% extends 'web/es/base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block contenido %}
+
+    <link href="{% static 'css/dropzone.css' %}" type="text/css" rel="stylesheet"/>
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+
+​
+                    {% csrf_token %}
+                    <h3>Etxearen informazioa</h3>
+                    <hr>
+​
+                    <div class="media-body">
+							<h2 class="media-heading"><a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">Etxea</a></h2>
+							<p><strong>Hiria:</strong> {{ casa.ciudad }}
+                            <p><strong>Helbidea:</strong>{{ casa.direccion }}</p>
+                            <p><strong>Logela kopurua:</strong>{{ casa.numHabitaciones }}    <strong>Eskugarri:</strong>{{ casa.numHabitacionesDisponibles }}</p>
+                            <p><strong>Deskribapena:</strong>{{ casa.descripciones }}</p>
+                            {% if casa.alquilerPorHabitaciones == true %}
+                            <p><strong>Se alquila por habitaciones</strong></p>
+                            {% endif %}
+                            <p><strong>Precio alquiler:</strong>{{ casa.precioAlquiler }} €     <strong>Precio gastos suplementarios:</strong>{{ casa.gastosComplementarios }} € </p>
+						</div>
+                    <div>
+                        {% for foto in casa.fotos.all %}
+                        <div><img class="media-object" src="{{foto.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true"></div>
+                        {% endfor %}
+
+                    </div>
+        </div>
+        <!-- /.contenido -->
+    </div>
+
+{% endblock %}

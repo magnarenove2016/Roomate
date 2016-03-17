@@ -55,7 +55,7 @@ def edit_profile(request):
                   {'form': formProfile, 'tag_forms': tag_forms, 'images': images})
 
 
-"""" eliminar determinada imagen del usuario"""
+# eliminar determinada imagen del usuario
 @login_required
 def delete_profile_image(request, path_image):
     fc=FotoPerfil.objects.filter(foto=path_image, perfil=request.user.profile)
@@ -87,12 +87,11 @@ def delete_tag(request, texto_del_tag):
         profile = request.user.profile
     except Profile.DoesNotExist:
         profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
-
         profile.save()
 
     tag = Tag.objects.filter(perfil=profile, text=texto_del_tag)  # obtenemos sus tags #TODO: buscamos el tag a eliminar
+    tag[0].delete()
 
-    tag.delete()
     return redirect('/completar_perfil/', )
 
 

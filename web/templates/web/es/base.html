@@ -46,7 +46,7 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top topnav first-nav" role="navigation">
     <div class="container topnav">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -67,53 +67,25 @@
                 <li>
                     <!-- selector de idiomas--> <!-- TODO: rework a esta seccion para que no se solape con el resto -->
                 <li>
-                    <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
-                        <img src="{% static 'img/lang/es_ES.jpg' %}"/>ES
-                    </a>
-                </li>
-                <li>
                     <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
                         <img src="{% static 'img/lang/eu_EU.jpg' %}"/>EU
                     </a>
                 </li>
+                <li>
+                    <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
+                        <img src="{% static 'img/lang/es_ES.jpg' %}"/>ES
+                    </a>
                 </li>
-                {% if request.user.is_superuser %}
-                    <li>
-                        <a href="/admin/auth/user/">Gestiona usuarios</a>
-                    </li>
-                    <li>
-                        <a href="/admin/web/tag/">Gestionar tags</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'undeveloped' %}">Gestiona logs</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
-                    </li>
-                {% else %}
-                    <li>
-                        <form action="/search/" method="get"
-                              class="glow navbar-form navbar-left post-form">    {% csrf_token %}
-                            <input type="text" class="form-control" placeholder="Buscar hogar..." name="s" id="id_s"/>
-                            <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
-                        </form>
-                    </li>
+                </li>
 
-                    {% if user.is_authenticated %}
-                        <li>
-                        <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'completar_perfil' %}">Mi perfil</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'add_house' %}">Añadir casa</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'show_my_houses' %}">Visualizar casas</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
+                <li>
+                    <form action="/search/" method="get"
+                          class="glow navbar-form navbar-left post-form">    {% csrf_token %}
+                        <input type="text" class="form-control" placeholder="Buscar casa..." name="s" id="id_s"/>
+                        <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
+                    </form>
+                </li>
+
                 <li>
                     {% block login %}
                         {% include "web/es/login.html" %}
@@ -136,11 +108,53 @@
                 {% endif %}
             </ul>
         </div>
+
+        <div class="navbar-"></div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
 
+<!-- Casos de uso -->
+{% if user.is_authenticated %}
+    <div class="navbar top-nav second-nav">
+        <ul class="nav navbar-nav">
+
+            {% if request.user.is_superuser %}
+
+                <li>
+                    <a href="/admin/auth/user/">Gestiona usuarios</a>
+                </li>
+                <li>
+                    <a href="/admin/web/tag/">Gestionar tags</a>
+                </li>
+                <li>
+                    <a href="{% url 'undeveloped' %}">Gestiona logs</a>
+                </li>
+                <li>
+                    <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
+                </li>
+
+            {% else %}
+
+                <li>
+                    <a href="{% url 'completar_perfil' %}">Mi perfil</a>
+                </li>
+                <li>
+                    <a href="{% url 'add_house' %}">Añadir casa</a>
+                </li>
+                <li>
+                    <a href="{% url 'show_my_houses' %}">Visualizar casas</a>
+                </li>
+                <li>
+                    <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
+                </li>
+
+            {% endif %}
+
+        </ul>
+    </div>
+{% endif %}
 
 <!-- Page Content -->
 

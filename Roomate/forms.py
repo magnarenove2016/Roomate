@@ -11,7 +11,7 @@ from web.models import validation
 import hashlib,random
 
 # Formato de mensaje para controlar correos duplicados en el registro
-DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro correo o inicie sesi&oacte;n")
+DOBLE_EMAIL = _(u"Este correo ya está en uso. "u"Por favor utilice otro correo o inicie sesión")
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
