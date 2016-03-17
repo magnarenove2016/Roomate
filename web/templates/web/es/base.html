@@ -98,11 +98,11 @@
                             <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
                         </form>
                     </li>
-                    <li>
-                        <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
-                    </li>
-                    {% if user.is_authenticated %}
 
+                    {% if user.is_authenticated %}
+                        <li>
+                        <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
+                        </li>
                         <li>
                             <a href="{% url 'completar_perfil' %}">Mi perfil</a>
                         </li>
