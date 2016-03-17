@@ -230,74 +230,7 @@ LOGGING = {
     }
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        # Formatos en los que se imprimen los logs. Es como dar formato en un printf de c. Sirven caracteres especiales como '\n', '\r', etc.
-        # Con etiquetas como %(atributo)s se pueden añadir los atributos de un Record. Todos los record tienen los mismos atributos.
-        # Aqui la lista: https://docs.python.org/2/library/logging.html#logrecord-attributes
-        'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-        'dbVerbose':{
-            'format' : "[%(asctime)s] %(levelname)s \n    duration: %(duration)s\n   operation: %(sql).10s\n   parameters: %(params)s\n",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        }
-    },
-    'handlers': {
-        # Los Handlers determinan el proceso que sequira un Record. Basicamente dice a donde ira el Record, si a un fichero,
-        # un socket, un correo electronico, etc. Solamente tratarán aqullos Records que tengan el mismo o superior nivel.
-        # Ademas, los Handlers pueden aplicar uno o mas filtros para decidir si tratar un Record o no.
-        'null': {
-            'class': 'logging.NullHandler',
-        },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'mysite.log',
-            'formatter': 'verbose'
-        },
-        'DBQfile': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'dbAccess.log',
-            'formatter': 'verbose'
-        },
-    },
-    'loggers': {
-        # Los Loggers son los objetos que crean y envian los records a los Handlers. Solo enviaran aquellos Redors que tengan
-        # el mismo o superior nivel. En tu programa instancias uno de los Loggers a continuacion declarados. A traves de el
-        # envias Records. Ej: loggerDejemplo = logging.getLogger('nombre')
-        #                     loggerDejemplo.info("mensaje del record") <------ hay una funcion para lanzar Records de cada
-        #                                                                       nivel.
-        # Los niveles son: DEBUG, INFO, WARNING, ERROR y CRITICAL
-        'django': {
-            'handlers':['null'],
-            'propagate': False,
-            'level':'INFO',
-        },
-        'web': {
-            'handlers': ['file'],
-            'level': 'INFO',
-        },
-        'database': {
-            'handlers': ['DBQfile'],
-            'level': 'INFO',
-        },
-        # Este Logger se activara solo enviando un Record por cada sentencia SQL, y solo lo hara si la variable DEBUG de settings.py esta en True.
-        # Todos los Records que envie seran de nivel DEBUG (el mas bajo) y por tanto, si se quiere poner en debug pero que no se hagan logs de las
-        # instrucciones sql (pues tienen un gran coste), se puede cambiar el nivel del logger a uno superior (como INFO o ERROR).
-#        'django.db.backends': {
-#            'handlers': ['DBQfile'],
-#            'level': 'INFO'
-#       }
-    }
-}
+
 
 try:
     from .local_settings import *
