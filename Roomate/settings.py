@@ -133,7 +133,7 @@ DEFAULT_FROM_EMAIL = 'no-reply@magnasis.com'
 SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = '/web/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
