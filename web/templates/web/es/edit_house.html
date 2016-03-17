@@ -19,6 +19,17 @@
                     {% bootstrap_form formCasa layout='horizontal'%}
 
 
+                    <div>
+                        {% for foto in casa.fotos.all %}
+                        <img class="media-object" src="{{foto.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
+                        <button>
+                            <a href="{% url 'delete_house_image' path_image=foto.foto %}"> Borrar esta imagen </a> <!-- boton para borrar este tag en concreto -->
+                        </button>
+                        {% endfor %}
+
+                    </div>
+
+
                     <div class='text-right'>
                         {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove"%}
                         {% bootstrap_button "Cancelar" button_type="link" href='/' button_class="btn-danger"%}
@@ -36,7 +47,13 @@
                                     paramName: "file",
                                     acceptedFiles: "image/*",
                                     maxFilesize: 5.0,
+                                {% if casa.fotos.all.count == 2 %}
+                                    maxFiles: 0,
+                                {% elif casa.fotos.all.count == 1 %}
+                                    maxFiles: 1,
+                                {% else %}
                                     maxFiles: 2,
+                                {% endif %}
                                     parallelUploads: 10000,
                                     uploadMultiple: true,
 
@@ -61,6 +78,7 @@
                                                 element.appendChild(data);
                                                 textright.insertBefore(element, textright.firstChild);
                                                 submitButton = element;
+
                                                 submitButton.addEventListener("click", function () {
                                                     var files = myDropzone.getAcceptedFiles();
                                                     myDropzone.processFiles(files);
@@ -71,9 +89,6 @@
                                                     //myDropzone.processQueue();
                                                     document.getElementById("myDropzone").submit();
                                                     // Tell Dropzone to process all queued files.
-
-
-
                                                 });
                                             }
                                         });
@@ -81,7 +96,6 @@
                                     }
                                 };
                             </script>
-
         </div>
         <!-- /.contenido -->
     </div>

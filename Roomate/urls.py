@@ -1,10 +1,10 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from . import views
+from django.conf import settings
 
 urlpatterns = [
-
     url(r'^admin/', admin.site.urls), #url para administracion
     url(r'^accounts/login/$', views.auth_view,name='auth_login'), #login provisto por Django
     url(r'^accounts/logout/$', views.logout, name='logout'),  # cerrar sesion
@@ -15,6 +15,9 @@ urlpatterns = [
 
     url(r'^accounts/password/reset/$',auth_views.password_reset, {'template_name' : 'web/es/password_reset.html', 'post_reset_redirect' : 'password_reset_done'},
     name='password_reset'),
+    # At the top of your urls.py file, add the following line:
+
+
 
     url(r'^accounts/password/reset/done/$',
     auth_views.password_reset_done,
@@ -44,4 +47,12 @@ urlpatterns = [
 
     url(r'', include('web.urls')), #todas las urls de web/urls.py
 ]
+
+# UNDERNEATH your urlpatterns definition, add the following two lines:
+if settings.DEBUG:
+    urlpatterns += patterns(
+        'django.views.static',
+        (r'media/(?P<path>.*)',
+        'serve',
+        {'document_root': settings.MEDIA_ROOT}), )
 

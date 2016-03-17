@@ -9,4 +9,9 @@ urlpatterns = [
     url(r'^add_tag/$', views.add_tag, name='add_tag'),
     url(r'^delete_tag/(?P<texto_del_tag>.+)/$', views.delete_tag, name='delete_tag'),
     url(r'^undeveloped/$', views.undeveloped, name='undeveloped'),
+    url(r'^show_location/$', views.show_location, name='show_location'),
+    url(r'^show_my_houses/$', views.show_my_houses, name='show_my_houses'),
+    url(r'^edit_house/(?P<dir>.+)/(?P<ciudad>.+)/$', views.edit_house, name='edit_house'),
+    url(r'^show_house/(?P<dir>.+)/(?P<ciudad>.+)/$', views.show_house, name='show_house'),
+    url(r'^delete_house_image/(?P<path_image>.+)/$', views.delete_house_image, name='delete_house_image'),
 ]

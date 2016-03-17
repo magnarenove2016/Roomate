@@ -8,11 +8,11 @@
 
     <div class="content-section-a">
         <div class="container">
-    <div class="media">
+            <div class="media">
 
             {% for casa in casas %}
                     <div class="media-left">
-							<a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">
+							<a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}">
                                 {% if casa.fotos|length != "0" %}    {{article.product.images.all.0.image.url}}
 								<img class="media-object" src="{{casa.fotos.all.0.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
 							    {% else %}
@@ -21,7 +21,7 @@
                             </a>
 						</div>
 						<div class="media-body">
-							<h2 class="media-heading"><a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">Casa </a></h2>
+							<h2 class="media-heading"><a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}">Casa</a></h2>
 							<p><strong>Ciudad:</strong> {{ casa.ciudad }}
                             <p><strong>Direccion:</strong>{{ casa.direccion }}</p>
                             <p><strong>Numero de habitaciones:</strong>{{ casa.numHabitaciones }}    <strong>Libres:</strong>{{ casa.numHabitacionesDisponibles }}</p>

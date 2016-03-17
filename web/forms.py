@@ -1,6 +1,7 @@
 from datetime import datetime
-
+from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
+from django.forms import DateField
 from django.forms.widgets import SelectDateWidget
 from .models import Casa, Profile, Tag
 
@@ -9,9 +10,9 @@ from .models import Casa, Profile, Tag
 class CasaForm(forms.ModelForm):
     class Meta:
         model = Casa
-        fields = ('ciudad', 'numHabitaciones', 'numHabitacionesDisponibles',
+        fields = ('ciudad','direccion', 'numHabitaciones', 'numHabitacionesDisponibles',
                   'descripcion', 'alquilerPorHabitaciones', 'precioAlquiler',
-                  'gastosComplementarios')
+                  'gastosComplementarios',)
 
 
 # formulario para completar el perfil de arrendatario
@@ -22,13 +23,20 @@ class ProfileForm(forms.ModelForm):
                   'ocupation', 'pet', 'iniEstancia', 'finEstancia', 'Instrument', 'description', 'lookingIn',
                   'isSmoker')
         widgets = {
+
             'birthdate': SelectDateWidget(years = range(datetime.now().year, 1800, -1)),
             'iniEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)),#generar 5 years mas desde el year actual
             'finEstancia': SelectDateWidget(years = range(datetime.now().year, datetime.now().year + 5, 1)), #generar 5 years mas desde el year actual
         }
+class ConfirmationForm(forms.Form):
+     myBool = forms.BooleanField(
+        required=False,
+        initial=False
+     )
 
 
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = ('text',)
+
