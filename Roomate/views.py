@@ -4,8 +4,10 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template.context_processors import csrf
 from . import forms
 from django.core import management
+import logging
 
-
+sessionLogger = logging.getLogger('web')
+dbLogger = logging.getLogget('database')
 
 castellano = "es"
 euskera = "eu"
@@ -16,6 +18,7 @@ def auth_view(request):
     password = request.POST.get('password', '')  # Almacenamos la password
     user = auth.authenticate(username=username, password=password)  # Iniciamos sesion con dichos datos
     if user is not None:  # Si el usuario y la password son validos
+        sessionLogger.info('INICIO de sesion USUARIO:\''+username+'\'')##Logging
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
     else:
@@ -31,6 +34,7 @@ def invalid_login(request):
 
 # Cerrar sesion
 def logout(request):
+    sessionLogger.info('CIERRE de sesion USUARIO:\''+request.user.username+'\'')##Logging
     auth.logout(request)
     c = {}
     c.update(csrf(request))
@@ -43,6 +47,7 @@ def register_new_user(request):
         form = forms.RegistrationForm(request.POST);  # Generar un formulario con los datos introducidos por el usuario
         if form.is_valid():  # Comprobar si los datos son validos
             new_user = form.save(commit=True)  # Si son validos, los guardamos
+            dbLogger.info("CREADO USER \'"+request.user.username+"\'")##Logging
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
@@ -65,6 +70,9 @@ def delete_user(request):
         username = request.POST.get('username', '')
         if (request.user.username == username):
             request.user.delete()
+            dbLogger.info("CREADO USER \'"+request.user.username+"\'")                  ##Logging
+            sessionLogger.info('CIERRE de sesion USUARIO:\''+request.user.username+'\'')##Logging
+
             auth.logout(request)
             return redirect('main')
         else:
