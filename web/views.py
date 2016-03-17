@@ -45,12 +45,21 @@ def edit_profile(request):
 
     tag_forms = []  # lista de formularios de tag vacia
     for i, tag in enumerate(tags):  # iterar los campos de tag asociados al perfil
-         print(i)
          tag_forms.append(
               TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
 
+    images=profile.fotos
+
     return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
-                  {'form': formProfile, 'tag_forms': tag_forms})
+                  {'form': formProfile, 'tag_forms': tag_forms, 'images': images})
+
+
+"""" eliminar determinada imagen del usuario"""
+@login_required
+def delete_profile_image(request, path_image):
+    fc=FotoPerfil.objects.filter(foto=path_image, profile=request.user.profile)
+    fc.all().delete()
+    return edit_profile(request) #
 
 
 # anadir tag al usuario
@@ -110,7 +119,6 @@ def add_house(request):
                             newFoto=FotoCasa(foto=f)
                             newFoto.casa=Cas
                             newFoto.save()
-                        print("added")
 
                         request.session['direccion'] = Cas.direccion
                         request.session['ciudad'] = Cas.ciudad
@@ -139,7 +147,7 @@ def show_my_houses(request):
 
 
 def show_house(request, dir, ciudad):
-    casa=Casa.objects.filter(direccion="dir").filter(ciudad=ciudad).first()
+    casa=Casa.objects.filter(direccion=dir, ciudad=ciudad).first()
     if casa is not None:
         return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casa': casa})
     else:
@@ -170,7 +178,6 @@ def edit_house(request, dir, ciudad):
                             newFoto=FotoCasa(foto=f)
                             newFoto.casa=Cas
                             newFoto.save()
-                        print("added")
 
                         request.session['direccion'] = Cas.direccion
                         request.session['ciudad'] = Cas.ciudad
@@ -193,7 +200,6 @@ def edit_house(request, dir, ciudad):
 """" eliminar determinado tag del usuario"""
 @login_required
 def delete_house_image(request, path_image):
-    print("delete house_image")
     fc=FotoCasa.objects.filter(foto=path_image, casa__dueno=request.user)
     cit=fc.first().casa.ciudad
     dir=fc.first().casa.direccion
@@ -214,7 +220,6 @@ def show_location(request):
     if(request.method=="POST"):
         if 'accept' in request.POST:
             return render(request, 'web/' + request.session['lang'] + '/casa_creada.html', {})
-            print("added")
         else:
             #case that he clicks cancel
             for c in casa:

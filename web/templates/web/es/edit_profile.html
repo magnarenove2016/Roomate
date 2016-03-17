@@ -153,6 +153,16 @@
                                 <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
                             </span>
 
+                             <div>
+                                {% for image in images.all %}
+                                <img class="media-object" src="{{image.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
+                                <button>
+                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}"> Borrar esta imagen </a> <!-- boton para borrar esta imagen en concreto -->
+                                </button>
+                                {% endfor %}
+
+                            </div>
+
                             <p class="aviso"><em>Aviso! Guarda tu perfil antes de a&ntilde;adir una etiqueta o se perder&aacute;n
                             los cambios que hayas realizado.</em></p>
                         </div>

@@ -23,7 +23,7 @@
                         {% for foto in casa.fotos.all %}
                         <img class="media-object" src="{{foto.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
                         <button>
-                            <a href="{% url 'delete_house_image' path_image=foto.foto %}"> Borrar esta imagen </a> <!-- boton para borrar este tag en concreto -->
+                            <a href="{% url 'delete_house_image' path_image=foto.foto %}"> Borrar esta imagen </a> <!-- boton para borrar esta imagen en concreto -->
                         </button>
                         {% endfor %}
 
