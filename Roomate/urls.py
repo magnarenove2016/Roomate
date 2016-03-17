@@ -1,7 +1,8 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from . import views
+from django.conf import settings
 from .forms import ValidatedSetPasswordForm, ValidatedPasswordChangeForm
 
 urlpatterns = [
@@ -51,4 +52,12 @@ urlpatterns = [
 
     url(r'', include('web.urls')), #todas las urls de web/urls.py
 ]
+
+# UNDERNEATH your urlpatterns definition, add the following two lines:
+if settings.DEBUG:
+    urlpatterns += patterns(
+        'django.views.static',
+        (r'media/(?P<path>.*)',
+        'serve',
+        {'document_root': settings.MEDIA_ROOT}), )
 

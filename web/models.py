@@ -92,7 +92,9 @@ class Tag(models.Model):
 
 
 class Casa(models.Model):
-    dueno = models.ForeignKey('auth.User', models.CASCADE, blank=True, null=True)
+    id = models.AutoField(primary_key=True)
+    dueno = models.ForeignKey('auth.User', models.CASCADE, blank=True, null=True, related_name="casas")
+    direccion=models.TextField(verbose_name="Dirección")
     ciudad = models.CharField(max_length=200)
     numHabitaciones = models.IntegerField()
     numHabitacionesDisponibles = models.IntegerField()
@@ -100,21 +102,31 @@ class Casa(models.Model):
     alquilerPorHabitaciones = models.BooleanField()
     precioAlquiler = models.FloatField()
     gastosComplementarios = models.FloatField()
+    latitude=models.FloatField()
+    longitude=models.FloatField()
 
     def obtener_habitaciones(self):
-        return Habitacion.objects.get(casa=self)
+        return self.habitaciones.all()
+
+
+
+def generar_ruta_image(instance, filename):
+    return "%s_%s" % (str(time()).replace('.', '_'), filename)
 
 
 class FotoCasa(models.Model):
+    id = models.AutoField(primary_key=True)
     foto = models.FileField(upload_to=generar_ruta_image)
-    casa = models.ForeignKey(Casa, blank=True, null=True)
+    casa = models.ForeignKey(Casa, blank=True, null=True, related_name="fotos")
 
 
 class Habitacion(models.Model):
-    casa = models.ForeignKey(Casa, null=True, blank=True)
+    id = models.AutoField(primary_key=True)
+    casa = models.ForeignKey(Casa, null=True, blank=True,related_name="habitaciones")
     descripcion = models.TextField()
 
 
 class FotoHabitacion(models.Model):
+    id = models.AutoField(primary_key=True)
     foto = models.CharField(max_length=200)  # path a las fotos
     habitacion = models.ForeignKey(Habitacion, blank=True, null=True)
