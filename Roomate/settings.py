@@ -135,19 +135,22 @@ RECAPTCHA_PRIVATE_KEY = '6LccDhkTAAAAAKwu3cOcPn3sW0x_oIcaSKjTzq19'
 NOCAPTCHA = True
 
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
 
 
 #-----------------------------------------------------------------------------
 #------------------------------- Para Heroku ---------------------------------
 #-----------------------------------------------------------------------------
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 # Update database configuration with $DATABASE_URL.
 import dj_database_url
@@ -156,11 +159,6 @@ DATABASES['default'].update(db_from_env)
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-    }
-}
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
