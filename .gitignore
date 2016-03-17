@@ -10,3 +10,5 @@ web/migrations
 .requirements
 /.pydevproject
 /.project
+/dbAccess.log
+/mysite.log
