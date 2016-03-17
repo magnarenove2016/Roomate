@@ -8,7 +8,7 @@ from Roomate.views import castellano, euskera
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
-
+import logging
 
 # Registrar un arrendatario completando su perfil
 @login_required
