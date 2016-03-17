@@ -104,3 +104,14 @@ def trigger_backup(request):
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
+
+@login_required
+def gest_logging(request):
+    if request.user.is_superuser:
+        log=open('roomate.log','r+').read()
+        if request.method == "POST":
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+    else:
+        return redirect('main')
