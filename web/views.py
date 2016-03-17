@@ -338,3 +338,58 @@ def contact_done(request):
 
 def legal(request):
     return render(request, 'web/'+request.session['lang'] + '/legal.html', {})
+
+#funciones de bienve
+def filtros(sex,fumador,city):
+    if sex == '':
+        if fumador == False:
+            if city == '':
+                return Profile.objects.filter(ocupation='E',isSmoker=False).all()
+            else:
+                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=False).all()
+        else:
+            if city == '':
+                return Profile.objects.filter(ocupation='E',isSmoker=True).all()
+            else:
+                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True).all()
+    else:
+        if fumador == False:
+            if city == '':
+                return Profile.objects.filter(ocupation='E',isSmoker=False,gender=sex).all()
+            else:
+                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=False,gender=sex).all()
+        else:
+            if city == '':
+                return Profile.objects.filter(ocupation='E',isSmoker=True,gender=sex).all()
+            else:
+                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True,gender=sex).all()
+
+#buscar compañeros de piso
+@login_required
+def busquedaCompa(request):
+    if request.method == "POST":
+        #creamos form
+        form = BusquedaForm(request.POST)
+        if form.is_valid():
+            sex=form.cleaned_data['gender']
+            fumador = form.cleaned_data['isSmoker']
+            city = form.cleaned_data['lookingIn']
+
+            print('sex '+ sex+' fumador: '+str(fumador)+' ciudad: '+city)
+            usuarios =filtros(sex,fumador,city)
+            return render(request, 'web/'+ request.session['lang']+'/ver_resul_busqueda_compa.html', {'usuarios':usuarios})
+    else:
+        #generamos form
+        form = BusquedaForm()
+    return render(request, 'web/'+ request.session['lang']+'/buscar_compa.html', {'form':form})
+
+#miestra el perfil del usuario por su nombre
+def mostrarcontacto(request,nombre):
+
+    user=User.objects.filter(username=nombre)
+    #print(user[0].username + 'impreso222')
+    b = Profile.objects.filter(user=user[0])
+    form = ProfileForm2(instance=b[0])
+
+    return render_to_response('web/'+request.session['lang']+'/ver_perfil_compa.html', {'fon':b[0].telephone,'mail':user[0].email})
+

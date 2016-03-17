@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^accounts/user/delete/$', views.delete_user, name='delete_user'),
     url(r'^register/$', views.register_new_user, name='register_new_user'),  # registrar a un nuevo usuario
     url(r'^register/success/$', views.user_created, name='register_success'),
+    url(r'^accounts/confirm/(?P<codigo>.+)$',views.activar_cuenta, name = 'activarCuenta'),
     # mensaje que se muestra cuando se ha creado bien el nuevo usuario
 
     url(r'^accounts/password/reset/$', auth_views.password_reset,
