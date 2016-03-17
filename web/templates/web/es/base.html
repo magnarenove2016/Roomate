@@ -58,24 +58,37 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand topnav" href="{% url 'main' %}">
-                <img src="{% static 'img/roomate-logo.jpg' %}" alt="Roomate_logo" height="30" width="110">
+                <img src="{% static 'img/roomate-logo-small.png' %}" alt="Roomate_logo" id="logo">
             </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <!-- selector de idiomas--> <!-- TODO: rework a esta seccion para que no se solape con el resto -->
+                <li>
+                    <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
+                        <img src="{% static 'img/lang/es_ES.jpg' %}"/>ES
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
+                        <img src="{% static 'img/lang/eu_EU.jpg' %}"/>EU
+                    </a>
+                </li>
+                </li>
                 {% if request.user.is_superuser %}
                     <li>
-                        <a href="{% url 'undeveloped' %}">Modificar contraseña</a>
+                        <a href="/admin/auth/user/">Gestiona usuarios</a>
                     </li>
                     <li>
-                        <a href="{% url 'undeveloped' %}">Gestionar usuarios</a>
+                        <a href="/admin/web/tag/">Gestionar tags</a>
                     </li>
                     <li>
-                        <a href="{% url 'undeveloped' %}">Gestionar logs</a>
+                        <a href="{% url 'undeveloped' %}">Gestiona logs</a>
                     </li>
                     <li>
-                        <a href="{% url 'undeveloped' %}">Gestionar copias de seguridad</a>
+                        <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
                     </li>
                 {% else %}
                     <li>
@@ -86,7 +99,7 @@
                         </form>
                     </li>
                     <li>
-                        <a href="{% url 'undeveloped' %}">Buscar compa&ntilde;ero</a>
+                        <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
                     </li>
                     {% if user.is_authenticated %}
 
@@ -106,17 +119,18 @@
                 <!-- Menú desplegable para acceder a los caso de uso
                      cambiar contraseña y borrar usuario -->
                 {% if user.is_authenticated %}
-                <li class="dropdown">
-                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
-                  </ul>
-                </li>
-                {% endif%}
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <!-- /.navbar-collapse -->
