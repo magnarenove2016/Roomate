@@ -133,7 +133,7 @@ DEFAULT_FROM_EMAIL = 'no-reply@magnasis.com'
 SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/web/static/'
+STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -166,6 +166,12 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
