@@ -1,3 +1,5 @@
+<!-- pagina generica para errores de busqueda -->
+
 {% extends 'web/es/base.html' %}
 
 {% block contenido %}
@@ -8,17 +10,16 @@
             <div class="row">
                 <div class="col-lg-12">
 
-                    <h1>Por favor, completa el siguiente formulario</h1>
-                    <form method="POST" class="custom_form">{% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="save btn btn-default">Save</button>
-                    </form>
+
+                     <div class="intro-message">
+                        <h3>El enlace de activación no es válido. se caducó</h3>
+                    </div>
 
                 </div>
             </div>
-
         </div>
-        <!-- /.contenido -->
+        <!-- /.container -->
     </div>
     <!-- /.intro-header -->
+
 {% endblock %}

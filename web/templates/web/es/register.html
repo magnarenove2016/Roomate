@@ -10,41 +10,51 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Introduce tu informaci&oacute;n y &uacute;nete a nosotros.</h1>
-
-
-                    <form method="POST" class="register-form">
+                    <form method="POST" class="registration-form">
                         {% csrf_token %}
-                        <h4><strong>Registrarse</strong></h4>
 
-                        <p><br>
-                            Acu&eacute;rdate de leer y aceptar <a href=""> las condiciones de uso </a> para poder continuar</p>
+                        <div class="description">
+                            <h3>Registrarse en Roomate</h3>
+                            <p class="text-info"> Acu&eacute;rdate de leer y aceptar <a target="_blank" href="{% url 'legal' %}">
+                                las condiciones de uso </a> para poder continuar</p>
+                        </div>
 
-                        <hr>
+                        <div class="form-category">
+                            {% bootstrap_label "1. Nombre de usuario" %}
+                            {% bootstrap_field form.username show_label=false show_help=false %}
 
-                        {% bootstrap_label "1. Nombre de usuario" %}
-                        {% bootstrap_field form.username show_label=false show_help=false %}
+                            {% bootstrap_label "2. Cuenta de correo" %}
+                            {% bootstrap_field form.email show_label=false show_help=false %}
 
-                        {% bootstrap_label "2. Cuenta de correo" %}
-                        {% bootstrap_field form.email show_label=false show_help=false %}
+                            {% bootstrap_label "3. Contraseña" %}
+                            {% bootstrap_field form.password1 show_label=false show_help=false %}
 
-                        {% bootstrap_label "3. Contraseña" %}
-                        {% bootstrap_field form.password1 show_label=false show_help=false %}
+                            {% bootstrap_label "4. Confirmación de la contraseña" %}
+                            {% bootstrap_field form.password2 show_label=false show_help=false %}
 
-                        {% bootstrap_label "4. Confirmación de la contraseña" %}
-                        {% bootstrap_field form.password2 show_label=false show_help=false %}
+                            {% bootstrap_label "5. Captcha" %}
+                            {% bootstrap_field form.captcha show_label=false %}
 
-                        {% bootstrap_label "5. Captcha" %}
-                        {% bootstrap_field form.captcha show_label=false %}
 
-                        <div class="form-buttons">
-                            {% bootstrap_field form.tos show_label=false %}
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label for="id_tos">
+                                        {{form.tos}}
+                                        He le&iacute;do y acepto <a target="_blank" href="{% url 'legal' %}">las condiciones de uso</a>
+                                    </label>
+                                </div>
+                                {% if form.tos.errors %}
+                                    <span class="text-danger">Debes aceptar las condiciones de uso para continuar</span>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="form-buttons text-center">
                             {% bootstrap_button "Crear cuenta" button_type="submit" button_class="btn-primary" %}
-                            {% bootstrap_button "Iniciar sesión" button_type="link" href="/accounts/login" button_class="btn-default" %}
                         </div>
 
                     </form>
-
 
                 </div>
             </div>

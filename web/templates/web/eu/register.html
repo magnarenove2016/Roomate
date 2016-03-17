@@ -1,0 +1,65 @@
+{% extends 'web/eu/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}Erregistratu{% endblock %}
+
+{% block contenido %}
+    <a name="contenido"></a>
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="POST" class="registration-form">
+                        {% csrf_token %}
+
+                        <div class="description">
+                            <h3>Batu zaitez Roomatera!</h3>
+                            <p class="text-info">Gogoratu <a target="_blank" href="{% url 'legal' %}">erabilpen baldintzak</a>
+                                irakurri eta onartzeaz jarraitu ahal izateko</p>
+                        </div>
+
+                        <div class="form-category">
+                            {% bootstrap_label "1. Erabiltzaile izena" %}
+                            {% bootstrap_field form.username show_label=false show_help=false %}
+
+                            {% bootstrap_label "2. Posta elektroniko helbidea" %}
+                            {% bootstrap_field form.email show_label=false show_help=false %}
+
+                            {% bootstrap_label "3. Pasahitza" %}
+                            {% bootstrap_field form.password1 show_label=false show_help=false %}
+
+                            {% bootstrap_label "4. Pasahitz baieztapena" %}
+                            {% bootstrap_field form.password2 show_label=false show_help=false %}
+
+                            {% bootstrap_label "5. Kaptcha" %}
+                            {% bootstrap_field form.captcha show_label=false %}
+
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label for="id_tos">
+                                        {{form.tos}}
+                                        <a target="_blank" href="{% url 'legal' %}">Erabilpen baldintzak</a> irakurri eta onartzen ditut
+                                    </label>
+                                </div>
+                                {% if form.tos.errors %}
+                                    <span class="text-danger">Erabilpen baldintzak onartu behar dituzu jarraitzeko</span>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="form-buttons text-center">
+                            {% bootstrap_button "Kontua sortu" button_type="submit" button_class="btn-primary" %}
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.container -->
+{% endblock %}

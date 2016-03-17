@@ -9,7 +9,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
-            url:"#",
+            url: "#",
             // Prevents Dropzone from uploading dropped files immediately
             autoProcessQueue: false,
             addRemoveLinks: true,
@@ -22,25 +22,24 @@
             uploadMultiple: true,
 
 
-            init : function() {
-                myDropzone=this;
+            init: function () {
+                myDropzone = this;
                 // You might want to show the submit button only when
                 // files are dropped here:
-                this.on("addedfile", function(file) {
-                    if (document.querySelectorAll(".btremove").length>0){
-                    var sub = document.querySelector(".btremove");
-                    sub.parentNode.removeChild(sub);
-                    var textright = document.querySelector(".text-right");
-                    var cancel = document.querySelector(".btn-default");
-                    var element = document.createElement("button");
-                    element.className = "btn btn-primary";
-                    element.type = "button";
+                this.on("addedfile", function (file) {
+                    if (document.querySelectorAll(".btremove").length > 0) {
+                        var sub = document.querySelector(".btremove");
+                        sub.parentNode.removeChild(sub);
+                        var textright = document.querySelector(".text-right");
+                        var cancel = document.querySelector(".btn-default");
+                        var element = document.createElement("button");
+                        element.className = "btn btn-primary";
+                        element.type = "button";
 
                         var data = document.createTextNode("Guardar cambios");
                         element.appendChild(data);
                         textright.insertBefore(element, textright.firstChild);
                         submitButton = element;
-
                         submitButton.addEventListener("click", function () {
                             var files = myDropzone.getAcceptedFiles();
                             myDropzone.processFiles(files);
@@ -51,9 +50,34 @@
                             //myDropzone.processQueue();
                             document.getElementById("myDropzone").submit();
                             // Tell Dropzone to process all queued files.
+
+
+
                         });
                     }
                 });
+                        var data = document.createTextNode("Guardar cambios");
+                        element.appendChild(data);
+                        textright.insertBefore(element, textright.firstChild);
+                        submitButton = element;
+
+                        submitButton.addEventListener("click", function () {
+                            var files = myDropzone.getAcceptedFiles();
+                            myDropzone.processFiles(files);
+                            var filesqueue = myDropzone.getQueuedFiles();
+                            for (var file in filesqueue) {
+                                myDropzone.processFile(file);
+                            }
+                            //myDropzone.processQueue();
+                            document.getElementById("myDropzone").submit();
+                            // Tell Dropzone to process all queued files.
+                        });
+                    }
+                });
+
+                }
+            };
+        </script>
 
             }
         };
@@ -61,42 +85,56 @@
 
 
     <a name="contenido"></a>
-    <div class="content-section-a">
+    <div class="content-section-a add-house">
         <div class="container">
-            <h1>Por favor, completa el siguiente formulario</h1>
-                <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data" >
-​
-                    {% csrf_token %}
-                    <h3>Crea tu casa</h3>
+            <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data">
+                ​
+                {% csrf_token %}
 
-                    <hr>  <!-- Formulario de aniadir casa -->
-​
+                <div class="description">
+                     <h3>A&ntilde;ade una nueva casa</h3>
+                     <p>Rellena el siguiente formulario para a&ntilde;adir una nueva casa</p>
+                </div>
+
+                <!-- Formulario de aniadir casa -->
+                ​<div class="form-category">
                     {% bootstrap_label "Ciudad:" %}
-                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false%}
+                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
+
+                    {% bootstrap_label "Direccion:" %}
+                    {% bootstrap_field formCasa.direccion show_label=false show_help=false %}
 
                     {% bootstrap_label "Número de habitaciones a alquilar:" %}
-                    {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false%}
+                    {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
 
                     {% bootstrap_label "Número de habitaciones disponibles:" %}
-                    {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false%}
+                    {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
 
                     {% bootstrap_label "Descipción de la casa / del piso:" %}
-                    {% bootstrap_field formCasa.descripcion show_label=false show_help=false%}
+                    {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
+                </div>
 
-                    {% bootstrap_label "¿Se alquila la casa / el piso por habitaciones?" %}
-                    {% bootstrap_field formCasa.alquilerPorHabitaciones show_label=false show_help=false%}
+                <div class="form-category">
 
                     {% bootstrap_label "Precio del alquiler:" %}
-                    {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false%}
+                    {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
 
                     {% bootstrap_label "Gastos adicionales:" %}
-                    {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false%}
+                    {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
 
-                    <div class='text-right'>
-                        {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove"%}
-                        {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-default"%}
+                    <div class="form-group">
+                        <div class="checkbox"><label for="id_alquilerPorHabitaciones">
+                            {{ formCasa.alquilerPorHabitaciones }}
+                            Alquiler por habitaciones</label></div>
                     </div>
-                </form>
+
+                </div>
+
+                <div class='text-right'>
+                    {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
+                    {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-default" %}
+                </div>
+            </form>
 
 
         </div>

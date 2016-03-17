@@ -11,7 +11,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
-            url:"#",
+            url: "#",
             // Prevents Dropzone from uploading dropped files immediately
             autoProcessQueue: false,
             addRemoveLinks: true,
@@ -23,19 +23,19 @@
             parallelUploads: 10000,
             uploadMultiple: true,
 
-            init : function() {
-                myDropzone=this;
+            init: function () {
+                myDropzone = this;
                 // You might want to show the submit button only when
                 // files are dropped here:
-                this.on("addedfile", function(file) {
-                    if (document.querySelectorAll(".btremove").length>0){
-                    var sub = document.querySelector(".btremove");
-                    sub.parentNode.removeChild(sub);
-                    var textright = document.querySelector(".text-right");
-                    var cancel = document.querySelector(".btn-default");
-                    var element = document.createElement("button");
-                    element.className = "btn btn-primary";
-                    element.type = "button";
+                this.on("addedfile", function (file) {
+                    if (document.querySelectorAll(".btremove").length > 0) {
+                        var sub = document.querySelector(".btremove");
+                        sub.parentNode.removeChild(sub);
+                        var textright = document.querySelector(".text-right");
+                        var cancel = document.querySelector(".btn-default");
+                        var element = document.createElement("button");
+                        element.className = "btn btn-primary";
+                        element.type = "button";
 
                         var data = document.createTextNode("Guardar cambios");
                         element.appendChild(data);
@@ -45,8 +45,8 @@
                         submitButton.addEventListener("click", function () {
                             var files = myDropzone.getAcceptedFiles();
                             myDropzone.processFiles(files);
-                            var filesqueue=myDropzone.getQueuedFiles();
-                            for(var file in filesqueue){
+                            var filesqueue = myDropzone.getQueuedFiles();
+                            for (var file in filesqueue) {
                                 myDropzone.processFile(file);
                             }
                             //myDropzone.processQueue();
@@ -65,85 +65,119 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form method="POST" class="edit-profile-form container dropzone" id="myDropzone" enctype="multipart/form-data" >
+                    <div class="description">
+                        <h3>Tu perfil</h3>
+                        <p class="text-info">Completa tu perfil para poder realizar búsquedas personalizadas, <br>
+                            y facilitar que otros usuarios puedan ponerse en contacto contigo.</p>
+                        <p class="text-muted">Todos los campos <strong>son opcionales</strong>.</p>
+                    </div>
+
+                    <form method="POST" class="edit-profile-form container dropzone" id="myDropzone"
+                          enctype="multipart/form-data">
 
                         {% csrf_token %}
-                        <h3>Edita tu perfil</h3>
-                        <hr>
 
                         <!-- formulario del perfil -->
+                        <div class="form-category">
+                            <h4>Información básica</h4>
 
-                    {% bootstrap_label "Nombre:" %}
-                    {% bootstrap_field form.firstName show_label=false show_help=false%}
+                            {% bootstrap_label "Nombre:" %}
+                            {% bootstrap_field form.firstName show_label=false show_help=false %}
 
-                    {% bootstrap_label "Apellidos:" %}
-                    {% bootstrap_field form.lastName show_label=false show_help=false%}
+                            {% bootstrap_label "Apellidos:" %}
+                            {% bootstrap_field form.lastName show_label=false show_help=false %}
 
-                    {% bootstrap_label "Fecha de nacimiento:" %}
-                    {% bootstrap_field form.birthdate show_label=false show_help=false%}
+                            {% bootstrap_label "Fecha de nacimiento:" %}
+                            {% bootstrap_field form.birthdate show_label=false show_help=false %}
 
-                    {% bootstrap_label "Número de teléfono:" %}
-                    {% bootstrap_field form.telephone show_label=false show_help=false%}
+                            {% bootstrap_label "Sexo:" %}
+                            {% bootstrap_field form.gender show_label=false show_help=false %}
 
-                    {% bootstrap_label "Sexo:" %}
-                    {% bootstrap_field form.gender show_label=false show_help=false%}
+                            {% bootstrap_label "Número de teléfono:" %}
+                            {% bootstrap_field form.telephone show_label=false show_help=false %}
 
-                    {% bootstrap_label "Ocupación:" %}
-                    {% bootstrap_field form.ocupation show_label=false show_help=false%}
-
-                    {% bootstrap_label "Mascota:" %}
-                    {% bootstrap_field form.pet show_label=false show_help=false%}
-
-                    {% bootstrap_label "Inicio de la estancia:" %}
-                    {% bootstrap_field form.iniEstancia show_label=false show_help=false%}
-
-                    {% bootstrap_label "Fin de la estancia:" %}
-                    {% bootstrap_field form.finEstancia show_label=false show_help=false%}
-
-                    {% bootstrap_label "Instrumento musical que toques:" %}
-                    {% bootstrap_field form.Instrument show_label=false show_help=false%}
-
-                    {% bootstrap_label "Descripción:" %}
-                    {% bootstrap_field form.description show_label=false show_help=false%}
-
-                    {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
-                    {% bootstrap_field form.lookingIn show_label=false show_help=false%}
-
-                    {% bootstrap_label "¿Eres fumador?" %}
-                    {% bootstrap_field form.isSmoker show_label=false show_help=false%}
-
-                        {% for tag in tag_forms %} <!-- iterar por todos los tags asociados a este usuario -->
-                            <div class="container-fluid">
-                                <div class="col-md-10">
-                                    {% bootstrap_form tag class="form-control" placeholder=".col-xs-3" %}
-                                    <!-- cada tag se muestra aqui -->
-                                </div>
-                                <div class="col-md-2">
-                                    </br>
-                                    <button>
-                                        <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"> Borrar este
-                                            campo </a> <!-- boton para borrar este tag en concreto -->
-                                    </button>
-                                </div>
-                            </div>
-                        {% endfor %}
-
-                        <div class='text-left'>
-                            {% bootstrap_button "A&ntilde;adir un campo personalizado" button_type="link" href='/add_tag/' button_class="btn-info" %}
-                            <!-- boton para anadir tag -->
                         </div>
 
-                        </br>
-                        </br>
+                        <div class="form-category">
+                            <h4>Preferencias</h4>
+                            {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
+                            {% bootstrap_field form.lookingIn show_label=false show_help=false %}
+
+                            {% bootstrap_label "Inicio de la estancia:" %}
+                            {% bootstrap_field form.iniEstancia show_label=false show_help=false %}
+
+                            {% bootstrap_label "Fin de la estancia:" %}
+                            {% bootstrap_field form.finEstancia show_label=false show_help=false %}
+                        </div>
+
+                        <div class="form-category">
+                            <h4>Otra informaci&oacute;n</h4>
+
+                            {% bootstrap_label "Ocupación:" %}
+                            {% bootstrap_field form.ocupation show_label=false show_help=false %}
+
+                            {% bootstrap_label "Mascota:" %}
+                            {% bootstrap_field form.pet show_label=false show_help=false %}
+
+                            {% bootstrap_label "Instrumento musical que toques:" %}
+                            {% bootstrap_field form.Instrument show_label=false show_help=false %}
+
+                            {% bootstrap_label "Descripción:" %}
+                            {% bootstrap_field form.description show_label=false show_help=false %}
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label for="id_perfil-isSmoker">
+                                        {{form.isSmoker}}
+                                        Fumador
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-category">
+                            <h4>Etiquetas
+                                <small>¡Descr&iacute;bete a ti mismo!</small>
+                            </h4>
+
+                            <!-- Iterar por todos los tags asociados a este usuario -->
+                            {% for tag in tag_forms %}
+                                <span class="tag label label-info">
+                                    {{ tag.text }}
+                                    <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}" class="glyphicon glyphicon-remove"></a>
+                                </span>
+                            {% endfor %}
+
+                            <!-- Boton para anadir tag -->
+                            <span class="add-tag label label-success">
+                                <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
+                            </span>
+
+                            <p class="aviso"><em>Aviso! Guarda tu perfil antes de a&ntilde;adir una etiqueta o se perder&aacute;n
+                            los cambios que hayas realizado.</em></p>
+                        </div>
+
+                        <div class="form-category">
+                            <h4>Imagenes
+                                <small>¡D&eacute;janos ver lo guap@ que eres!</small>
+                            </h4>
+                            {% for image in images.all %}
+                                <span class="tag label label-info">
+                                    <img class="media-object" src="{{image.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
+                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="glyphicon glyphicon-remove"></a>
+                                    </img>
+                                </span>
+
+                            {% endfor %}
+
+                            <p class="aviso"><em>Aviso! Completa algo de informaci&oacute;tu perf&iacute;l, para que podamos asociar la foto a tu perf&iacute;l.</em></p>
+                        </div>
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
                             {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
-
                         </div>
-                        <font size="3" color="red"> **(guarda los cambios antes de a&ntilde;adir un campo o se borrar&aacute; lo que
-                            has escrito)</font>  <!-- mensaje de alerta -->
-
 
                     </form>
                 </div>

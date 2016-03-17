@@ -29,19 +29,19 @@
 
                             <!-- si la contrasena no es segura -->
                         {% elif insecure %}
-                            <p style='color:#ff0000'>La contrase&ntilde;a no es lo suficientemente segura. Requiere al menos 8
+                            <p style='color:#ff0000'>La contraseña no es lo suficientemente segura. Requiere al menos 8
                                 caracteres y contenter al menos una letra y un n&uacute;mero</p>
                             <button type="submit" class="save btn btn-default">Go back</button>
 
                             <!-- si el correo no tiene un formato adecuado -->
                         {% elif no_email %}
-                            <p style='color:#ff0000'>El correo electr&oacute;nico no tiene el formato adecuado</p>
+                            <p style='color:#ff0000'>El correo electronico no tiene el formato adecuado</p>
                             <button type="submit" class="save btn btn-default">Go back</button>
 
                             <!-- Si el correo ha sido creado -->
                         {% elif created %}
-                            <p>Se ha enviado un correo electr&oacute;nico a <strong>{{ created }}</strong>. Por favor, sigue
-                                las instrucciones en &eacute;l.</p>
+                            <p>Se ha enviado un correo electrónico a <strong>{{ created }}</strong>. Por favor, sigue
+                                las instrucciones en él.</p>
                             <button type="submit" class="save btn btn-default">Go back</button>
 
                             <!-- En su defecto, poner el formulario de creaccion -->

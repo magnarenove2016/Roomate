@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1,
@@ -25,7 +25,52 @@ h6 {
 
 .topnav {
     font-size: 14px;
+
+
 }
+
+.first-nav {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+}
+
+.second-nav {
+    background-color: #a92222;
+    border-bottom: solid 2px #801919;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+    text-align: center;
+    top: 50px;
+}
+
+.second-nav .navbar-nav {
+    width: 100%;
+    text-align: center;
+}
+
+.second-nav .navbar-nav > li {
+    float: none;
+    display: inline-block;
+}
+
+.second-nav .navbar-nav > li > a:hover,
+.second-nav .navbar-nav > li > a:focus {
+    background-color: #d52a2a;
+}
+
+.second-nav a {
+    color: white;
+    font-weight: bold;
+}
+
+.navbar-nav > li > a {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+
+.navbar {
+    min-height: 32px !important
+}
+
+/* ------------------------------------------------------------------ */
 
 .lead {
     font-size: 18px;
@@ -50,18 +95,18 @@ h6 {
 
 .error-message > h1 {
     margin: 0;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
     font-size: 5em;
 }
 
 .error-divider {
     width: 400px;
     border-top: 1px solid #f8f8f8;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .error-message > h3 {
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
 .intro-header {
@@ -73,6 +118,14 @@ h6 {
     background-size: cover;
 }
 
+.contact-header {
+    padding-top: 50px; /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
+    padding-bottom: 50px;
+    text-align: center;
+    color: #000000;
+    background-size: cover;
+}
+
 .intro-message {
     position: relative;
     padding-top: 20%;
@@ -81,21 +134,21 @@ h6 {
 
 .intro-message > h1 {
     margin: 0;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
     font-size: 5em;
 }
 
 .intro-divider {
     width: 400px;
     border-top: 1px solid #f8f8f8;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .intro-message > h3 {
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .intro-message {
         padding-bottom: 15%;
     }
@@ -156,7 +209,7 @@ h6 {
 
 .banner h2 {
     margin: 0;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
     font-size: 3em;
 }
 
@@ -169,17 +222,17 @@ h6 {
     margin-top: 0;
 }
 
-@media(max-width:1199px) {
+@media (max-width: 1199px) {
     ul.banner-social-buttons {
         float: left;
         margin-top: 15px;
     }
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .banner h2 {
         margin: 0;
-        text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
         font-size: 3em;
     }
 
@@ -201,4 +254,126 @@ footer {
 
 p.copyright {
     margin: 15px 0 0;
+}
+
+/* ------------------------ Formularios -----------------------*/
+
+.registration-form {
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.registration-form .btn-primary {
+    width: 120px;
+    margin-top: -10px;
+}
+
+.description {
+    text-align: center;
+}
+
+.form-category {
+    background-color: white;
+    border: solid 1px rgb(200, 200, 200);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+form .btn {
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+    margin-right: 7px
+}
+
+.form-category > h4 {
+    margin: 0px 0px 20px 0px;
+}
+
+.aviso {
+    color: dimgrey;
+    margin: 10px 0px 0px 0px;
+}
+
+.add-house  {
+    padding-top: 0px;
+}
+
+
+/* --------------------------- Login --------------------------*/
+
+#login-dp {
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow: hidden;
+}
+
+#login-dp .btn {
+    margin-top: 10px;
+}
+
+#login-dp .btn-primary {
+    width: 80px;
+    margin-right: 4px;
+}
+
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+#logo {
+    position: relative;
+    top: -5px;
+    width: 98px;
+    height: 30px;
+}
+
+/*----------------------- Página "Sobre nosotros" --------------------------*/
+
+.about-us {
+    color: black;
+    background-color: #f8f8f8;
+    text-align: left;
+    padding: 20px 40px 20px 40px;
+    margin: 20px;
+}
+
+.about-us > .list {
+    margin: 20px 0px 20px 20px;
+}
+
+.about-us > .list > li {
+    list-style: square;
+    margin-left: 30px;
+}
+
+/*----------------------------- TAGS -----------------------------*/
+
+.tag, .add-tag {
+    display: inline-block;
+    font-size: 13px;
+    margin-left: 8px;
+    margin-bottom: 8px;
+}
+
+.tag > input {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.tag > a, .add-tag > a {
+    text-decoration: none;
+}
+
+.tag > a:hover, .add-tag > a:hover {
+    cursor: pointer;
+}
+
+.add-tag > a {
+    color: rgb(45, 134, 45);
+}
+
+.add-tag > a:hover {
+    color: rgb(32, 96, 32);
 }

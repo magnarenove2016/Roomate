@@ -3,19 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response, redirect
 from django.template.context_processors import csrf
 from . import forms
-
-
+from django.core import management
+from web.models import validation
+from datetime import timedelta
 
 castellano = "es"
 euskera = "eu"
-idioma = "es"
 
 # Comprobar si el usuario esta registrado
 def auth_view(request):
     username = request.POST.get('username', '')  # Almacenamos el nombre de usuario
     password = request.POST.get('password', '')  # Almacenamos la password
     user = auth.authenticate(username=username, password=password)  # Iniciamos sesion con dichos datos
-    if user is not None:  # Si el usuario y la password son validos
+    if user is not None and user.is_active:  # Si el usuario y la password son validos
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
     else:
@@ -71,3 +71,65 @@ def delete_user(request):
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
 
     return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
+
+# Gestionar backups de la base de datos
+@login_required
+def database_backup(request):
+    if request.user.is_superuser:
+        if request.method == "POST":
+            a=1
+            # TODO: descargar backups
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/database_backup.html', {})
+    else:
+        return redirect('main')
+
+
+# Ejecutar copia d ela base de datos y ficheros
+@login_required
+def trigger_backup(request):
+    if request.user.is_superuser:
+        management.call_command('dbbackup')  # Copia de la base de datos
+        management.call_command('mediabackup')  # Copia de Media
+        return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
+    else:
+        return redirect('main')
+
+#simplemente te hace una redireccón a una pagina que te muestra el mensaje de cuenta activada
+def cuentaactivada(request):
+	return render_to_response('web/'+request.session['lang']+'/activacion_complete.html')
+
+#mostrar el mensaje de error de activación de cuenta
+def error_activacion(request):
+	return render_to_response('web/'+request.session['lang']+'/activacionerror.html')
+
+def activar_cuenta(request,codigo):
+    try:
+        u = validation.objects.get(ash=codigo)
+    except:
+        print('error al buscar la validacion')
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('web/'+request.session['lang']+'/activation_link_error.html',c)
+
+    if u is None:
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('web/'+request.session['lang']+'/activacionerror.html',c)
+
+    else:
+        expired_date = u.creation_date - timedelta(days=2)
+        print(expired_date)
+        if expired_date > u.creation_date :
+            u.user.delete()
+            u.delete()
+            c = {}
+            c.update(csrf(request))
+            return render_to_response('web/'+request.session['lang']+'/activation_link_error.html',c)
+
+        u.user.is_active = True
+        u.user.save()
+        u.delete()
+        c = {}
+        c.update(csrf(request))
+        return render_to_response('web/'+request.session['lang']+'/activacion_complete.html',c)
