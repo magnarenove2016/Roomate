@@ -167,7 +167,7 @@ LOGGING = {
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '[%(asctime)s] %(levelname)s %(message)s'
         },
         'dbVerbose':{
             'format' : "[%(asctime)s] %(levelname)s \n    duration: %(duration)s\n   operation: %(sql).10s\n   parameters: %(params)s\n",
@@ -184,7 +184,13 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'mysite.log',
+            'filename': 'roomate.log',
+            'formatter': 'simple'
+        },
+        'sessionfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'session.log',
             'formatter': 'verbose'
         },
         'DBQfile': {
@@ -207,11 +213,11 @@ LOGGING = {
             'level':'INFO',
         },
         'web': {
-            'handlers': ['file'],
+            'handlers': ['file','sessionfile'],
             'level': 'INFO',
         },
         'database': {
-            'handlers': ['DBQfile'],
+            'handlers': ['file','DBQfile'],
             'level': 'INFO',
         },
         # Este Logger se activara solo enviando un Record por cada sentencia SQL, y solo lo hara si la variable DEBUG de settings.py esta en True.
