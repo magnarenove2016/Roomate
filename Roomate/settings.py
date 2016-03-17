@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'captcha',
     'web',
+	'bootstrap3',
+    'dbbackup',  # django-dbbackup
+    'dropbox',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -71,17 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Roomate.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -104,7 +96,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+DBBACKUP_STORAGE = 'dbbackup.storage.dropbox_storage'
+DBBACKUP_TOKENS_FILEPATH = 'tokens'
+DBBACKUP_DROPBOX_APP_KEY = 'tnbo7trh24hk32a'
+DBBACKUP_DROPBOX_APP_SECRET = 'tuuljgl8x38hau4'
+DBBACKUP_DROPBOX_DIRECTORY ='Roomate_Backups'
+
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'Europe/Madrid'
 
@@ -114,18 +112,22 @@ USE_L10N = True
 
 USE_TZ = True
 
-#A continuacion esta la config. para usar una cuenta gmail, con la clave especifica para aplicaciones
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'magnasis.grupo1@gmail.com'
-EMAIL_HOST_PASSWORD = 'M4gn4sis'
+#A continuacion esta la config. para usar una cuenta de correo
+EMAIL_HOST = 'mail.gandi.net'
+EMAIL_HOST_USER = 'no-reply@magnasis.com'
+EMAIL_HOST_PASSWORD = 'magnarenove2016'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'no-reply@magnasis.com'
+SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 #Clave publica para usar en ReCaptcha
 RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'
@@ -141,6 +143,29 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 DEBUG = False
+
+
+#-----------------------------------------------------------------------------
+#------------------------------- Para Heroku ---------------------------------
+#-----------------------------------------------------------------------------
+
+# Update database configuration with $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
+
+#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+
 
 try:
     from .local_settings import *

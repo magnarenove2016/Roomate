@@ -1,0 +1,54 @@
+{% extends 'web/es/base.html' %}
+
+{% block title %}Borrar cuenta{% endblock %}
+
+{% block contenido %}
+
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="POST" class="register-form">
+
+                        {% csrf_token %}
+                        <h4><strong>Borrar cuenta</strong></h4>
+
+                        <p>Aviso! Est&aacute;s a punto de borrar tu cuenta <strong>de forma permanente</strong>.<br>
+                            Por favor, introduce tu nombre de usuario como confirmaci&oacute;n:</p>
+
+                        {% if messages %}
+
+                            <!-- Si hay errores, mostrar el campo en rojo
+                            junto con el correspondiente aviso de error -->
+
+                            <div class="form-group has-error">
+                                <input type="text" class="form-control" name="username" maxlength="30"
+                                       placeholder="Nombre de usuario (confirmación)">
+                                {% for message in messages %}
+                                    <span class="control-label"> {{ message }} </span>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+
+                            <!-- Si no hay errores, mostrar el campo normal -->
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="username" maxlength="30"
+                                       placeholder="Nombre de usuario (confirmación)">
+                            </div>
+
+                        {% endif %}
+
+                        <!-- Botones -->
+
+                        <input type="submit" class="btn btn-danger" value="Borrar cuenta">
+                        <a href="{% url 'main' %}" class="btn btn-default">Cancelar</a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
