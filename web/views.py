@@ -139,9 +139,9 @@ def show_my_houses(request):
 
 
 def show_house(request, dir, ciudad):
-    casa=Casa.objects.filter(direccion="dir").filter(ciudad=ciudad).first()
+    casa=Casa.objects.filter(direccion=dir,ciudad=ciudad).first()
     if casa is not None:
-        return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casa': casa})
+        return render(request, 'web/' + request.session['lang'] + '/show_house.html', {'casa': casa})
     else:
         return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
 #Anadir una casa (requiere login)
