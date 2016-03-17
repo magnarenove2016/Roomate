@@ -106,3 +106,10 @@ def trigger_backup(request):
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
+
+@login_required
+def gest_logging(request):
+    if request.user.is_superuser:
+        return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
+    else:
+        return redirect('main')
