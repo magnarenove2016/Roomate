@@ -5,6 +5,7 @@ from django.template.context_processors import csrf
 from . import forms
 from django.core import management
 import logging
+import logMessages
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -18,7 +19,7 @@ def auth_view(request):
     password = request.POST.get('password', '')  # Almacenamos la password
     user = auth.authenticate(username=username, password=password)  # Iniciamos sesion con dichos datos
     if user is not None:  # Si el usuario y la password son validos
-        sessionLogger.info('INICIO de sesion USUARIO:\''+username+'\'')##Logging
+        sessionLogger.info(logMessages.login_message+username+'\'')##Logging
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
     else:
@@ -34,7 +35,7 @@ def invalid_login(request):
 
 # Cerrar sesion
 def logout(request):
-    sessionLogger.info('CIERRE de sesion USUARIO:\''+request.user.username+'\'')##Logging
+    sessionLogger.info(logMessages.logout_message+request.user.username+'\'')##Logging
     auth.logout(request)
     c = {}
     c.update(csrf(request))
@@ -47,7 +48,7 @@ def register_new_user(request):
         form = forms.RegistrationForm(request.POST);  # Generar un formulario con los datos introducidos por el usuario
         if form.is_valid():  # Comprobar si los datos son validos
             new_user = form.save(commit=True)  # Si son validos, los guardamos
-            dbLogger.info("CREADO  USER \'"+request.POST.get('username','') +"\'")##Logging
+            dbLogger.info(logMessages.userCreated_message+request.POST.get('username','') +"\'")##Logging
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
@@ -70,9 +71,9 @@ def delete_user(request):
         username = request.POST.get('username', '')
         if (request.user.username == username):
             request.user.delete()
-            dbLogger.info("BORRADO USER \'"+username+"\'")                  ##Logging
+            dbLogger.info(logMessages.userDeleted_message+username+"\'") ##Logging
             auth.logout(request)
-            sessionLogger.info('CIERRE de sesion USUARIO:\''+username+'\'') ##Logging
+            sessionLogger.info(logMessages.logout_message+username+'\'') ##Logging
             return redirect('main')
         else:
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
@@ -92,12 +93,14 @@ def database_backup(request):
         return redirect('main')
 
 
-# Ejecutar copia d ela base de datos y ficheros
+# Ejecutar copia de la base de datos y ficheros
 @login_required
 def trigger_backup(request):
     if request.user.is_superuser:
-        management.call_command('dbbackup')  # Copia de la base de datos
+        management.call_command('dbbackup')  # Copia de la base de
+        dbLogger.info(logMessages.dbBackup_message+request.user.username+'\'')
         management.call_command('mediabackup')  # Copia de Media
+        dbLogger.info(logMessages.mediaBackup_message+request.user.username+'\'')
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
