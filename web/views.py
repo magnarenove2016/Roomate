@@ -118,32 +118,32 @@ def add_house(request):
                         return redirect("/show_location/")
                     else:
                         request.session['refreshing_vcs']=False
-                        return render(request, 'web/'+idioma+'/error_casa_no_encontrada.html', {})
+                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
                 else:
                     request.session['refreshing_vcs']=False
-                    return render(request, 'web/'+idioma+'/error_casa.html', {})
+                    return render(request, 'web/'+request.session['lang']+'/error_casa.html', {})
             else:
                 request.session['refreshing_vcs']=False
-                return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
+                return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
         else:
             #generamos form
             formcasa = CasaForm()
         request.session['refreshing_vcs']=False
-        return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
+        return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
 
 #Anadir una casa (requiere login)
 
 @login_required
 def show_my_houses(request):
-    return render(request, 'web/' + idioma + '/view_house.html', {'casas': request.user.casas.all()})
+    return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casas': request.user.casas.all()})
 
 
 def show_house(request, dir, ciudad):
     casa=Casa.objects.filter(direccion="dir").filter(ciudad=ciudad).first()
     if casa is not None:
-        return render(request, 'web/' + idioma + '/view_house.html', {'casa': casa})
+        return render(request, 'web/' + request.session['lang'] + '/view_house.html', {'casa': casa})
     else:
-        return render(request, 'web/'+idioma+'/error_casa_no_encontrada.html', {})
+        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
 #Anadir una casa (requiere login)
 
 @login_required
@@ -178,16 +178,16 @@ def edit_house(request, dir, ciudad):
                         return redirect("/show_location/")
                     else:
                         request.session['refreshing_vcs']=False
-                        return render(request, 'web/'+idioma+'/error_casa_no_encontrada.html', {})
+                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
 
                 else:
                     request.session['refreshing_vcs']=False
-                    return render(request, 'web/'+idioma+'/add_house.html', {'formCasa': formcasa})
+                    return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
             else:
                 #generamos form
                 formcasa = CasaForm(instance=casa.first())
             request.session['refreshing_vcs']=False
-            return render(request, 'web/'+idioma+'/edit_house.html', {'formCasa': formcasa,'casa': casa.first()})
+            return render(request, 'web/'+request.session['lang']+'/edit_house.html', {'formCasa': formcasa,'casa': casa.first()})
 
 
 """" eliminar determinado tag del usuario"""
@@ -213,7 +213,7 @@ def show_location(request):
     casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
     if(request.method=="POST"):
         if 'accept' in request.POST:
-            return render(request, 'web/' + idioma + '/casa_creada.html', {})
+            return render(request, 'web/' + request.session['lang'] + '/casa_creada.html', {})
             print("added")
         else:
             #case that he clicks cancel
@@ -224,7 +224,7 @@ def show_location(request):
             #return one renderized view
             return redirect("/")
     else:
-        return render(request, 'web/'+idioma+'/show_loc.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
+        return render(request, 'web/'+request.session['lang']+'/show_loc.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
 
 
 # pagina generica para funciones sin desarrollar
@@ -291,13 +291,13 @@ def get_location_search(request):
                 for casa in casas:
                     if distance_meters(search.latitude, search.longitude,casa.latitude,casa.longitude)< 1500:
                         searched.append(casa)
-                return render(request, 'web/' + idioma + '/search_result.html', {'casas':searched})
+                return render(request, 'web/' + request.session['lang'] + '/search_result.html', {'casas':searched})
             else:
                 #No houses in that range
-                return render(request, 'web/' + idioma + '/info.html', {})
+                return render(request, 'web/' + request.session['lang'] + '/info.html', {})
         else:
             # Loc not found
-            return render(request, 'web/' + idioma + '/info_no_loc.html', {})
+            return render(request, 'web/' + request.session['lang'] + '/info_no_loc.html', {})
     else:
         # used url /search/ with no parameters
         return render(request, 'web/' + request.session['lang'] + '/error.html', {})
