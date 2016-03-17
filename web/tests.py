@@ -12,11 +12,6 @@ class DefaultTestCase(TestCase):
         self.username = "user1"
         self.password = "pass1"
         self.email = "false@email.com"
-
-        session = self.client.session
-        session["lang"] = 'es'
-        session.save()
-
         User.objects.create_user(self.username, self.email, self.password)
 
 

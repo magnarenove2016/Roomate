@@ -1,5 +1,4 @@
 /* #### bootstrap Form #### */
-
 .custom_form {
     margin-left:auto;
     margin-right:auto;
@@ -60,6 +59,8 @@
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 .custom_form select {
+    background: #FFF url('down-arrow.png') no-repeat right;
+    background: #FFF url('down-arrow.png') no-repeat right;
     appearance:none;
     -webkit-appearance:none;
     -moz-appearance: none;

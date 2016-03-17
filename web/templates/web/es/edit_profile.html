@@ -143,9 +143,9 @@
                             <!-- Iterar por todos los tags asociados a este usuario -->
                             {% for tag in tag_forms %}
                                 <span class="tag label label-info">{{ tag.text }}
-                                    <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"
-                                       class="glyphicon glyphicon-remove"></a>
-                                </span>
+                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"
+                                   class="glyphicon glyphicon-remove"></a>
+                            </span>
                             {% endfor %}
 
                             <!-- Boton para anadir tag -->
@@ -155,22 +155,6 @@
 
                             <p class="aviso"><em>Aviso! Guarda tu perfil antes de a&ntilde;adir una etiqueta o se perder&aacute;n
                             los cambios que hayas realizado.</em></p>
-                        </div>
-
-                        <div class="form-category">
-                            <h4>Imagenes
-                                <small>¡D&eacute;janos ver lo guap@ que eres!</small>
-                            </h4>
-                            {% for image in images.all %}
-                                <span class="tag label label-info">
-                                    <img class="media-object" src="{{image.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
-                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="glyphicon glyphicon-remove"></a>
-                                    </img>
-                                </span>
-
-                            {% endfor %}
-
-                            <p class="aviso"><em>Aviso! Completa algo de informaci&oacute;tu perf&iacute;l, para que podamos asociar tu foto a tu perf&iacute;l.</em></p>
                         </div>
 
                         <div class='text-right'>
