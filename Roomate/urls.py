@@ -16,7 +16,6 @@ urlpatterns = [
     url(r'^database_backup/$', views.database_backup, name='database_backup'),  # pagina para la gestion de backups
     url(r'^database_backup/trigger_backup/$', views.trigger_backup, name='trigger_backup'),
     # pagina para disparar una copia de seguridad d ela base de datos
-    url(r'^logging/$', views.gest_logging, name='gest_logging'),
     url(r'^logging/(?P<log_file>\d+)/$', views.gest_logging, name='gest_logging'),
     # pagina de gestion de loggings
     url(r'^accounts/user/delete/$', views.delete_user, name='delete_user'),
