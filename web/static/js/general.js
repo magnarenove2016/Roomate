@@ -72,12 +72,3 @@ function handleNoGeolocation(errorFlag) {
   map.setCenter(options.position);
 }
 google.maps.event.addDomListener(window, 'load', initialize);
-
-// funciones de control de contactar
-$( document ).ready(function() {
-    console.log( "ready!" );
-});
-
-function vercontacto(id){
-
-}
