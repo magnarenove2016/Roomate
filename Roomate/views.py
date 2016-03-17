@@ -4,7 +4,10 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template.context_processors import csrf
 from . import forms
 from django.core import management
-
+from django.core.urlresolvers import resolve
+from django.contrib.auth.forms import (
+    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+)
 
 
 castellano = "es"
@@ -94,3 +97,12 @@ def trigger_backup(request):
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
+
+# def password_reset(request):
+#     form = forms.auth_views.password_reset(request.POST)
+#     return render(request, 'web/' + request.session['lang'] + '/password_reset.html', {'form': form})
+
+def open_view(request):
+    current_url = resolve(request.path_info).url_name
+    form = PasswordResetForm
+    return render(request, 'web/'+request.session['lang']+'/'+current_url, {'form': form})
