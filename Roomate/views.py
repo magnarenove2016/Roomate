@@ -6,8 +6,8 @@ from . import forms
 from django.core import management
 import logging
 
-sessionLogger = logging.getLogger('web')
-dbLogger = logging.getLogget('database')
+sessionLogger = logging.getLogger('web') ##Logging
+dbLogger = logging.getLogger('database') ##Logging
 
 castellano = "es"
 euskera = "eu"
