@@ -6,8 +6,10 @@ from . import forms
 from django.core import management
 from web.models import validation
 from datetime import timedelta
+from django.contrib.sites.shortcuts import get_current_site
 import logging
 import logMessages
+from django.core.mail import EmailMultiAlternatives
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -49,13 +51,27 @@ def register_new_user(request):
     if request.method == "POST":  # Si el usuario le ha dado al boton de registrarse
         form = forms.RegistrationForm(request.POST);  # Generar un formulario con los datos introducidos por el usuario
         if form.is_valid():  # Comprobar si los datos son validos
+            current_site = get_current_site(request)
             new_user = form.save(commit=True)  # Si son validos, los guardamos
+            enviarCorreosActivation(new_user,current_site.domain)
             dbLogger.info(logMessages.userCreated_message+request.POST.get('username','') +"\'")##Logging
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
     return render(request, 'web/' + request.session['lang'] + '/register.html', {'form': form})
 
+def enviarCorreosActivation(user,dir):
+    email_subject = 'Confirmacion de cuenta'
+    usr = validation.objects.filter(user=user).all()
+    email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
+    en el siguiente link para confirmar tu correo y disfrutar \
+    plenamente de tu cuenta:<br> \
+    <a href='http://%s/accounts/confirm/%s'>Confirmar cuenta</a>" % (user.username,dir,usr[0].ash)
+    subject, from_email = 'hello', 'no-reply@magnasis.com'
+    text_content = 'Correo de confirmaci&oacute;n.'
+    msg = EmailMultiAlternatives(email_subject, text_content, from_email, [user.email])
+    msg.attach_alternative(email_body, "text/html")
+    msg.send()
 
 # Mostrar mensaje de usuario creado
 def user_created(request):
