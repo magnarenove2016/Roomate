@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'captcha',
     'prueba',
-	'bootstrap3',
+    'bootstrap3',
     'dbbackup',  # django-dbbackup
     'dropbox',
 ]
@@ -145,12 +145,21 @@ ALLOWED_HOSTS = ['*']
 #------------------------------- Para Heroku ---------------------------------
 #-----------------------------------------------------------------------------
 
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd71ahidnsk4blg',
+        'USER': 'enepksmxwbyhlk',
+        'PASSWORD': 'uzIy9pKyHq2TiiYWmKf7E3gNEp',
+        'HOST': 'ec2-54-247-167-90.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.postgresql_psycopg2",
+#    }
+#}
 
 # Update database configuration with $DATABASE_URL.
 import dj_database_url
