@@ -8,10 +8,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.mail import EmailMultiAlternatives
 from datetime import  datetime
 from web.models import validation
+from django.core.urlresolvers import resolve
+from django.http import request
 import hashlib,random
 
 # Formato de mensaje para controlar correos duplicados en el registro
 DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro correo o inicie sesi&oacute;n")
+NOMBRE_DOMINIO= 'http://roomate-magnarenove.herokuapp.com'#127.0.0.1:8000'
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
@@ -80,11 +83,13 @@ class RegistrationForm(UserCreationForm):
             val.save();
 
             #crear el mail y enviarlo
+            #print(request.HttpRequest.path)
+
             email_subject = 'Confirmacion de cuenta'
             email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
             en el siguiente link para confirmar tu correo y disfrutar \
             plenamente de tu cuenta:<br> \
-           <a href='http://127.0.0.1:8000/accounts/confirm/%s'>Confirmar cuenta</a>" % (user.username, Activation_key)
+           <a href='%s/accounts/confirm/%s'>Confirmar cuenta</a>" % (user.username,NOMBRE_DOMINIO, Activation_key)
             subject, from_email = 'hello', 'no-reply@magnasis.com'
             text_content = 'Correo de confirmaci&oacute;n.'
             #html_content = '<p>This is an <strong>important</strong> message.</p>'
