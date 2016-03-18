@@ -362,25 +362,25 @@ def filtros(sex,fumador,city):
     if sex == '':
         if fumador == False:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=False).all()
+                return Profile.objects.all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=False).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=False).all()
         else:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=True).all()
+                return Profile.objects.filter(isSmoker=True).all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=True).all()
     else:
         if fumador == False:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=False,gender=sex).all()
+                return Profile.objects.filter(isSmoker=False,gender=sex).all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=False,gender=sex).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=False,gender=sex).all()
         else:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=True,gender=sex).all()
+                return Profile.objects.filter(isSmoker=True,gender=sex).all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True,gender=sex).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=True,gender=sex).all()
 
 #buscar companeros de piso
 @login_required
