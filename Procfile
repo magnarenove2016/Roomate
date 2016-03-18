@@ -1,1 +1,1 @@
-web: gunicorn Roomate.wsgi -b 0.0.0.0:$PORT
+web: gunicorn Roomate.wsgi
