@@ -160,7 +160,7 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         # Formatos en los que se imprimen los logs. Es como dar formato en un printf de c. Sirven caracteres especiales como '\n', '\r', etc.
-        # Con etiquetas como %(atributo)s se pueden añadir los atributos de un Record. Todos los record tienen los mismos atributos.
+        # Con etiquetas como %(atributo)s se pueden anadir los atributos de un Record. Todos los record tienen los mismos atributos.
         # Aqui la lista: https://docs.python.org/2/library/logging.html#logrecord-attributes
         'verbose': {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
@@ -176,7 +176,7 @@ LOGGING = {
     },
     'handlers': {
         # Los Handlers determinan el proceso que sequira un Record. Basicamente dice a donde ira el Record, si a un fichero,
-        # un socket, un correo electronico, etc. Solamente tratarán aqullos Records que tengan el mismo o superior nivel.
+        # un socket, un correo electronico, etc. Solamente trataran aqullos Records que tengan el mismo o superior nivel.
         # Ademas, los Handlers pueden aplicar uno o mas filtros para decidir si tratar un Record o no.
         'null': {
             'class': 'logging.NullHandler',
