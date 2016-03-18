@@ -63,20 +63,8 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <!-- selector de idiomas--> <!-- TODO: rework a esta seccion para que no se solape con el resto -->
-                <li>
-                    <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
-                        <img src="{% static 'img/lang/eu_EU.jpg' %}"/>EU
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
-                        <img src="{% static 'img/lang/es_ES.jpg' %}"/>ES
-                    </a>
-                </li>
-                </li>
 
                 <li>
                     <form action="/search/" method="get"
@@ -94,18 +82,19 @@
                 <!-- Menú desplegable para acceder a los caso de uso
                      cambiar contraseña y borrar usuario -->
                 {% if user.is_authenticated %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
-                            <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
-                        </ul>
-                    </li>
                 {% endif %}
+
+                <!-- Idiomas -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">ES<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'change_language' language="eu" %}">Euskera</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'change_language' language="es" %}">Español</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
 
@@ -117,42 +106,56 @@
 
 <!-- Casos de uso -->
 {% if user.is_authenticated %}
-    <div class="navbar top-nav second-nav">
-        <ul class="nav navbar-nav">
+    <div class="navbar second-nav">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
 
-            {% if request.user.is_superuser %}
+                {% if request.user.is_superuser %}
 
-                <li>
-                    <a href="/admin/auth/user/">Gestiona usuarios</a>
-                </li>
-                <li>
-                    <a href="/admin/web/tag/">Gestionar tags</a>
-                </li>
-                <li>
-                    <a href="{% url 'gest_logging' log_file=0 %}">Gestiona logs</a>
-                </li>
-                <li>
-                    <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
-                </li>
+                    <li>
+                        <a href="/admin/auth/user/">Gestiona usuarios</a>
+                    </li>
+                    <li>
+                        <a href="/admin/web/tag/">Gestionar tags</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'gest_logging' log_file=0 %}">Gestiona logs</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
+                    </li>
 
-            {% else %}
+                {% else %}
 
-                <li>
-                    <a href="{% url 'completar_perfil' %}">Mi perfil</a>
-                </li>
-                <li>
-                    <a href="{% url 'add_house' %}">Añadir casa</a>
-                </li>
-                <li>
-                    <a href="{% url 'show_my_houses' %}">Visualizar casas</a>
-                </li>
-                <li>
-                    <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
-                </li>
+                    <li>
+                        <a href="{% url 'completar_perfil' %}">Mi perfil</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'add_house' %}">Añadir casa</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'show_my_houses' %}">Visualizar casas</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a>
+                    </li>
 
-            {% endif %}
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
-        </ul>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
+                        </ul>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+        </div>
     </div>
 {% endif %}
 

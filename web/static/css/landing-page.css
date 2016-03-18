@@ -23,6 +23,8 @@ h6 {
     font-weight: 700;
 }
 
+/* Barra de navegacion superior */
+
 .topnav {
     font-size: 14px;
 }
@@ -31,9 +33,16 @@ h6 {
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
 }
 
+.first-nav .dropdown {
+    margin-top: 3px;
+}
+
+/* Segunda barra de navegacion superior */
+
 .second-nav {
     background-color: #a92222;
     border-bottom: solid 2px #801919;
+    border-radius: 0;
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
     text-align: center;
     top: 50px;
@@ -47,6 +56,10 @@ h6 {
 .second-nav .navbar-nav > li {
     float: none;
     display: inline-block;
+}
+
+.second-nav .dropdown {
+    position: relative;
 }
 
 .second-nav .navbar-nav > li > a:hover,
@@ -293,10 +306,9 @@ form .btn {
     margin: 10px 0px 0px 0px;
 }
 
-.add-house  {
+.add-house {
     padding-top: 0px;
 }
-
 
 /* --------------------------- Login --------------------------*/
 
@@ -343,6 +355,66 @@ form .btn {
 .about-us > .list > li {
     list-style: square;
     margin-left: 30px;
+}
+
+/*------------------------- House view ---------------------------*/
+
+.house-view {
+    background: white;
+    outline: solid 1px rgb(200, 200, 200);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    height: 188px;
+    max-width: 800px;
+
+}
+
+.campo {
+    font-weight: bold;
+}
+
+.house-edit {
+    position: absolute;
+    top: -4px;
+    right: 10px;
+    color: rgb(180, 180, 180);
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.house-edit:hover {
+    color: rgb(140, 140, 140);
+    text-decoration: none;
+}
+
+.house-info {
+    white-space: nowrap;
+
+    /* Alinear verticalmente */
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.house-info li {
+    list-style: square;
+    margin-bottom: 10px;
+}
+
+.house-img {
+    max-width: 260px;
+    padding: 0;
+}
+
+.house-img img {
+    width: 250px;
+    height: 188px;
+    outline: 5px solid rgba(240,240,240,1);
+    outline-offset: -5px;
 }
 
 /*----------------------------- TAGS -----------------------------*/
