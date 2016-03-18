@@ -1,5 +1,7 @@
 *.pyc
 __pycache__
+/.pydevproject
+/.project
 myvenv
 db.sqlite3
 .DS_Store
@@ -7,10 +9,7 @@ db.sqlite3
 /tokens
 /media
 /backups
-web/migrations
-.requirements
-/.pydevproject
-/.project
 /roomate.log
 /session.log
 /dbAccess.log
+/Roomate/local_settings.py
