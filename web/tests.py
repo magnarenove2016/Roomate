@@ -125,8 +125,8 @@ class PasswordChangeTest(DefaultTestCase):
 
         # Comprobar que se muestran los mensajes de error correspondientes
         self.assertFormError(response, 'form', 'old_password',
-                             'Su contraseña antigua es incorrecta. Por favor, vuelva a introducirla. ')
-        self.assertFormError(response, 'form', 'new_password2', 'Los dos campos de contraseña no coinciden.')
+                             'Su contraseï¿½a antigua es incorrecta. Por favor, vuelva a introducirla. ')
+        self.assertFormError(response, 'form', 'new_password2', 'Los dos campos de contraseï¿½a no coinciden.')
 
 
 # -------------------------------------------------------------------------------

@@ -6,6 +6,11 @@ from . import forms
 from django.core import management
 from web.models import validation
 from datetime import timedelta
+import logging
+import logMessages
+
+sessionLogger = logging.getLogger('web') ##Logging
+dbLogger = logging.getLogger('database') ##Logging
 
 castellano = "es"
 euskera = "eu"
@@ -16,6 +21,7 @@ def auth_view(request):
     password = request.POST.get('password', '')  # Almacenamos la password
     user = auth.authenticate(username=username, password=password)  # Iniciamos sesion con dichos datos
     if user is not None and user.is_active:  # Si el usuario y la password son validos
+        sessionLogger.info(logMessages.login_message+username+'\'')##Logging
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
     else:
@@ -31,6 +37,7 @@ def invalid_login(request):
 
 # Cerrar sesion
 def logout(request):
+    sessionLogger.info(logMessages.logout_message+request.user.username+'\'')##Logging
     auth.logout(request)
     c = {}
     c.update(csrf(request))
@@ -43,6 +50,7 @@ def register_new_user(request):
         form = forms.RegistrationForm(request.POST);  # Generar un formulario con los datos introducidos por el usuario
         if form.is_valid():  # Comprobar si los datos son validos
             new_user = form.save(commit=True)  # Si son validos, los guardamos
+            dbLogger.info(logMessages.userCreated_message+request.POST.get('username','') +"\'")##Logging
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
@@ -65,7 +73,9 @@ def delete_user(request):
         username = request.POST.get('username', '')
         if (request.user.username == username):
             request.user.delete()
+            dbLogger.info(logMessages.userDeleted_message+username+"\'") ##Logging
             auth.logout(request)
+            sessionLogger.info(logMessages.logout_message+username+'\'') ##Logging
             return redirect('main')
         else:
             messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
@@ -85,23 +95,25 @@ def database_backup(request):
         return redirect('main')
 
 
-# Ejecutar copia d ela base de datos y ficheros
+# Ejecutar copia de la base de datos y ficheros
 @login_required
 def trigger_backup(request):
     if request.user.is_superuser:
-        management.call_command('dbbackup')  # Copia de la base de datos
+        management.call_command('dbbackup')  # Copia de la base de
+        dbLogger.info(logMessages.dbBackup_message+request.user.username+'\'')
         management.call_command('mediabackup')  # Copia de Media
+        dbLogger.info(logMessages.mediaBackup_message+request.user.username+'\'')
         return render(request, 'web/' + request.session['lang'] + '/database_backup_complete.html', {})
     else:
         return redirect('main')
 
 #simplemente te hace una redireccion a una pagina que te muestra el mensaje de cuenta activada
 def cuentaactivada(request):
-	return render_to_response('web/'+request.session['lang']+'/activacion_complete.html')
+    return render_to_response('web/'+request.session['lang']+'/activacion_complete.html')
 
 #mostrar el mensaje de error de activacion de cuenta
 def error_activacion(request):
-	return render_to_response('web/'+request.session['lang']+'/activacionerror.html')
+    return render_to_response('web/'+request.session['lang']+'/activacionerror.html')
 
 def activar_cuenta(request,codigo):
     try:
@@ -133,3 +145,20 @@ def activar_cuenta(request,codigo):
         c = {}
         c.update(csrf(request))
         return render_to_response('web/'+request.session['lang']+'/activacion_complete.html',c)
+
+@login_required
+def gest_logging(request,log_file):
+    if request.user.is_superuser:
+        if (log_file=='1'):
+            log=open('roomate.log','r+').read()
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+        elif (log_file=='2'):
+            log=open('session.log','r+').read()
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+        elif (log_file=='3'):
+            log=open('dbAccess.log','r+').read()
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {'text_log':log})
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
+    else:
+        return redirect('main')
