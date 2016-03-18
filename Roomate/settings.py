@@ -129,11 +129,17 @@ SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = True
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 #Clave publica para usar en ReCaptcha
 RECAPTCHA_PUBLIC_KEY = '6LeuGRsTAAAAAH_mhWMchrE-CzOsUBJCndfyyeWu'
