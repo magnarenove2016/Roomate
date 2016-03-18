@@ -10,3 +10,6 @@ web/migrations
 .requirements
 /.pydevproject
 /.project
+/roomate.log
+/session.log
+/dbAccess.log
