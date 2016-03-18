@@ -109,7 +109,7 @@ def add_house(request):
                 casa=Casa.objects.filter(direccion=Cas.direccion,ciudad=Cas.ciudad, dueno=request.user)
                 if casa.count()==0:
                     Cas.dueno=request.user
-                    loc = getLocation("España "+Cas.ciudad+" "+Cas.direccion)
+                    loc = getLocation("Espana "+Cas.ciudad+" "+Cas.direccion)
                     if loc is not None:
                         location=loc[0]
                         Cas.latitude=location.latitude
@@ -168,7 +168,7 @@ def edit_house(request, dir, ciudad):
                     #obtener datos y guardar perfil
                     Cas = formcasa.save(commit=False)
                     Cas.dueno=request.user
-                    loc = getLocation("España "+Cas.ciudad+" "+Cas.direccion)
+                    loc = getLocation("Espana "+Cas.ciudad+" "+Cas.direccion)
                     if loc is not None:
                         location=loc[0]
                         Cas.latitude=location.latitude
@@ -206,7 +206,7 @@ def delete_house_image(request, path_image):
     fc.all().delete()
     return edit_house(request, dir, cit) #falta editar este y crear el boton que lo llame
 
-#Enseñar localizacion de casa y confirmar (requiere login)
+#Ensenar localizacion de casa y confirmar (requiere login)
 @login_required
 def show_location(request):
     #creamos form
@@ -363,7 +363,7 @@ def filtros(sex,fumador,city):
             else:
                 return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True,gender=sex).all()
 
-#buscar compañeros de piso
+#buscar companeros de piso
 @login_required
 def busquedaCompa(request):
     if request.method == "POST":

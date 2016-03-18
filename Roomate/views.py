@@ -95,11 +95,11 @@ def trigger_backup(request):
     else:
         return redirect('main')
 
-#simplemente te hace una redireccón a una pagina que te muestra el mensaje de cuenta activada
+#simplemente te hace una redireccion a una pagina que te muestra el mensaje de cuenta activada
 def cuentaactivada(request):
 	return render_to_response('web/'+request.session['lang']+'/activacion_complete.html')
 
-#mostrar el mensaje de error de activación de cuenta
+#mostrar el mensaje de error de activacion de cuenta
 def error_activacion(request):
 	return render_to_response('web/'+request.session['lang']+'/activacionerror.html')
 

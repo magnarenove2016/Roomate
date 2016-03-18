@@ -4,7 +4,8 @@ myvenv
 db.sqlite3
 .DS_Store
 .idea/
-idea/
+/tokens
+/media
 /backups
 web/migrations
 .requirements

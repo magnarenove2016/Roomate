@@ -11,7 +11,7 @@ from web.models import validation
 import hashlib,random
 
 # Formato de mensaje para controlar correos duplicados en el registro
-DOBLE_EMAIL = _(u"Este correo ya está en uso. "u"Por favor utilice otro correo o inicie sesión")
+DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro correo o inicie sesi&oacute;n")
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
@@ -51,12 +51,12 @@ class RegistrationForm(UserCreationForm):
 
         # Expresion regular que comprueba si la password tiene al menos 8 caracteres,
         # entre los cuales debe haber como minimo un digito y una letra
-        valid = re.match(r'^(?=.*[A-Za-zñÑ])(?=.*\d).{8,}$', password2)
+        valid = re.match(r'^(?=.*[A-Za-z])(?=.*\d).{8,}$', password2)
 
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
             raise forms.ValidationError(
-                "La contraseña debe tener una longitud mínima de 8 caracteres y contener, al menos, una letra y un número",
+                "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero",
                 code='invalid_password',
             )
 
@@ -86,7 +86,7 @@ class RegistrationForm(UserCreationForm):
             plenamente de tu cuenta:<br> \
            <a href='http://127.0.0.1:8000/accounts/confirm/%s'>Confirmar cuenta</a>" % (user.username, Activation_key)
             subject, from_email = 'hello', 'no-reply@magnasis.com'
-            text_content = 'Correo de confirmación.'
+            text_content = 'Correo de confirmaci&oacute;n.'
             #html_content = '<p>This is an <strong>important</strong> message.</p>'
             msg = EmailMultiAlternatives(email_subject, text_content, from_email, [user.email])
             msg.attach_alternative(email_body, "text/html")
@@ -101,12 +101,12 @@ class ValidatedPasswordChangeForm(PasswordChangeForm):
 
         # Expresion regular que comprueba si la password tiene al menos 8 caracteres,
         # entre los cuales debe haber como minimo un digito y una letra
-        valid = re.match(r'^(?=.*[A-Za-zñÑ])(?=.*\d).{8,}$', password2)
+        valid = re.match(r'^(?=.*[A-Za-z])(?=.*\d).{8,}$', password2)
 
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
             raise forms.ValidationError(
-                "La contraseña debe tener una longitud mínima de 8 caracteres y contener, al menos, una letra y un número",
+                "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero",
                 code='invalid_password',
             )
 
@@ -119,12 +119,12 @@ class ValidatedSetPasswordForm(SetPasswordForm):
 
         # Expresion regular que comprueba si la password tiene al menos 8 caracteres,
         # entre los cuales debe haber como minimo un digito y una letra
-        valid = re.match(r'^(?=.*[A-Za-zñÑ])(?=.*\d).{8,}$', password2)
+        valid = re.match(r'^(?=.*[A-Za-z])(?=.*\d).{8,}$', password2)
 
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
             raise forms.ValidationError(
-                "La contraseña debe tener una longitud mínima de 8 caracteres y contener, al menos, una letra y un número",
+                "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero",
                 code='invalid_password',
             )
 
