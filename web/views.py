@@ -9,7 +9,11 @@ from Roomate.views import castellano, euskera
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
+import logging
+import logMessages
 
+sessionLogger = logging.getLogger('web') ##Logging
+dbLogger = logging.getLogger('database') ##Logging
 
 # Registrar un arrendatario completando su perfil
 @login_required
@@ -29,15 +33,18 @@ def edit_profile(request):
             tagForm = TagForm(request.POST, instance=tag, prefix='tag_%s' % i)
             tagForm.perfil = profile
             if tagForm.is_valid():
-                tagForm.save()
+                tagForm.save()  # TODO: comprobar si el tag ya existe?
+                dbLogger.info(logMessages.tagCreated_message+request.user.username+'\'')##Logging
 
         for file in request.FILES._itervalues():
             newFoto = FotoPerfil(foto=file)
             newFoto.perfil = profile
             newFoto.save()
+            dbLogger.info(logMessages.foPerAdded_message+request.user.username+'\'')##Logging
 
         if formProfile.is_valid():  # comprobamos que el profile es valido
             formProfile.save()  # y lo guardamos
+            dbLogger.info(logMessages.profileEdited_message + request.user.username + '\'')##Logging
             return redirect('completar_perfil')
 
     else:
@@ -60,6 +67,7 @@ def edit_profile(request):
 def delete_profile_image(request, path_image):
     fc=FotoPerfil.objects.filter(foto=path_image, perfil=request.user.profile)
     fc.all().delete()
+    dbLogger.info(logMessages.foPerDeleted_message+request.user.username+'\'')##Logging
     return edit_profile(request) #
 
 
@@ -71,12 +79,14 @@ def add_tag(request):
     except Profile.DoesNotExist:
         profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
         profile.save()
+        dbLogger.info(logMessages.profileCreated_message+request.user.username+'\'')
 
     tag = Tag()
 
     tag.perfil = profile  # asignamos el perfil
     tag.text = "Etiqueta en Blanco"  # y un texto generico
     tag.save()  # y lo guardamos
+    dbLogger.info(logMessages.tagAdded_message+request.user.username+'\'')
     return redirect('/completar_perfil/', )
 
 
@@ -88,10 +98,12 @@ def delete_tag(request, texto_del_tag):
     except Profile.DoesNotExist:
         profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
         profile.save()
+        dbLogger.info(logMessages.profileCreated_message+request.user.username+'\'')
 
     tag = Tag.objects.filter(perfil=profile, text=texto_del_tag)  # obtenemos sus tags #TODO: buscamos el tag a eliminar
     tag[0].delete()
 
+    dbLogger.info(logMessages.tagDeleted_message+request.user.username+'\'')
     return redirect('/completar_perfil/', )
 
 
@@ -109,16 +121,18 @@ def add_house(request):
                 casa=Casa.objects.filter(direccion=Cas.direccion,ciudad=Cas.ciudad, dueno=request.user)
                 if casa.count()==0:
                     Cas.dueno=request.user
-                    loc = getLocation("España "+Cas.ciudad+" "+Cas.direccion)
+                    loc = getLocation("Espana "+Cas.ciudad+" "+Cas.direccion)
                     if loc is not None:
                         location=loc[0]
                         Cas.latitude=location.latitude
                         Cas.longitude=location.longitude
                         Cas.save()
+                        dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
                         for f in request.FILES._itervalues():
                             newFoto=FotoCasa(foto=f)
                             newFoto.casa=Cas
                             newFoto.save()
+                            dbLogger.info(logMessages.fotoAdded_message+request.user.username+'\'')##Logging
 
                         request.session['direccion'] = Cas.direccion
                         request.session['ciudad'] = Cas.ciudad
@@ -168,16 +182,20 @@ def edit_house(request, dir, ciudad):
                     #obtener datos y guardar perfil
                     Cas = formcasa.save(commit=False)
                     Cas.dueno=request.user
-                    loc = getLocation("España "+Cas.ciudad+" "+Cas.direccion)
+                    loc = getLocation("Espana "+Cas.ciudad+" "+Cas.direccion)
                     if loc is not None:
                         location=loc[0]
                         Cas.latitude=location.latitude
                         Cas.longitude=location.longitude
                         Cas.save()
+                        #dbLogger.info(logMessages.casaEdited_message+request.user.username+'Ciudad: '+Cas.ciudad+'Direccion: '+Cas.direccion+'\'')##Logging
+                        dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
                         for f in request.FILES._itervalues():
                             newFoto=FotoCasa(foto=f)
                             newFoto.casa=Cas
                             newFoto.save()
+                            #dbLogger.info(logMessages.fotoAdded_message+request.user.username+' de la casa:'+Cas.ciudad+' '+Cas.direccion+'\'')##Logging
+                            dbLogger.info(logMessages.fotoAdded_message+request.user.username+'\'')##Logging
 
                         request.session['direccion'] = Cas.direccion
                         request.session['ciudad'] = Cas.ciudad
@@ -204,9 +222,10 @@ def delete_house_image(request, path_image):
     cit=fc.first().casa.ciudad
     dir=fc.first().casa.direccion
     fc.all().delete()
+    dbLogger.info(logMessages.foCasDeleted_message+request.user.username+'\'')##Logging
     return edit_house(request, dir, cit) #falta editar este y crear el boton que lo llame
 
-#Enseñar localizacion de casa y confirmar (requiere login)
+#Ensenar localizacion de casa y confirmar (requiere login)
 @login_required
 def show_location(request):
     #creamos form
@@ -363,7 +382,7 @@ def filtros(sex,fumador,city):
             else:
                 return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True,gender=sex).all()
 
-#buscar compañeros de piso
+#buscar companeros de piso
 @login_required
 def busquedaCompa(request):
     if request.method == "POST":

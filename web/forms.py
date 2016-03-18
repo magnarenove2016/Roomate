@@ -55,7 +55,7 @@ class ContactForm(forms.Form):
     #     self.fields['contact_email'].label = "Your email:"
     #     self.fields['content'].label = "What do you want to say?"
 
-#formulario para Buscar compañero
+#formulario para Buscar companero
 class BusquedaForm(forms.ModelForm):
     class Meta:
         model = Busqueda

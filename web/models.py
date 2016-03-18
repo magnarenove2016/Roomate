@@ -37,7 +37,7 @@ class Profile(models.Model):
 
     # Expresion regular para validar el numero de telefono
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
-                                 message=u'Número de teléfono inválido (debe tener de 9 a 15 dígitos)')
+                                 message=u'N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)')
 
     # Usuario asociado al perfil (un perfil por usuario)
     user = models.OneToOneField('auth.User', models.CASCADE, related_name='profile')
@@ -95,7 +95,7 @@ class Tag(models.Model):
 class Casa(models.Model):
     id = models.AutoField(primary_key=True)
     dueno = models.ForeignKey('auth.User', models.CASCADE, blank=True, null=True, related_name="casas")
-    direccion=models.TextField(verbose_name="Dirección")
+    direccion=models.TextField(verbose_name="Direccion")
     ciudad = models.CharField(max_length=200)
     numHabitaciones = models.IntegerField()
     numHabitacionesDisponibles = models.IntegerField()
@@ -133,9 +133,9 @@ class FotoHabitacion(models.Model):
     habitacion = models.ForeignKey(Habitacion, blank=True, null=True)
 
 
-#esta clase solo sirve para realizar busquedas. Nada más
+#esta clase solo sirve para realizar busquedas. Nada mas
 class Busqueda(models.Model):
-    #las elecciones posibles de la opción de sexo. del usuario
+    #las elecciones posibles de la opcion de sexo. del usuario
     GENDER_CHOICES = (
         ('', 'Ambos'),
         ('H', 'Hombre'),
