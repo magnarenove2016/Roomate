@@ -159,16 +159,20 @@
                         </div>
 
                         <div class="form-category">
-                            <h4>Im&aacute;genes
+                            <h4>Fotos
                                 <small>¡D&eacute;janos ver lo guap@ que eres!</small>
                             </h4>
+
+                            {% if images.all|length == 0 %}
+                                <p class="text-muted"><em>Por el momento no has subido ninguna imagen...</em></p>
+                            {% endif %}
+
                             {% for image in images.all %}
                                 <span class="tag label label-info">
                                     <img class="media-object" src="{{image.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
                                     <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="glyphicon glyphicon-remove"></a>
                                     </img>
                                 </span>
-
                             {% endfor %}
 
                             <p class="aviso"><em>Aviso! Completa algo de informaci&oacute;tu perf&iacute;l, para que podamos asociar la foto a tu perfil.</em></p>
@@ -176,7 +180,7 @@
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
-                            {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
+                            <a href="{% url 'main' %}" class="btn btn-danger">Cancelar</a>
                         </div>
 
                     </form>

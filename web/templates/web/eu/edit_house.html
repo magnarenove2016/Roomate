@@ -1,8 +1,10 @@
-{% extends 'web/es/base.html' %}
+{% extends 'web/eu/base.html' %}
 
 {% load staticfiles %}
 
 {% load bootstrap3 %}
+
+{% block title %}Etxea editatu{% endblock %}
 
 {% block contenido %}
 
@@ -11,7 +13,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
-            url: "#",
+            url:"#",
             // Prevents Dropzone from uploading dropped files immediately
             autoProcessQueue: false,
             addRemoveLinks: true,
@@ -19,24 +21,32 @@
             paramName: "file",
             acceptedFiles: "image/*",
             maxFilesize: 5.0,
+        {% if casa.fotos.all.count == 2 %}
+            maxFiles: 0,
+        {% elif casa.fotos.all.count == 1 %}
+            maxFiles: 1,
+        {% else %}
             maxFiles: 2,
+        {% endif %}
             parallelUploads: 10000,
             uploadMultiple: true,
 
 
-            init: function () {
-                myDropzone = this;
+            init : function() {
+
+                myDropzone=this;
+
                 // You might want to show the submit button only when
                 // files are dropped here:
-                this.on("addedfile", function (file) {
-                    if (document.querySelectorAll(".btremove").length > 0) {
-                        var sub = document.querySelector(".btremove");
-                        sub.parentNode.removeChild(sub);
-                        var textright = document.querySelector(".text-right");
-                        var cancel = document.querySelector(".btn-default");
-                        var element = document.createElement("button");
-                        element.className = "btn btn-primary";
-                        element.type = "button";
+                this.on("addedfile", function(file) {
+                    if (document.querySelectorAll(".btremove").length>0){
+                    var sub = document.querySelector(".btremove");
+                    sub.parentNode.removeChild(sub);
+                    var textright = document.querySelector(".text-right");
+                    var cancel = document.querySelector(".btn-default");
+                    var element = document.createElement("button");
+                    element.className = "btn btn-primary";
+                    element.type = "button";
 
                         var data = document.createTextNode("Guardar cambios");
                         element.appendChild(data);
@@ -46,8 +56,8 @@
                         submitButton.addEventListener("click", function () {
                             var files = myDropzone.getAcceptedFiles();
                             myDropzone.processFiles(files);
-                            var filesqueue = myDropzone.getQueuedFiles();
-                            for (var file in filesqueue) {
+                            var filesqueue=myDropzone.getQueuedFiles();
+                            for(var file in filesqueue){
                                 myDropzone.processFile(file);
                             }
                             //myDropzone.processQueue();
@@ -68,56 +78,56 @@
                 {% csrf_token %}
 
                 <div class="description">
-                     <h3>A&ntilde;ade una nueva casa</h3>
-                     <p>Rellena el siguiente formulario para a&ntilde;adir una nueva casa</p>
+                     <h3>Zure etxea editatu{{ request.session.lang }}</h3>
+                     <p>Gogoratu egiten dituzun aldaketak gordetzea!</p>
                 </div>
 
                 <!-- Formulario de aniadir casa -->
                 ​<div class="form-category">
 
-                    {% bootstrap_label "Ciudad:" %}
+                    {% bootstrap_label "Hiria:" %}
                     {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
                     <div class="form-group">
-                        <label class="control-label" for="id_direccion">Direcci&oacute;n:</label>
-                        <textarea class="form-control" required="required" rows="1"></textarea>
+                        <label class="control-label" for="id_direccion">Helbidea:</label>
+                        <textarea class="form-control" required="required" rows="1">{{ formCasa.direccion.value }}</textarea>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                        {% bootstrap_label "N&uacute;mero de habitaciones a alquilar:" %}
+                        {% bootstrap_label "Alkilatzeko gela kopurua:" %}
                         {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
                         </div>
                         <div class="col-md-6">
-                        {% bootstrap_label "N&uacute;mero de habitaciones disponibles:" %}
+                        {% bootstrap_label "Eskuragarri dauden logela kopurua:" %}
                         {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
                         </div>
                     </div>
 
-                    {% bootstrap_label "Descripci&oacute;n de la casa / del piso:" %}
+                    {% bootstrap_label "Etxearen / pisuaren deskribapena:" %}
                     {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
 
                 </div>
 
                 <div class="form-category">
 
-                    {% bootstrap_label "Precio del alquiler:" %}
+                    {% bootstrap_label "Akura-saria:" %}
                     {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
 
-                    {% bootstrap_label "Gastos adicionales:" %}
+                    {% bootstrap_label "Bestelako gastuak:" %}
                     {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
 
                     <div class="form-group">
                         <div class="checkbox"><label for="id_alquilerPorHabitaciones">
                             {{ formCasa.alquilerPorHabitaciones }}
-                            Alquiler por habitaciones</label></div>
+                            Gelatiko alokairua</label></div>
                     </div>
 
                 </div>
 
                 <div class='text-right'>
-                    {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
-                    <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Cancelar</a>
+                    {% bootstrap_button "Aldaketak gorde" button_type="submit" button_class="btn-primary btremove" %}
+                    <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Ezeztatu</a>
                 </div>
 
             </form>
