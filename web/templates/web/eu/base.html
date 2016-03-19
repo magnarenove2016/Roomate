@@ -12,7 +12,6 @@
 
     <title>Roomate</title>
 
-
     <!-- jQuery -->
     <script src="{% static 'js/jquery-1.11.2.min.js' %}" type="text/javascript"></script>
 
@@ -67,7 +66,7 @@
                 <li>
                     <form action="/search/" method="get"
                           class="glow navbar-form navbar-left post-form">    {% csrf_token %}
-                        <input type="text" class="form-control" placeholder="Buscar hogar..." name="s" id="id_s"/>
+                        <input type="text" class="form-control" placeholder="Etxea bilatu..." name="s" id="id_s"/>
                         <button type="submit" class="save btn btn-default" value="Search">Bilatu</button>
                     </form>
                 </li>
@@ -83,9 +82,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">EU<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{% url 'change_language' language="eu" %}">Euskera</a></li>
+                        <li><a href="{% url 'change_language' language="eu" actual=request.path%}">Euskera</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="{% url 'change_language' language="es" %}">Español</a></li>
+                        <li><a href="{% url 'change_language' language="es" actual=request.path%}">Español</a></li>
                     </ul>
                 </li>
 
