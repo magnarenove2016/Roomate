@@ -125,6 +125,22 @@
 
                 </div>
 
+                <div class="form-category">
+                    <h4>Argazkiak <small>¡Zein etxe polita!</small></h4>
+
+                    {% for foto in casa.fotos.all %}
+
+                        <span class="tag label label-info">
+                            <img class="media-object" src="{{ foto.foto.url }}" alt="120x120"
+                                 data-src="holder.js/120x120" style="width: 120px; height: 120px;"
+                                 data-holder-rendered="true">
+                                 <a href="{% url 'delete_house_image' path_image=foto.foto %}" class="glyphicon glyphicon-remove"></a>
+                            </img>
+                        </span>
+
+                    {% endfor %}
+                </div>
+
                 <div class='text-right'>
                     {% bootstrap_button "Aldaketak gorde" button_type="submit" button_class="btn-primary btremove" %}
                     <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Ezeztatu</a>
