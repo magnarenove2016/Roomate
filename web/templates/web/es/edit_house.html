@@ -87,37 +87,39 @@
 
                         {% csrf_token %}
 
-                        <div class="form-category">
-                            {% csrf_token %}
+                            <div class="form-category">
 
-                            {% bootstrap_label "Ciudad:" %}
-                            {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
+                                {% bootstrap_label "Ciudad:" %}
+                                {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
-                            {% bootstrap_label "Direcci&oacute;n completa" %}
-                            {% bootstrap_field formCasa.direccion show_label=false show_help=false %}
+                                {% bootstrap_label "Direcci&oacute;n completa" %}
+                                {% bootstrap_field formCasa.direccion show_label=false show_help=false %}
 
-                            {% bootstrap_label "N&uacute;mero de habitaciones totales" %}
-                            {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                                {% bootstrap_label "N&uacute;mero de habitaciones totales" %}
+                                {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
 
-                            {% bootstrap_label "N&uacute;mero de habitaciones disponibles" %}
-                            {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                                {% bootstrap_label "N&uacute;mero de habitaciones disponibles" %}
+                                {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
 
-                            {% bootstrap_label "Descripci&oacute;n" %}
-                            {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
+                                {% bootstrap_label "Descripci&oacute;n" %}
+                                {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
 
-                            {% bootstrap_label "¿Alquiler por habitaciones?" %}
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label for="id_perfil-isSmoker">
-                                    {{formCasa.alquilerPorHabitaciones}}
-                                </div>
                             </div>
-                            
-                            {% bootstrap_label "Precio del alquiler" %}
-                            {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
 
-                            {% bootstrap_label "Gastos complementarios" %}
-                            {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
+                            <div class="form-category">
+
+                                {% bootstrap_label "Precio del alquiler:" %}
+                                {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
+
+                                {% bootstrap_label "Gastos adicionales:" %}
+                                {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
+
+                                <div class="form-group">
+                                    <div class="checkbox"><label for="id_alquilerPorHabitaciones">
+                                        {{ formCasa.alquilerPorHabitaciones }}
+                                        Alquiler por habitaciones</label></div>
+                            </div>
+
                         </div>
 
                         <div class="form-category">
@@ -136,7 +138,7 @@
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
-                            {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
+                            <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Cancelar</a>
                         </div>
 
                     </form>

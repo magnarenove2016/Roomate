@@ -98,20 +98,29 @@
 
                 <!-- Formulario de aniadir casa -->
                 ​<div class="form-category">
+
                     {% bootstrap_label "Ciudad:" %}
                     {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
-                    {% bootstrap_label "Direccion:" %}
-                    {% bootstrap_field formCasa.direccion show_label=false show_help=false %}
+                    <div class="form-group">
+                        <label class="control-label" for="id_direccion">Direcci&oacute;n:</label>
+                        <textarea class="form-control" required="required" rows="1"></textarea>
+                    </div>
 
-                    {% bootstrap_label "Número de habitaciones a alquilar:" %}
-                    {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                    <div class="row">
+                        <div class="col-md-6">
+                        {% bootstrap_label "N&uacute;mero de habitaciones a alquilar:" %}
+                        {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                        </div>
+                        <div class="col-md-6">
+                        {% bootstrap_label "N&uacute;mero de habitaciones disponibles:" %}
+                        {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                        </div>
+                    </div>
 
-                    {% bootstrap_label "Número de habitaciones disponibles:" %}
-                    {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
-
-                    {% bootstrap_label "Descipción de la casa / del piso:" %}
+                    {% bootstrap_label "Descripci&oacute;n de la casa / del piso:" %}
                     {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
+
                 </div>
 
                 <div class="form-category">
@@ -132,7 +141,7 @@
 
                 <div class='text-right'>
                     {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
-                    {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
+                    <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>
 
