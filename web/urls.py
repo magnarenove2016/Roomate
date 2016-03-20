@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^show_house/(?P<dir>.+)/(?P<ciudad>.+)/$', views.show_house, name='show_house'),
     url(r'^delete_house_image/(?P<path_image>.+)/$', views.delete_house_image, name='delete_house_image'),
     url(r'^busqueda/$', views.busquedaCompa, name='busqueda'),
-    url(r'^usuario/(?P<nombre>.+)$', views.mostrarcontacto, name='mostrarperfil'),
+    url(r'^usuario/(?P<nombre>.+)/$', views.mostrarcontacto, name='mostrarperfil'),
 ]

@@ -11,13 +11,13 @@
     <div class="content-section-a">
         <div class="container">
 
-            <div class="row text-center"><h4>Resultado de la búsqueda:</h4></div>
+            <div class="row text-center"><h4>Resultado de la b&uacute;squeda:</h4></div>
 
             {% for casa in casas %}
                 <div class="row house-view">
 
                     <div class="col-xs-6 col-sm-4 house-img">
-                        <a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}">
+                        <a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">
                             {% if casa.fotos.all|length > 0 %}
                                 {{ article.product.images.all.0.image.url }}
                                 <img class="img img-width-300" src="{{ casa.fotos.all.0.foto.url }}" alt="300x225"
@@ -36,11 +36,11 @@
                     <div class="col-xs-6 col-sm-8 house-info">
                         <ul>
                             <li><span class="campo">Ciudad: </span>{{ casa.ciudad }}</li>
-                            <li><span class="campo">Direccion: </span>{{ casa.direccion }}</li>
-                            <li><span class="campo">Numero de habitaciones: </span>{{ casa.numHabitaciones }}
+                            <li><span class="campo">Direcci&oacute;n: </span>{{ casa.direccion }}</li>
+                            <li><span class="campo">N&uacute;mero de habitaciones: </span>{{ casa.numHabitaciones }}
                                 <span class="text-muted">({{ casa.numHabitacionesDisponibles }} disponibles)</span></li>
                             <li><span class="campo">Precio de alquiler
-                                {% if casa.alquilerPorHabitaciones %}(por habitación){% endif %}
+                                {% if casa.alquilerPorHabitaciones %}(por habitaci&oacute;n){% endif %}
                                 : </span>{{ casa.precioAlquiler }}€
                             </li>
                             <li><span class="campo">Gastos complementarios: </span>{{ casa.gastosComplementarios }}€
