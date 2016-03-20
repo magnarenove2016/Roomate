@@ -81,6 +81,10 @@ h6 {
     min-height: 32px !important
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 /* ------------------------------------------------------------------ */
 
 .lead {
@@ -317,6 +321,47 @@ textarea {
     height: 100px;
 }
 
+.title {
+    margin-bottom: 20px;
+}
+
+/* ------------------- Buscar compañero ------------------*/
+
+.form-search {
+    margin: auto;
+    max-width: 700px;
+}
+
+.form-search h3 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.form-search .btn {
+    width: 100px;
+    margin: 0;
+    margin-top: -10px;
+}
+
+.panel {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto 25px auto;
+    border: solid 1px rgb(200, 200, 200);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
+}
+
+
+.panel-heading h4 {
+    display: inline-block;
+    margin: 3px;
+}
+
+.panel-heading span {
+    margin-top: 2px;
+    font-size: 15px;
+}
+
 /* ---------------- Fotos ----------------- */
 
 .photo-preview {
@@ -337,7 +382,7 @@ textarea {
 }
 
 .photo-preview:hover img {
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 .photo-delete {
@@ -507,11 +552,11 @@ textarea {
 }
 /*----------------------------- TAGS -----------------------------*/
 
-.tag, .add-tag {
+.label, .tag, .add-tag{
     display: inline-block;
-    font-size: 13px;
-    margin-left: 8px;
-    margin-bottom: 8px;
+    font-size: 12px;
+    margin-left: 4px;
+    margin-bottom: 6px;
 }
 
 .tag > input {
