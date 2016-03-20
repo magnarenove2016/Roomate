@@ -130,16 +130,18 @@
                 <div class="form-category">
                     <h4>Argazkiak <small>¡Zein etxe polita!</small></h4>
 
-                    {% for foto in casa.fotos.all %}
+                    {% if casa.fotos.all|length == 0 %}
+                        <p class="text-muted"><em>Oraingoz ez duzu argazkirik igo...</em></p>
+                    {% endif %}
 
-                        <div class="row photo-preview">
-                            <img class="" src="{{ foto.foto.url }}" alt="Foto casa"
+                    {% for foto in casa.fotos.all %}
+                        <div class="photo-preview">
+                            <img src="{{ foto.foto.url }}" alt="Foto casa"
                                  data-src="holder.js/280x200" data-holder-rendered="true">
                             <a href="{% url 'delete_house_image' path_image=foto.foto %}" class="photo-delete">
                                  <span class="glyphicon glyphicon-remove"></span>
                             </a>
                         </div>
-
                     {% endfor %}
                 </div>
 

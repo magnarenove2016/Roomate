@@ -343,8 +343,8 @@ textarea {
 .photo-delete {
     position: absolute;
     bottom: -22%;
-    left: 0;
-    width: 97%;
+    left: 4px;
+    width: calc(100% - 8px);
     height: 20%;
     padding-top: 9px;
 
@@ -354,14 +354,13 @@ textarea {
     background-color: rgb(70,70,70);
     font-size: 16px;
     font-weight: lighter;
-    margin: 4px;
 
     transition: all 0.2s ease-out;
 }
 
 .photo-preview:hover .photo-delete {
     cursor: pointer;
-    bottom: 0;
+    bottom: 4px;
     color: white;
     text-decoration: none;
 }
@@ -377,7 +376,7 @@ textarea {
 /* Pantallas pequeñas  */
 @media (max-width: 767px) {
     .photo-preview .photo-delete {
-        bottom: 0;
+        bottom: 4px;
     }
 
     .photo-preview:hover img {
@@ -446,11 +445,21 @@ textarea {
 
 .house-edit {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 0;
+    right: 0;
+
     color: #b4b4b4;
     text-decoration: none;
     font-size: 14px;
+    text-align: center;
+
+    /* Aumentar el espacio en el que se puede hacer click */
+    width: 40px;
+    height: 40px;
+    padding-top: 10px;
+
+    /* Necesario, si no se queda por debajo y no se puede pulsar */
+    z-index: 1;
 }
 
 .house-edit:hover {

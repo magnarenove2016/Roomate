@@ -19,7 +19,7 @@
             paramName: "file",
             acceptedFiles: "image/*",
             maxFilesize: 5.0,
-            maxFiles: 2,
+            maxFiles: 2 - {{ images.all|length }},
             parallelUploads: 10000,
             uploadMultiple: true,
 
@@ -60,7 +60,6 @@
         };
     </script>
 
-    <a name="contenido"></a>
     <div class="content-section-a">
         <div class="container">
             <div class="row">
@@ -166,13 +165,14 @@
                             {% endif %}
 
                             {% for image in images.all %}
-                                <span class="tag label label-info">
-                                    <img class="media-object" src="{{image.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
-                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="glyphicon glyphicon-remove"></a>
-                                    </img>
-                                </span>
+                                <div class="photo-preview">
+                                    <img src="{{ image.foto.url }}" alt="Foto casa"
+                                         data-src="holder.js/280x200" data-holder-rendered="true">
+                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="photo-delete">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </div>
                             {% endfor %}
-
                         </div>
 
                         <div class='text-right'>
