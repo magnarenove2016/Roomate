@@ -256,12 +256,12 @@ def undeveloped(request):
     return render(request, 'web/' + request.session['lang'] + '/undeveloped.html', {})
 
 
-def change_language(request, language):
+def change_language(request, language, actual):
     if language == castellano:
         request.session['lang'] = castellano
     elif language == euskera:
         request.session['lang'] = euskera
-    return redirect('main');
+    return redirect(actual);
 
 
 # pagina sobre los desarrolladores
