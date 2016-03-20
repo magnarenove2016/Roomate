@@ -14,7 +14,7 @@
             {% for casa in casas %}
                 <div class="row house-view">
 
-                     <a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}"
+                    <a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}"
                            class="house-edit glyphicon glyphicon-pencil"></a>
 
                     <div class="col-xs-4 col-sm-4 house-img">
@@ -37,7 +37,7 @@
                     <div class="col-xs-6 col-sm-8 house-info">
                         <ul>
                             <li><span class="campo">Ciudad: </span>{{ casa.ciudad }}</li>
-                            <li><span class="campo">Direccion: </span>{{ casa.direccion }}</li>
+                            <li><span class="campo">Direcci&oacute;n: </span>{{ casa.direccion }}</li>
                             <li><span class="campo">Numero de habitaciones: </span>{{ casa.numHabitaciones }}
                                 <span class="text-muted">({{ casa.numHabitacionesDisponibles }} disponibles)</span></li>
                             <li><span class="campo">Precio de alquiler
