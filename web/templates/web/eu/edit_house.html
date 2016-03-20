@@ -88,9 +88,11 @@
                     {% bootstrap_label "Hiria:" %}
                     {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
+                    <label>Helbidea:</label>
                     <div class="form-group">
-                        <label class="control-label" for="id_direccion">Helbidea:</label>
-                        <textarea class="form-control" required="required" rows="1">{{ formCasa.direccion.value }}</textarea>
+                        <label class="sr-only control-label" for="id_direccion">Direcci&oacute;n</label>
+                        <textarea class="form-control" cols="40" id="id_direccion" name="direccion"
+                        required="required" rows="1" title="">{{ formCasa.direccion.value }}</textarea>
                     </div>
 
                     <div class="row">
@@ -130,13 +132,13 @@
 
                     {% for foto in casa.fotos.all %}
 
-                        <span class="tag label label-info">
-                            <img class="media-object" src="{{ foto.foto.url }}" alt="120x120"
-                                 data-src="holder.js/120x120" style="width: 120px; height: 120px;"
-                                 data-holder-rendered="true">
-                                 <a href="{% url 'delete_house_image' path_image=foto.foto %}" class="glyphicon glyphicon-remove"></a>
-                            </img>
-                        </span>
+                        <div class="row photo-preview">
+                            <img class="" src="{{ foto.foto.url }}" alt="Foto casa"
+                                 data-src="holder.js/280x200" data-holder-rendered="true">
+                            <a href="{% url 'delete_house_image' path_image=foto.foto %}" class="photo-delete">
+                                 <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                        </div>
 
                     {% endfor %}
                 </div>

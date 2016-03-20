@@ -78,11 +78,12 @@
                     {% bootstrap_label "Hiria:" %}
                     {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
+                    <label>Helbidea:</label>
                     <div class="form-group">
-                        <label class="control-label" for="id_direccion">Helbidea:</label>
-                        <textarea class="form-control" required="required" rows="1"></textarea>
+                        <label class="sr-only control-label" for="id_direccion">Direcci&oacute;n</label>
+                        <textarea class="form-control" cols="40" id="id_direccion" name="direccion"
+                        required="required" rows="1" title=""></textarea>
                     </div>
-
                     <div class="row">
                         <div class="col-md-6">
                         {% bootstrap_label "Alkilatzeko gela kopurua:" %}
