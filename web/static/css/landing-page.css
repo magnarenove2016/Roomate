@@ -322,6 +322,7 @@ p.copyright {
 
 form {
     max-width: 900px;
+    margin: auto;
 }
 
 .form-category {

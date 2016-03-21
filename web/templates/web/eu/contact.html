@@ -8,9 +8,11 @@
     <a name="contenido"></a>
     <div class="container">
         <div class="contact-header">
-            <h1>Harremanetan jarri</h1>
             <form role="form" action="" method="post">
                 {% csrf_token %}
+
+                <h1>Harremanetan jarri</h1><br>
+
                 {% bootstrap_label "Izen abizenak / erabiltzailea: " %}
                 {% bootstrap_field form.contact_name show_label=false show_help=false set_required=true %}
                 {% bootstrap_label "Posta elektroniko helbidea: " %}
