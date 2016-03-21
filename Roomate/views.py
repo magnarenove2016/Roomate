@@ -12,6 +12,7 @@ import logMessages
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import resolve
 from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,) #por ahora solo se hace uso de passwordresetform en view_open
+from .forms import ValidatedSetPasswordForm, ValidatedPasswordChangeForm
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -36,6 +37,7 @@ def auth_view(request):
 def invalid_login(request):
     c = {}
     c.update(csrf(request))
+    messages.error(request, "Error")
     return redirect('main') #TODO: mostrar mensaje de error
 
 
@@ -59,6 +61,11 @@ def register_new_user(request):
             dbLogger.info(logMessages.userCreated_message+request.POST.get('username','') +"\'")##Logging
             return redirect('register_success')  # Redireccion a una pagina que muestra un mensaje de usuario creado
     else:
+        ###intento de poner mensaje de error, sin conseguirlo :(
+        # if request.session['lang'] == "es":
+        #     messages.error(request, 'Ha habido un problema desconocido, por favor vuelve a intentarlo en otro momento')
+        # else:
+        #     messages.error(request, 'Arazo bat egon da zure eskaerakin, mesedes saiatu zaitez berriro beranduago')
         form = forms.RegistrationForm();  # Si el usuario esta entrando en la pagina de registro, le mostramos un formulario vacio
     return render(request, 'web/' + request.session['lang'] + '/register.html', {'form': form})
 
@@ -181,7 +188,63 @@ def gest_logging(request,log_file):
     else:
         return redirect('main')
 
+# def open_view(request):
+#     current_url = resolve(request.path_info).url_name+".html"
+#     if request.method == "POST":  # Si el usuario le ha dado al boton de registrarse
+#         form = PasswordResetForm
+#         if form.is_valid():
+#             return render(request, 'web/'+request.session['lang']+'/'+current_url, {'form': form})
+#         else:
+#             if request.session['lang'] == "es":
+#                 messages.error(request, 'Ha habido un problema desconocido, por favor vuelve a intentarlo en otro momento')
+#             else:
+#                 messages.error(request, 'Arazo bat egon da zure eskaerakin, mesedes saiatu zaitez berriro beranduago')
+#         return render(request, 'web/' + request.session['lang'] + '/' +current_url, {'form': form})
+#     return render(request, 'web/' + request.session['lang'] + '/' +current_url, {'form': PasswordResetForm})
+
 def open_view(request):
     current_url = resolve(request.path_info).url_name+".html"
     form = PasswordResetForm
     return render(request, 'web/'+request.session['lang']+'/'+current_url, {'form': form})
+
+def password_reset(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            return redirect('password_reset_done')
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/password_reset.html', {'form': form})
+    return render(request, 'web/' + request.session['lang'] + '/password_reset.html', {
+        'form': PasswordResetForm
+    })
+
+def password_reset_done(request):
+    return render(request, 'web/' + request.session['lang'] + '/password_reset_done.html', {})
+
+def password_reset_confirm(request):
+    if request.method == 'POST':
+        form = ValidatedSetPasswordForm(request.POST)
+        if form.is_valid():
+            return redirect('password_reset_complete')
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/password_reset_confirm.html', {'form': form})
+    return render(request, 'web/' + request.session['lang'] + '/password_reset_confirm.html', {
+        'form': ValidatedSetPasswordForm
+    })
+
+def password_reset_complete(request):
+    return render(request, 'web/' + request.session['lang'] + '/password_reset_complete.html', {})
+
+def password_change(request):
+    if request.method == 'POST':
+        form = ValidatedPasswordChangeForm(request.POST)
+        if form.is_valid():
+            return redirect('password_change_done')
+        else:
+            return render(request, 'web/' + request.session['lang'] + '/password_change.html', {'form': form})
+    return render(request, 'web/' + request.session['lang'] + '/password_change.html', {
+        'form': ValidatedPasswordChangeForm
+    })
+
+def password_change_done(request):
+    return render(request, 'web/'+request.session['lang']+'/password_change_done.html')
