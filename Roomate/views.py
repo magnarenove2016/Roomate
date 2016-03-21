@@ -10,6 +10,8 @@ from django.contrib.sites.shortcuts import get_current_site
 import logging
 import logMessages
 from django.core.mail import EmailMultiAlternatives
+from django.core.urlresolvers import resolve
+from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,) #por ahora solo se hace uso de passwordresetform en view_open
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -178,3 +180,8 @@ def gest_logging(request,log_file):
             return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
     else:
         return redirect('main')
+
+def open_view(request):
+    current_url = resolve(request.path_info).url_name+".html"
+    form = PasswordResetForm
+    return render(request, 'web/'+request.session['lang']+'/'+current_url, {'form': form})
