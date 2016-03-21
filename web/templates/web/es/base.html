@@ -115,13 +115,9 @@
                     {% if request.user.is_superuser %}
 
                         <li><a href="/admin/auth/user/">Gestiona usuarios</a></li>
-                        <hr>
                         <li><a href="/admin/web/tag/">Gestionar tags</a></li>
-                        <hr>
                         <li><a href="{% url 'gest_logging' log_file=0 %}">Gestiona logs</a></li>
-                        <hr>
                         <li><a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a></li>
-                        <hr>
 
                     {% else %}
 
