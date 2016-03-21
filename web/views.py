@@ -222,7 +222,7 @@ def delete_house_image(request, path_image):
     dir=fc.first().casa.direccion
     fc.all().delete()
     dbLogger.info(logMessages.foCasDeleted_message+request.user.username+'\'')##Logging
-    return edit_house(request, dir, cit) #falta editar este y crear el boton que lo llame
+    return redirect("/edit_house/"+dir+"/"+cit+"/") #falta editar este y crear el boton que lo llame
 
 #Ensenar localizacion de casa y confirmar (requiere login)
 @login_required
