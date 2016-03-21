@@ -21,34 +21,18 @@
 
                         <div class="form-category">
                             {% bootstrap_label "1. Erabiltzaile izena" %}
-{#                            {% bootstrap_field form.username show_label=false show_help=false %}#}
-                        <div class="form-group">
-                            <label class="sr-only control-label" for="id_username">Nombre de usuario</label>
-                            <input class="form-control" id="id_username" maxlength="30" name="username" placeholder="Erabiltzaile izena" required="required" title="" type="text">
-                        </div>
+                            {% bootstrap_field form.username show_label=false show_help=false %}
 
                             {% bootstrap_label "2. Posta elektroniko helbidea" %}
-{#                            {% bootstrap_field form.email show_label=false show_help=false %}#}
-                        <div class="form-group">
-                            <label class="sr-only control-label" for="id_email">Email</label>
-                            <input class="form-control" id="id_email" name="email" placeholder="Posta elektroniko helbidea" required="required" title="" type="email">
-                        </div>
+                            {% bootstrap_field form.email show_label=false show_help=false %}
 
                             {% bootstrap_label "3. Pasahitza" %}
-{#                            {% bootstrap_field form.password1 show_label=false show_help=false %}#}
-                        <div class="form-group">
-                            <label class="sr-only control-label" for="id_password1">Contraseña</label>
-                            <input class="form-control" id="id_password1" name="password1" placeholder="Pasahitza" required="required" title="" type="password">
-                        </div>
+                            {% bootstrap_field form.password1 show_label=false show_help=false %}
 
                             {% bootstrap_label "4. Pasahitz baieztapena" %}
-{#                            {% bootstrap_field form.password2 show_label=false show_help=false %}#}
-                        <div class="form-group">
-                            <label class="sr-only control-label" for="id_password2">Contraseña (confirmación)</label>
-                            <input class="form-control" id="id_password2" name="password2" placeholder="Pasahitza (baieztapena)" required="required" title="" type="password">
-                        </div>
+                            {% bootstrap_field form.password2 show_label=false show_help=false %}
 
-                            {% bootstrap_label "5. Captcha" %}
+                            {% bootstrap_label "5. Kaptcha" %}
                             {% bootstrap_field form.captcha show_label=false %}
 
 
@@ -56,7 +40,7 @@
                                 <div class="checkbox">
                                     <label for="id_tos">
                                         {{form.tos}}
-                                        <a target="_blank" href="{% url 'legal' %}">Erabilpen baldintzak</a> irakurri ditut eta onartzen ditut
+                                        <a target="_blank" href="{% url 'legal' %}">Erabilpen baldintzak</a> irakurri eta onartzen ditut
                                     </label>
                                 </div>
                                 {% if form.tos.errors %}
