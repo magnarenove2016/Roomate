@@ -199,7 +199,7 @@ def edit_house(request, dir, ciudad):
                         request.session['direccion'] = Cas.direccion
                         request.session['ciudad'] = Cas.ciudad
                         request.session['refreshing_vcs']=False
-                        return redirect("/show_location/")
+                        return redirect("/show_loc_edit/")
                     else:
                         request.session['refreshing_vcs']=False
                         return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
@@ -248,6 +248,31 @@ def show_location(request):
             return redirect("/")
     else:
         return render(request, 'web/'+request.session['lang']+'/show_loc.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
+
+#Ensenar localizacion de casa y confirmar (requiere login)
+@login_required
+def show_loc_edit(request):
+    #creamos form
+    casaDir=request.session.get('direccion')
+    casaCi=request.session.get('ciudad')
+
+    request.session.delete('direccion')
+    request.session.delete('ciudad')
+
+    casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
+    if(request.method=="POST"):
+        if 'accept' in request.POST:
+            return redirect('show_my_houses')
+        else:
+            #case that he clicks cancel
+            for c in casa:
+                for f in c.fotos.all():
+                    f.delete()
+                c.delete()
+            #return one renderized view
+            return redirect("/")
+    else:
+        return render(request, 'web/'+request.session['lang']+'/show_loc_edit.html', {'lat':str(casa[0].latitude).replace(",", "."), 'long':str(casa[0].longitude).replace(",", ".")})
 
 
 # pagina generica para funciones sin desarrollar
