@@ -16,8 +16,8 @@
                     <div class="media-body">
 							<h2 class="media-heading"><a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">Casa </a></h2>
 							<p><strong>Ciudad:</strong> {{ casa.ciudad }}
-                            <p><strong>Direccion:</strong>{{ casa.direccion }}</p>
-                            <p><strong>Numero de habitaciones:</strong>{{ casa.numHabitaciones }}    <strong>Libres:</strong>{{ casa.numHabitacionesDisponibles }}</p>
+                            <p><strong>Direcci&oacute;n:</strong>{{ casa.direccion }}</p>
+                            <p><strong>N&uacute;mero de habitaciones:</strong>{{ casa.numHabitaciones }}    <strong>Libres:</strong>{{ casa.numHabitacionesDisponibles }}</p>
                             <p><strong>Descripci&oacute;n:</strong>{{ casa.descripciones }}</p>
                             {% if casa.alquilerPorHabitaciones == true %}
                             <p><strong>Se alquila por habitaciones</strong></p>
