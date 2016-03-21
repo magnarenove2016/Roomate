@@ -22,9 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'f&2jh2uw)mlq@!1g=#ok_1!rlxu95q_oal3&t%lpk6ux!yvebl'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -38,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'captcha',
     'web',
-	'bootstrap3',
+    'bootstrap3',
     'dbbackup',  # django-dbbackup
     'dropbox',
 ]
@@ -71,18 +68,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'Roomate.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 # Password validation
@@ -132,28 +117,10 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'no-reply@magnasis.com'
 SERVER_EMAIL = 'no-reply@magnasis.com'
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-LOGIN_REDIRECT_URL = '/'
-APPEND_SLASH = True
-
 #Clave publica para usar en ReCaptcha
-RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'
-RECAPTCHA_PRIVATE_KEY = '6LccDhkTAAAAAKwu3cOcPn3sW0x_oIcaSKjTzq19'
+RECAPTCHA_PUBLIC_KEY = '6LeuGRsTAAAAAH_mhWMchrE-CzOsUBJCndfyyeWu'
+RECAPTCHA_PRIVATE_KEY = '6LeuGRsTAAAAACz4b37EwdxeD4VX5VZ4RUcLL-yK'
 NOCAPTCHA = True
-
-
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-ALLOWED_HOSTS = ['*']
-
-DEBUG = False
 
 LOGGING = {
     'version': 1,
@@ -229,6 +196,40 @@ LOGGING = {
 #       }
     }
 }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
+
+DEBUG = False
+
+
+# Static files (CSS, JavaScript, Images)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+LOGIN_REDIRECT_URL = '/'
+APPEND_SLASH = True
+
+
+WSGI_APPLICATION = 'Roomate.wsgi.application'
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
 try:
