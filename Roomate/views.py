@@ -180,8 +180,3 @@ def gest_logging(request,log_file):
             return render(request, 'web/' + request.session['lang'] + '/gest_logging.html', {})
     else:
         return redirect('main')
-
-def open_view(request):
-    current_url = resolve(request.path_info).url_name+".html"
-    form = PasswordResetForm
-    return render(request, 'web/'+request.session['lang']+'/'+current_url, {'form': form})

@@ -8,9 +8,10 @@ from django.utils.translation import ugettext_lazy as _
 from datetime import  datetime
 from web.models import validation
 import hashlib,random
+import html
 
 # Formato de mensaje para controlar correos duplicados en el registro
-DOBLE_EMAIL = _(u"Este correo ya est&aacute; en uso. "u"Por favor utilice otro correo o inicie sesi&oacute;n")
+DOBLE_EMAIL = _(html.unescape("Este correo ya est&aacute; en uso. Por favor utilice otro correo o inicie sesi&oacute;n."))
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
@@ -29,7 +30,7 @@ class RegistrationForm(UserCreationForm):
     # Checkbox para las condiciones de uso que el usuario debe aceptar
     tos = forms.BooleanField(
         widget = forms.CheckboxInput,
-        label = 'He le&iacute;do y acepto las condiciones de uso',
+        label = html.unescape('He le&iacute;do y acepto las condiciones de uso'),
         error_messages={'required': 'Debes aceptar las condiciones de uso para continuar'}
     )
 
@@ -55,7 +56,7 @@ class RegistrationForm(UserCreationForm):
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
             raise forms.ValidationError(
-                "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero",
+                html.unescape("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero"),
                 code='invalid_password',
             )
 
@@ -91,7 +92,7 @@ class ValidatedPasswordChangeForm(PasswordChangeForm):
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
             raise forms.ValidationError(
-                "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero",
+                 html.unescape("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero"),
                 code='invalid_password',
             )
 
@@ -109,7 +110,7 @@ class ValidatedSetPasswordForm(SetPasswordForm):
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
             raise forms.ValidationError(
-                "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero",
+                 html.unescape("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero"),
                 code='invalid_password',
             )
 
