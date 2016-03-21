@@ -4,50 +4,52 @@
 
 {% block contenido %}
     <style type="text/css">
-      #mapdiv {
-        height:500px;
-      }
+        #mapdiv {
+            height: 500px;
+        }
     </style>
 
-    <a name="contenido"></a>
     <div class="content-section-a">
         <div class="container">
-            <h1>Localizacion de la casa a crear</h1>
-                                <!-- IMPORTANT enctype attribute! -->
-        <div id="mapdiv"></div>
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class='text-right'>
-                        {% bootstrap_button "Aceptar" button_type="submit" name="accept"  button_class="btn-primary btremove"%}
-                        {% bootstrap_button "Cancelar" button_type="submit" name="cancel" button_class="btn-danger"%}
-                    </div>
-                </form>
-                <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-              <script>
-    map = new OpenLayers.Map("mapdiv");
-    map.addLayer(new OpenLayers.Layer.OSM());
+
+            <h3 class="text-center">Localizacion de la casa a crear</h3>
+
+            <form method="POST" class="form-category">
+                {% csrf_token %}
+
+                <!-- IMPORTANT enctype attribute! -->
+                <div id="mapdiv"></div><br>
+
+                <div class='text-right'>
+                    {% bootstrap_button "Aceptar" button_type="submit" name="accept" button_class="btn-primary btremove" %}
+                    {% bootstrap_button "Cancelar" button_type="submit" name="cancel" button_class="btn-danger" %}
+                </div>
+            </form>
+
+            <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+            <script>
+                map = new OpenLayers.Map("mapdiv");
+                map.addLayer(new OpenLayers.Layer.OSM());
 
 
- // create layer switcher widget in top right corner of map.
-    var layer_switcher= new OpenLayers.Control.LayerSwitcher({});
-    map.addControl(layer_switcher);
-    //Set start centrepoint and zoom
-    var lonLat = new OpenLayers.LonLat({{ long }},{{ lat }})
-          .transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
-    var zoom=16;
+                // create layer switcher widget in top right corner of map.
+                var layer_switcher = new OpenLayers.Control.LayerSwitcher({});
+                map.addControl(layer_switcher);
+                //Set start centrepoint and zoom
+                var lonLat = new OpenLayers.LonLat({{ long }}, {{ lat }})
+                        .transform(
+                                new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                                map.getProjectionObject() // to Spherical Mercator Projection
+                        );
+                var zoom = 16;
 
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
+                var markers = new OpenLayers.Layer.Markers("Markers");
+                map.addLayer(markers);
 
-    markers.addMarker(new OpenLayers.Marker(lonLat));
-    map.setCenter (lonLat, zoom);
+                markers.addMarker(new OpenLayers.Marker(lonLat));
+                map.setCenter(lonLat, zoom);
 
-    </script>
-
-
+            </script>
 
         </div>
         <!-- /.contenido -->
