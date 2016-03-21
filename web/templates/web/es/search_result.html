@@ -2,39 +2,56 @@
 
 {% load bootstrap3 %}
 
-{% block title %}Editar perfil{% endblock %}
+{% load staticfiles %}
+
+{% block title %}B&uacute;usqueda de casas{% endblock %}
 
 {% block contenido %}
 
     <div class="content-section-a">
         <div class="container">
-    <div class="media">
+
+            <div class="row text-center"><h4>Resultado de la b&uacute;squeda:</h4></div>
 
             {% for casa in casas %}
-                    <div class="media-left">
-							<a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">
-                                {% if casa.fotos|length != "0" %}    {{article.product.images.all.0.image.url}}
-								<img class="media-object" src="{{casa.fotos.all.0.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
-							    {% else %}
-                                <img class="media-object" src="" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
-                                {% endif %}
-                            </a>
-						</div>
-						<div class="media-body">
-							<h2 class="media-heading"><a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">Casa </a></h2>
-							<p><strong>Ciudad:</strong> {{ casa.ciudad }}
-                            <p><strong>Direccion:</strong>{{ casa.direccion }}</p>
-                            <p><strong>Numero de habitaciones:</strong>{{ casa.numHabitaciones }}    <strong>Libres:</strong>{{ casa.numHabitacionesDisponibles }}</p>
-                            <p><strong>Descripción:</strong>{{ casa.descripciones }}</p>
-                            {% if casa.alquilerPorHabitaciones == true %}
-                            <p><strong>Se alquila por habitaciones</strong></p>
-                            {% endif %}
-                            <p><strong>Precio alquiler:</strong>{{ casa.precioAlquiler }} €     <strong>Precio gastos suplementarios:</strong>{{ casa.gastosComplementarios }} € </p>
-						</div>
+                <div class="row house-view">
 
-                    <hr>
+                    <div class="col-xs-6 col-sm-4 house-img">
+                        <a href="{% url 'show_house' ciudad=casa.ciudad dir=casa.direccion %}">
+                            {% if casa.fotos.all|length > 0 %}
+                                {{ article.product.images.all.0.image.url }}
+                                <img class="img img-width-300" src="{{ casa.fotos.all.0.foto.url }}" alt="300x225"
+                                     data-src="holder.js/300x225"
+                                     data-holder-rendered="true">
+                            {% else %}
+                                <img class="img img-width-300" src="{% static 'img/housePlaceholder.jpg' %}"
+                                     alt="300x225"
+                                     data-src="holder.js/300x225"
+                                     data-holder-rendered="true">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <!--/col-*-4-->
+
+                    <div class="col-xs-6 col-sm-8 house-info">
+                        <ul>
+                            <li><span class="campo">Ciudad: </span>{{ casa.ciudad }}</li>
+                            <li><span class="campo">Direcci&oacute;n: </span>{{ casa.direccion }}</li>
+                            <li><span class="campo">N&uacute;mero de habitaciones: </span>{{ casa.numHabitaciones }}
+                                <span class="text-muted">({{ casa.numHabitacionesDisponibles }} disponibles)</span></li>
+                            <li><span class="campo">Precio de alquiler
+                                {% if casa.alquilerPorHabitaciones %}(por habitaci&oacute;n){% endif %}
+                                : </span>{{ casa.precioAlquiler }}€
+                            </li>
+                            <li><span class="campo">Gastos complementarios: </span>{{ casa.gastosComplementarios }}€
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/col-*-8-->
+                </div>
+                <!--/row-->
             {% endfor %}
-            </div>
+
         </div>
     </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'web/es/base.html' %}
+{% extends 'web/eu/base.html' %}
 {% load staticfiles %}
 {% load bootstrap3 %}
 
@@ -10,13 +10,13 @@
             <div class="row">
                 <div class="">
                     <div class="panel panel-default  ">
-                        <div class="panel-heading"><h4>Datos de contacto </h4></div>
+                        <div class="panel-heading"><h4>Kontaktu informazioa </h4></div>
                         <ul class="list-group">
                             {% if fon != '' %}
-                                <li class="list-group-item"> N&uacute;mero de tel&eacute;fono: <span
+                                <li class="list-group-item"> Telefono zenbakia: <span
                                         class="label label-default "> {{ fon }}</span></li> {% endif %}
                             {% if mail != '' %}
-                                <li class="list-group-item"> Correo electr&oacute;nico: <span
+                                <li class="list-group-item"> Posta elektroniko helbidea: <span
                                         class="label label-default ">{{ mail }}</span></li> {% endif %}
                         </ul>
 

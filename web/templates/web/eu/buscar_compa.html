@@ -1,4 +1,4 @@
-{% extends 'web/es/base.html' %}
+{% extends 'web/eu/base.html' %}
 {% load staticfiles %}
 {% load bootstrap3 %}
 {% block contenido %}
@@ -9,20 +9,20 @@
             <form method="POST" class="form-search">
                 {% csrf_token %}
 
-                <h3 class="text-center">Buscar compa&ntilde;eros de piso</h3>
+                <h3 class="text-center">Pisukideak bilatu</h3>
 
                 <div class="form-category">
 
-                    {% bootstrap_label "Zona / ciudad de b&uacute;squeda:" %}
+                    {% bootstrap_label "Non bilatu:" %}
                     {% bootstrap_field form.lookingIn show_label=false show_help=false %}
 
-                    <label>Sexo:</label>
+                    <label>Sexua:</label>
                     <div class="form-group">
-                        <label class="sr-only control-label" for="id_gender">Sexo</label>
+                        <label class="sr-only control-label" for="id_gender">Sexua</label>
                         <select class="form-control" id="id_gender" name="gender" title="">
-                            <option value="" selected="selected">Indiferente</option>
-                            <option value="H">Hombre</option>
-                            <option value="M">Mujer</option>
+                            <option value="" selected="selected">Zehaztu gabe</option>
+                            <option value="H">Gizona</option>
+                            <option value="M">Emakumea</option>
                         </select>
                     </div>
 
@@ -30,7 +30,7 @@
                         <div class="checkbox">
                             <label for="id_isSmoker">
                                 <input class="" id="id_isSmoker" name="isSmoker" type="checkbox"/>
-                                Fumador
+                                Erretzailea
                             </label>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <button type="submit" class="btn btn-primary">Bilatu</button>
                 </div>
 
             </form>

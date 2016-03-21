@@ -24,46 +24,51 @@ urlpatterns = [
     url(r'^accounts/confirm/(?P<codigo>.+)$',views.activar_cuenta, name = 'activarCuenta'),
     # mensaje que se muestra cuando se ha creado bien el nuevo usuario
 
-    url(r'^accounts/password/reset/$', auth_views.password_reset,
-        {'template_name': 'web/es/password_reset.html',
-         'post_reset_redirect': 'password_reset_done'},
-        name='password_reset'),
+    # url(r'^accounts/password/reset/$', auth_views.password_reset,
+    #     {'template_name': 'web/es/password_reset.html',
+    #      'post_reset_redirect': 'password_reset_done'},
+    #     name='password_reset'),
+    url(r'^accounts/password/reset/$', views.open_view, name='password_reset'),
 
-    url(r'^accounts/password/reset/done/$',
-        auth_views.password_reset_done,
-        {'template_name': 'web/es/password_reset_done.html'},
-        name='password_reset_done'),
+    # url(r'^accounts/password/reset/done/$',
+    #     auth_views.password_reset_done,
+    #     {'template_name': 'web/es/password_reset_done.html'},
+    #     name='password_reset_done'),
+    url(r'^accounts/password/reset/$', views.open_view, name='password_reset_done'),
 
-    url(r'^accounts/password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        auth_views.password_reset_confirm,
-        {'template_name': 'web/es/password_reset_confirm.html',
-         'set_password_form': ValidatedSetPasswordForm},
-        name='password_reset_confirm'),
+    # url(r'^accounts/password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    #     auth_views.password_reset_confirm,
+    #     {'template_name': 'web/es/password_reset_confirm.html',
+    #      'set_password_form': ValidatedSetPasswordForm},
+    #     name='password_reset_confirm'),
+    url(r'^accounts/password/reset/$', views.open_view, name='password_reset_confirm'),
 
-    url(r'^accounts/password/reset/complete/$',
-        auth_views.password_reset_complete,
-        {'template_name': 'web/es/password_reset_complete.html'},
-        name='password_reset_complete'),
+    # url(r'^accounts/password/reset/complete/$',
+    #     auth_views.password_reset_complete,
+    #     {'template_name': 'web/es/password_reset_complete.html'},
+    #     name='password_reset_complete'),
+    url(r'^accounts/password/reset/$', views.open_view, name='password_reset_complete'),
 
-    url(r'^accounts/password/change/$',
-        auth_views.password_change,
-        {'template_name': 'web/es/password_change.html',
-         'password_change_form': ValidatedPasswordChangeForm,
-         'post_change_redirect': 'password_change_done'},
-        name='password_change'),
+    # url(r'^accounts/password/change/$',
+    #     auth_views.password_change,
+    #     {'template_name': 'web/es/password_change.html',
+    #      'password_change_form': ValidatedPasswordChangeForm,
+    #      'post_change_redirect': 'password_change_done'},
+    #     name='password_change'),
+    url(r'^accounts/password/reset/$', views.open_view, name='password_change'),
 
-    url(r'^accounts/password/change/done/$',
-        auth_views.password_change_done,
-        {'template_name': 'web/es/password_change_done.html'},
-        name='password_change_done'),
+    # url(r'^accounts/password/change/done/$',
+    #     auth_views.password_change_done,
+    #     {'template_name': 'web/es/password_change_done.html'},
+    #     name='password_change_done'),
+    url(r'^accounts/password/reset/$', views.open_view, name='password_change_done'),
 
     url(r'', include('web.urls')),  # todas las urls de web/urls.py
 ]
 
 # UNDERNEATH your urlpatterns definition, add the following two lines:
-if settings.DEBUG:
-    urlpatterns += patterns(
-        'django.views.static',
-        (r'media/(?P<path>.*)',
-         'serve',
-         {'document_root': settings.MEDIA_ROOT}), )
+urlpatterns += patterns(
+    'django.views.static',
+    (r'media/(?P<path>.*)',
+     'serve',
+     {'document_root': settings.MEDIA_ROOT}), )

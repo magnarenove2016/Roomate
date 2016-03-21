@@ -1,5 +1,7 @@
 {% extends 'web/eu/base.html' %}
+
 {% load staticfiles %}
+
 {% load bootstrap3 %}
 
 {% block contenido %}
@@ -59,8 +61,6 @@
         };
     </script>
 
-
-    <a name="contenido"></a>
     <div class="content-section-a add-house">
         <div class="container">
             <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data">
@@ -74,20 +74,30 @@
 
                 <!-- Formulario de aniadir casa -->
                 ​<div class="form-category">
+
                     {% bootstrap_label "Hiria:" %}
                     {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
 
-                    {% bootstrap_label "Helbidea:" %}
-                    {% bootstrap_field formCasa.direccion show_label=false show_help=false %}
-
-                    {% bootstrap_label "Alkilatzeko gela kopurua:" %}
-                    {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
-
-                    {% bootstrap_label "Eskuragarri dauden logela kopurua:" %}
-                    {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                    <label>Helbidea:</label>
+                    <div class="form-group">
+                        <label class="sr-only control-label" for="id_direccion">Direcci&oacute;n</label>
+                        <textarea class="form-control" cols="40" id="id_direccion" name="direccion"
+                        required="required" rows="1" title=""></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                        {% bootstrap_label "Alkilatzeko gela kopurua:" %}
+                        {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                        </div>
+                        <div class="col-md-6">
+                        {% bootstrap_label "Eskuragarri dauden logela kopurua:" %}
+                        {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                        </div>
+                    </div>
 
                     {% bootstrap_label "Etxearen / pisuaren deskribapena:" %}
                     {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
+
                 </div>
 
                 <div class="form-category">
@@ -101,20 +111,19 @@
                     <div class="form-group">
                         <div class="checkbox"><label for="id_alquilerPorHabitaciones">
                             {{ formCasa.alquilerPorHabitaciones }}
-                            Alquiler por habitaciones</label></div>
+                            Gelatiko alokairua</label></div>
                     </div>
 
                 </div>
 
                 <div class='text-right'>
                     {% bootstrap_button "Aldaketak gorde" button_type="submit" button_class="btn-primary btremove" %}
-                    {% bootstrap_button "Ezeztatu" button_type="link" href="/" button_class="btn-default" %}
+                    <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Ezeztatu</a>
                 </div>
+
             </form>
-
-
         </div>
-        <!-- /.contenido -->
+        <!-- /.content -->
     </div>
 
 {% endblock %}

@@ -2,45 +2,62 @@
 
 {% load bootstrap3 %}
 
-{% block title %}Editar perfil{% endblock %}
+{% load staticfiles %}
+
+{% block title %}Tus casas{% endblock %}
 
 {% block contenido %}
 
     <div class="content-section-a">
         <div class="container">
-            <div class="media">
 
-                {% for casa in casas %}
-                    <div class="media-left">
+            <div class="row">
+                <h3 class="text-center">Tus casas</h3>
+            </div>
+
+            {% for casa in casas %}
+                <div class="row house-view">
+
+                    <a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}"
+                           class="house-edit glyphicon glyphicon-pencil"></a>
+
+                    <div class="col-xs-4 col-sm-4 house-img">
                         <a href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}">
-                            {% if casa.fotos|length != "0" %}    {{ article.product.images.all.0.image.url }}
-                                <img class="media-object" src="{{ casa.fotos.all.0.foto.url }}" alt="120x120"
-                                     data-src="holder.js/120x120" style="width: 120px; height: 120px;"
+                            {% if casa.fotos.all|length > 0 %}
+                                {{ article.product.images.all.0.image.url }}
+                                <img class="img img-width-300" src="{{ casa.fotos.all.0.foto.url }}" alt="300x225"
+                                     data-src="holder.js/300x225"
                                      data-holder-rendered="true">
                             {% else %}
-                                <img class="media-object" src="" alt="120x120" data-src="holder.js/120x120"
-                                     style="width: 120px; height: 120px;" data-holder-rendered="true">
+                                <img class="img img-width-300" src="{% static 'img/housePlaceholder.jpg' %}"
+                                     alt="300x225"
+                                     data-src="holder.js/300x225"
+                                     data-holder-rendered="true">
                             {% endif %}
                         </a>
                     </div>
-                    <div class="media-body">
-                        <h2 class="media-heading"><a
-                                href="{% url 'edit_house' ciudad=casa.ciudad dir=casa.direccion %}">Casa</a></h2>
-                        <p><strong>Ciudad:</strong> {{ casa.ciudad }}</p>
-                        <p><strong>Direccion:</strong>{{ casa.direccion }}</p>
-                        <p><strong>Numero de habitaciones:</strong>{{ casa.numHabitaciones }}
-                            <strong>Libres:</strong>{{ casa.numHabitacionesDisponibles }}</p>
-                        <p><strong>Descripción:</strong>{{ casa.descripciones }}</p>
-                        {% if casa.alquilerPorHabitaciones == true %}
-                            <p><strong>Se alquila por habitaciones</strong></p>
-                        {% endif %}
-                        <p><strong>Precio alquiler:</strong>{{ casa.precioAlquiler }} € <strong>Precio gastos
-                            suplementarios:</strong>{{ casa.gastosComplementarios }} € </p>
-                    </div>
+                    <!--/col-*-4-->
 
-                    <hr>
-                {% endfor %}
-            </div>
+                    <div class="col-xs-6 col-sm-8 house-info">
+                        <ul>
+                            <li><span class="campo">Ciudad: </span>{{ casa.ciudad }}</li>
+                            <li><span class="campo">Direcci&oacute;n: </span>{{ casa.direccion }}</li>
+                            <li><span class="campo">Numero de habitaciones: </span>{{ casa.numHabitaciones }}
+                                <span class="text-muted">({{ casa.numHabitacionesDisponibles }} disponibles)</span></li>
+                            <li><span class="campo">Precio de alquiler
+                                {% if casa.alquilerPorHabitaciones %}(por habitación){% endif %}
+                                : </span>{{ casa.precioAlquiler }}€
+                            </li>
+                            <li><span class="campo">Gastos complementarios: </span>{{ casa.gastosComplementarios }}€
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/col-*-8-->
+                </div>
+                <!--/row-->
+            {% endfor %}
+
         </div>
     </div>
+
 {% endblock %}

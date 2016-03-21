@@ -1,10 +1,10 @@
-{% extends 'web/es/base.html' %}
+{% extends 'web/eu/base.html' %}
 
 {% load staticfiles %}
 
 {% load bootstrap3 %}
 
-{% block title %}Buscar compa&ntilde;ero{% endblock %}
+{% block title %}Pisukidea bilatu{% endblock %}
 
 {% block contenido %}
 
@@ -39,13 +39,12 @@
         <div class="container">
 
             <div class="title text-center">
-                <h3>Resultado de la búsqueda</h3>
+                <h3>Bilaketaren emaitza</h3>
                 {% if not usuarios %}
-                    <p>No se ha encontrado ningún usuario que cumpla los criterios indicados</p>
+                    <p>Ez da aurkitu esandako irizpideak betetzen dituen erabiltzailerik</p>
                 {% else %}
-                    <p>Posibles compa&ntilde;eros de piso:</p>
+                    <p>Pisukide posibleak:</p>
                 {% endif %}
-
             </div>
 
             {% if usuarios %}
@@ -65,52 +64,48 @@
 
                                     {% if usuario.firstName != '' %}
                                         <li class="list-group-item">
-                                            <b>Nombre:</b> {{ usuario.firstName }} {{ usuario.lastName }}
+                                            <b>Izena:</b> {{ usuario.firstName }} {{ usuario.lastName }}
                                         </li>
                                     {% endif %}
 
                                     {% if usuario.lookingIn != '' %}
                                         <li class="list-group-item">
-                                            <b>Zona en la que busca piso:</b> {{ usuario.lookingIn }}
+                                            <b>Non ari da pisua bilatzen:</b> {{ usuario.lookingIn }}
                                         </li>
                                     {% endif %}
 
                                     <li class="list-group-item">
-                                        <b>Otros datos:</b>
+                                        <b>Beste datu batzuk:</b>
                                         {% if usuario.gender == "M" %}
-                                            <span class="label label-default">Mujer</span>
+                                            <span class="label label-default">Emakumea</span>
                                         {% elif usuario.gender == "H" %}
-                                            <span class="label label-default ">Hombre</span>
-                                        {% endif %}
-                                        {% if usuario.isSmoker %}
-                                             {% if usuario.gender == "M" %}
-                                                 <span class="label label-default">Fumadora</span>
-                                             {% else %}
-                                                 <span class="label label-default">Fumador</span>
-                                             {% endif %}
-                                        {% else %}
-                                            <span class="label label-default">No fuma</span>
+                                            <span class="label label-default ">Gizona</span>
                                         {% endif %}
                                         {% if usuario.get_pet_display != 'Ninguna' %}
-                                            <span class="label label-default ">Mascota: {{ usuario.get_pet_display }}</span>
+                                            <span class="label label-default ">Maskota: {{ usuario.get_pet_display }}</span>
                                         {% else %}
-                                            <span class="label label-default ">Sin mascota</span>
+                                            <span class="label label-default ">Maskotarik gabe</span>
+                                        {% endif %}
+                                        {% if usuario.isSmoker %}
+                                            <span class="label label-default">Erretzailea</span>
+                                        {% else %}
+                                            <span class="label label-default">Ez du erretzen</span>
                                         {% endif %}
                                         {% if usuario.Instrument != '' %}
-                                            <span class="label label-default">Instrumento: {{ usuario.Instrument }}</span>
+                                            <span class="label label-default">Musika-tresna: {{ usuario.Instrument }}</span>
                                         {% endif %}
                                     </li>
 
                                     {% if usuario.description != '' %}
                                         <li class="list-group-item">
-                                            <b>Descripci&oacute;n:</b>
+                                            <b>Deskribapena:</b>
                                             <p>{{ usuario.description }}</p>
                                         </li>
                                     {% endif %}
 
                                     {% if usuario.tags.all %}
                                         <div class="list-group-item">
-                                            <b>Tags:</b>
+                                            <b>Etiketak:</b>
 
                                             {% for tag in usuario.tags.all %}
                                                 <span class="tag label label-info">
@@ -126,7 +121,7 @@
 
                             <div class="panel-footer">
                                 <a href="/usuario/{{ usuario.user.username }}" class="btn btn-default" role="button">
-                                    Ponerse en contacto
+                                    Harremanetan jarri
                                 </a>
                             </div>
 

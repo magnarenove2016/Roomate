@@ -1,5 +1,7 @@
 {% extends 'web/es/base.html' %}
+
 {% load staticfiles %}
+
 {% load bootstrap3 %}
 
 {% block title %}Editar perfil{% endblock %}
@@ -19,7 +21,7 @@
             paramName: "file",
             acceptedFiles: "image/*",
             maxFilesize: 5.0,
-            maxFiles: 2,
+            maxFiles: 2 - {{ images.all|length }},
             parallelUploads: 10000,
             uploadMultiple: true,
 
@@ -67,7 +69,7 @@
                 <div class="col-lg-12">
                     <div class="description">
                         <h3>Tu perfil</h3>
-                        <p class="text-info">Completa tu perfil para poder realizar búsquedas personalizadas, <br>
+                        <p class="text-info">Completa tu perfil para poder realizar b&uacute;squedas personalizadas,
                             y facilitar que otros usuarios puedan ponerse en contacto contigo.</p>
                         <p class="text-muted">Todos los campos <strong>son opcionales</strong>.</p>
                     </div>
@@ -79,7 +81,7 @@
 
                         <!-- formulario del perfil -->
                         <div class="form-category">
-                            <h4>Información básica</h4>
+                            <h4>Informaci&oacute;n b&aacute;sica</h4>
 
                             {% bootstrap_label "Nombre:" %}
                             {% bootstrap_field form.firstName show_label=false show_help=false %}
@@ -93,14 +95,14 @@
                             {% bootstrap_label "Sexo:" %}
                             {% bootstrap_field form.gender show_label=false show_help=false %}
 
-                            {% bootstrap_label "Número de teléfono:" %}
+                            {% bootstrap_label "N&uacute;mero de tel&eacute;fono:" %}
                             {% bootstrap_field form.telephone show_label=false show_help=false %}
 
                         </div>
 
                         <div class="form-category">
                             <h4>Preferencias</h4>
-                            {% bootstrap_label "Ciudad o zona en la que buscas piso" %}
+                            {% bootstrap_label "Ciudad o zona en la que buscas piso:" %}
                             {% bootstrap_field form.lookingIn show_label=false show_help=false %}
 
                             {% bootstrap_label "Inicio de la estancia:" %}
@@ -113,7 +115,7 @@
                         <div class="form-category">
                             <h4>Otra informaci&oacute;n</h4>
 
-                            {% bootstrap_label "Ocupación:" %}
+                            {% bootstrap_label "Ocupaci&oacuten:" %}
                             {% bootstrap_field form.ocupation show_label=false show_help=false %}
 
                             {% bootstrap_label "Mascota:" %}
@@ -122,7 +124,7 @@
                             {% bootstrap_label "Instrumento musical que toques:" %}
                             {% bootstrap_field form.Instrument show_label=false show_help=false %}
 
-                            {% bootstrap_label "Descripción:" %}
+                            {% bootstrap_label "Descripci&oacuten:" %}
                             {% bootstrap_field form.description show_label=false show_help=false %}
 
                             <div class="form-group">
@@ -159,24 +161,28 @@
                         </div>
 
                         <div class="form-category">
-                            <h4>Imagenes
+                            <h4>Fotos
                                 <small>¡D&eacute;janos ver lo guap@ que eres!</small>
                             </h4>
+
+                            {% if images.all|length == 0 %}
+                                <p class="text-muted"><em>Por el momento no has subido ninguna foto...</em></p>
+                            {% endif %}
+
                             {% for image in images.all %}
-                                <span class="tag label label-info">
-                                    <img class="media-object" src="{{image.foto.url}}" alt="120x120" data-src="holder.js/120x120" style="width: 120px; height: 120px;" data-holder-rendered="true">
-                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="glyphicon glyphicon-remove"></a>
-                                    </img>
-                                </span>
-
+                                <div class="photo-preview">
+                                    <img src="{{ image.foto.url }}" alt="Foto casa"
+                                         data-src="holder.js/280x200" data-holder-rendered="true">
+                                    <a href="{% url 'delete_profile_image' path_image=image.foto %}" class="photo-delete">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </div>
                             {% endfor %}
-
-                            <p class="aviso"><em>Aviso! Completa algo de informaci&oacute;tu perf&iacute;l, para que podamos asociar la foto a tu perf&iacute;l.</em></p>
                         </div>
 
                         <div class='text-right'>
                             {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
-                            {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-danger" %}
+                            <a href="{% url 'main' %}" class="btn btn-danger">Cancelar</a>
                         </div>
 
                     </form>
