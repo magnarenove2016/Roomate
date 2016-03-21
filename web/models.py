@@ -3,10 +3,11 @@ from django.core.validators import RegexValidator  # utilizando una expresion re
 from django.db import models
 from django.utils.translation import ugettext_lazy as _  # traduccion de los formatos de texto de errores
 from time import time
+import html
 
 # formato de mensaje para controlar que no se meta mal las fechas
 FECHAS_ESTANCIA_ERROR = _(
-    u"revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final")
+    u"Revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final.")
 
 """
     Perfil del usuario que contiene todos los datos extra que
@@ -37,7 +38,7 @@ class Profile(models.Model):
 
     # Expresion regular para validar el numero de telefono
     phone_regex = RegexValidator(regex=r'^\+?1?(\d| ){9,15}$',
-                                 message=u'N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)')
+                                 message=html.unescape('N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)'))
 
     # Usuario asociado al perfil (un perfil por usuario)
     user = models.OneToOneField('auth.User', models.CASCADE, related_name='profile')

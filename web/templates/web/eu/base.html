@@ -99,7 +99,7 @@
 <!-- Casos de uso -->
 {% if user.is_authenticated %}
     <div class="navbar" id="second-nav" role="navigation">
-        <div class="container topnav">
+        <div class="container-fluid topnav">
 
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#second-navbar-collapse">
@@ -136,7 +136,7 @@
                                aria-expanded="false">
                                 <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
-                            <ul class="dropdown-menu visible-md">
+                            <ul class="dropdown-menu">
                                 <li><a href="{% url 'password_change' %}">Pasahitza aldatu</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{% url 'delete_user' %}">Kontua ezabatu</a></li>
