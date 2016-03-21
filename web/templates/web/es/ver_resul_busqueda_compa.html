@@ -77,16 +77,24 @@
 
                                     <li class="list-group-item">
                                         <b>Otros datos:</b>
-                                        <span class="label label-default ">{{ usuario.get_gender_display }}</span>
-                                        {% if usuario.get_pet_display != 'Ninguna' %}
-                                            <span class="label label-default ">{{ usuario.get_pet_display }}</span>
-                                        {% else %}
-                                            <span class="label label-default ">Sin mascota</span>
+                                        {% if usuario.gender == "M" %}
+                                            <span class="label label-default">Mujer</span>
+                                        {% elif usuario.gender == "H" %}
+                                            <span class="label label-default ">Hombre</span>
                                         {% endif %}
                                         {% if usuario.isSmoker %}
-                                            <span class="label label-default">Fumador</span>
+                                             {% if usuario.gender == "M" %}
+                                                 <span class="label label-default">Fumadora</span>
+                                             {% else %}
+                                                 <span class="label label-default">Fumador</span>
+                                             {% endif %}
                                         {% else %}
                                             <span class="label label-default">No fuma</span>
+                                        {% endif %}
+                                        {% if usuario.get_pet_display != 'Ninguna' %}
+                                            <span class="label label-default ">Mascota: {{ usuario.get_pet_display }}</span>
+                                        {% else %}
+                                            <span class="label label-default ">Sin mascota</span>
                                         {% endif %}
                                         {% if usuario.Instrument != '' %}
                                             <span class="label label-default">Instrumento: {{ usuario.Instrument }}</span>
@@ -100,14 +108,14 @@
                                         </li>
                                     {% endif %}
 
-                                    {% if usuario.tags %}
+                                    {% if usuario.tags.all %}
                                         <div class="list-group-item">
                                             <b>Tags:</b>
 
                                             {% for tag in usuario.tags.all %}
                                                 <span class="tag label label-info">
-                                                {{ tag.text }}
-                                            </span>
+                                                    {{ tag.text }}
+                                                </span>
                                             {% endfor %}
                                         </div>
                                     {% endif %}

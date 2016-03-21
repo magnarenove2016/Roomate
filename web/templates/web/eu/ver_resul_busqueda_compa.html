@@ -103,14 +103,14 @@
                                         </li>
                                     {% endif %}
 
-                                    {% if usuario.tags %}
+                                    {% if usuario.tags.all %}
                                         <div class="list-group-item">
                                             <b>Etiketak:</b>
 
                                             {% for tag in usuario.tags.all %}
                                                 <span class="tag label label-info">
-                                                {{ tag.text }}
-                                            </span>
+                                                    {{ tag.text }}
+                                                </span>
                                             {% endfor %}
                                         </div>
                                     {% endif %}
