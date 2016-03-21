@@ -409,4 +409,3 @@ def mostrarcontacto(request,nombre):
     form = ProfileForm2(instance=b[0])
 
     return render(request, 'web/'+request.session['lang']+'/ver_perfil_compa.html', {'fon':b[0].telephone,'mail':user[0].email})
-
