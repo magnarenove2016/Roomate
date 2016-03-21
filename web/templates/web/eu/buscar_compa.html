@@ -1,30 +1,47 @@
-{% extends 'web/es/base.html' %}
+{% extends 'web/eu/base.html' %}
 {% load staticfiles %}
 {% load bootstrap3 %}
 {% block contenido %}
 
-    <a name="contenido"></a>
     <div class="content-section-a">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <br><br><br><br>
-                    <h1>Mesedez, bete hurrengo formulario pisukideak bilatzeko</h1>
-                    <form method="POST" class="col-md-5 edit-profile-form container">{% csrf_token %}
 
-                        {% bootstrap_label "Sexua:" %}
-                        {% bootstrap_field form.gender show_label=false show_help=false %}
-                        {% bootstrap_label "Erretzailea:" %}
-                        {% bootstrap_field form.isSmoker show_label=false show_help=false %}
-                        {% bootstrap_label "Non bilatu:" %}
-                        {% bootstrap_field form.lookingIn show_label=false show_help=false %}
+            <form method="POST" class="form-search">
+                {% csrf_token %}
 
-                        <button type="submit" class="save btn btn-default">Bilatu</button>
-                        
-                    </form>
+                <h3 class="text-center">Pisukideak bilatu</h3>
+
+                <div class="form-category">
+
+                    {% bootstrap_label "Non bilatu:" %}
+                    {% bootstrap_field form.lookingIn show_label=false show_help=false %}
+
+                    <label>Sexua:</label>
+                    <div class="form-group">
+                        <label class="sr-only control-label" for="id_gender">Sexua</label>
+                        <select class="form-control" id="id_gender" name="gender" title="">
+                            <option value="" selected="selected">Zehaztu gabe</option>
+                            <option value="H">Gizona</option>
+                            <option value="M">Emakumea</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="id_isSmoker">
+                                <input class="" id="id_isSmoker" name="isSmoker" type="checkbox"/>
+                                Erretzailea
+                            </label>
+                        </div>
+                    </div>
 
                 </div>
-            </div>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">Bilatu</button>
+                </div>
+
+            </form>
 
         </div>
         <!-- /.contenido -->

@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^delete_profile_image/(?P<path_image>.+)/$', views.delete_profile_image, name='delete_profile_image'),
     url(r'^add_tag/$', views.add_tag, name='add_tag'),
     url(r'^delete_tag/(?P<texto_del_tag>.+)/$', views.delete_tag, name='delete_tag'),
-    url(r'^change_language/(?P<language>.+)/$', views.change_language, name='change_language'),
+    url(r'^change_language/(?P<language>.+)/(?P<actual>/.*)/$', views.change_language, name='change_language'),
     url(r'^undeveloped/$', views.undeveloped, name='undeveloped'),
     url(r'^about_us/$', views.about_us, name='about_us'),
     url(r'^contact/$', views.contact, name='contact'),
@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^show_house/(?P<dir>.+)/(?P<ciudad>.+)/$', views.show_house, name='show_house'),
     url(r'^delete_house_image/(?P<path_image>.+)/$', views.delete_house_image, name='delete_house_image'),
     url(r'^busqueda/$', views.busquedaCompa, name='busqueda'),
-    url(r'^usuario/(?P<nombre>.+)$', views.mostrarcontacto, name='mostrarperfil'),
+    url(r'^usuario/(?P<nombre>.+)/$', views.mostrarcontacto, name='mostrarperfil'),
 ]

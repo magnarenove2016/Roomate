@@ -1,16 +1,15 @@
+import logging
 import math
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.core.mail import send_mail  # para contactar con el support
-from django.shortcuts import render_to_response, render, redirect
-from django.template import RequestContext  # para mostrar el mail en el .html
+import logMessages
 
 from Roomate.views import castellano, euskera
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail  # para contactar con el support
+from django.shortcuts import render, redirect
+from django.template import RequestContext  # para mostrar el mail en el .html
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
-import logging
-import logMessages
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -238,7 +237,7 @@ def show_location(request):
     casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
     if(request.method=="POST"):
         if 'accept' in request.POST:
-            return render(request, 'web/' + request.session['lang'] + '/casa_creada.html', {})
+            return redirect('show_my_houses')
         else:
             #case that he clicks cancel
             for c in casa:
@@ -256,12 +255,12 @@ def undeveloped(request):
     return render(request, 'web/' + request.session['lang'] + '/undeveloped.html', {})
 
 
-def change_language(request, language):
+def change_language(request, language, actual):
     if language == castellano:
         request.session['lang'] = castellano
     elif language == euskera:
         request.session['lang'] = euskera
-    return redirect('main');
+    return redirect(actual);
 
 
 # pagina sobre los desarrolladores
@@ -325,7 +324,7 @@ def get_location_search(request):
     else:
         # used url /search/ with no parameters
         return render(request, 'web/' + request.session['lang'] + '/error.html', {})
-    return render_to_response('web/' + request.session['lang'] + '/search_result.html',
+    return render(request, 'web/' + request.session['lang'] + '/search_result.html',
                               {'latitude': search.latitude, 'longitude': search.longitude, 'distance': dist},
                               context_instance=RequestContext(request))
 
@@ -362,25 +361,25 @@ def filtros(sex,fumador,city):
     if sex == '':
         if fumador == False:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=False).all()
+                return Profile.objects.all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=False).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=False).all()
         else:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=True).all()
+                return Profile.objects.filter(isSmoker=True).all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=True).all()
     else:
         if fumador == False:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=False,gender=sex).all()
+                return Profile.objects.filter(isSmoker=False,gender=sex).all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=False,gender=sex).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=False,gender=sex).all()
         else:
             if city == '':
-                return Profile.objects.filter(ocupation='E',isSmoker=True,gender=sex).all()
+                return Profile.objects.filter(isSmoker=True,gender=sex).all()
             else:
-                return Profile.objects.filter(ocupation='E',lookingIn=city,isSmoker=True,gender=sex).all()
+                return Profile.objects.filter(lookingIn=city,isSmoker=True,gender=sex).all()
 
 #buscar companeros de piso
 @login_required
@@ -409,5 +408,5 @@ def mostrarcontacto(request,nombre):
     b = Profile.objects.filter(user=user[0])
     form = ProfileForm2(instance=b[0])
 
-    return render_to_response('web/'+request.session['lang']+'/ver_perfil_compa.html', {'fon':b[0].telephone,'mail':user[0].email})
+    return render(request, 'web/'+request.session['lang']+'/ver_perfil_compa.html', {'fon':b[0].telephone,'mail':user[0].email})
 
