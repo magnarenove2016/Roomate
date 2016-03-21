@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^contact/done/$', views.contact_done, name='contact_done'),
     url(r'^legal/$', views.legal, name='legal'),
     url(r'^show_location/$', views.show_location, name='show_location'),
+    url(r'^show_loc_edit/$', views.show_loc_edit, name='show_loc_edit'),
     url(r'^show_my_houses/$', views.show_my_houses, name='show_my_houses'),
     url(r'^edit_house/(?P<dir>.+)/(?P<ciudad>.+)/$', views.edit_house, name='edit_house'),
     url(r'^show_house/(?P<dir>.+)/(?P<ciudad>.+)/$', views.show_house, name='show_house'),
