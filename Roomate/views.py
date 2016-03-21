@@ -77,7 +77,7 @@ def enviarCorreosActivation(user,dir):
 def user_created(request):
     c = {}
     c.update(csrf(request))
-    return render_to_response('web/' + request.session['lang'] + '/register_complete.html', c)
+    return render(request,'web/' + request.session['lang'] + '/register_complete.html', c)
 
 
 # Borrar un usuario
@@ -125,11 +125,11 @@ def trigger_backup(request):
 
 #simplemente te hace una redireccion a una pagina que te muestra el mensaje de cuenta activada
 def cuentaactivada(request):
-    return render_to_response('web/'+request.session['lang']+'/activacion_complete.html')
+    return render(request,'web/'+request.session['lang']+'/activacion_complete.html')
 
 #mostrar el mensaje de error de activacion de cuenta
 def error_activacion(request):
-    return render_to_response('web/'+request.session['lang']+'/activacionerror.html')
+    return render(request,'web/'+request.session['lang']+'/activacionerror.html')
 
 def activar_cuenta(request,codigo):
     try:
@@ -138,12 +138,12 @@ def activar_cuenta(request,codigo):
         print('error al buscar la validacion')
         c = {}
         c.update(csrf(request))
-        return render_to_response('web/'+request.session['lang']+'/activation_link_error.html',c)
+        return render(request,'web/'+request.session['lang']+'/activation_link_error.html',c)
 
     if u is None:
         c = {}
         c.update(csrf(request))
-        return render_to_response('web/'+request.session['lang']+'/activacionerror.html',c)
+        return render(request,'web/'+request.session['lang']+'/activacionerror.html',c)
 
     else:
         expired_date = u.creation_date - timedelta(days=2)
@@ -153,14 +153,14 @@ def activar_cuenta(request,codigo):
             u.delete()
             c = {}
             c.update(csrf(request))
-            return render_to_response('web/'+request.session['lang']+'/activation_link_error.html',c)
+            return render(request,'web/'+request.session['lang']+'/activation_link_error.html',c)
 
         u.user.is_active = True
         u.user.save()
         u.delete()
         c = {}
         c.update(csrf(request))
-        return render_to_response('web/'+request.session['lang']+'/activacion_complete.html',c)
+        return render(request,'web/'+request.session['lang']+'/activacion_complete.html',c)
 
 @login_required
 def gest_logging(request,log_file):
