@@ -159,11 +159,13 @@
 {% block contenido %}
 {% endblock %}
 
-</div>
-<!-- /.banner -->
-
 {% block footer %}
     {% include "web/eu/footer.html" %}
 {% endblock %}
+
+{% block messages %}
+    {% include "web/es/messages.html" %}
+{% endblock %}
+
 </body>
 </html>

@@ -2,6 +2,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response, redirect
 from django.template.context_processors import csrf
+from django.utils.translation import ugettext as _
 from . import forms
 from django.core import management
 from web.models import validation
@@ -28,8 +29,11 @@ def auth_view(request):
         sessionLogger.info(logMessages.login_message+username+'\'')##Logging
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
+    elif user is not None:
+        messages.error(request, _("La cuenta con la que estás intentando acceder no está activa."))
     else:
-        return redirect('invalid')  # Si no son validos, se redirige al usuario a una pagina de error
+        messages.error(request, _("Los datos introducidos son incorrectos, vuelve a intentarlo."))
+    return redirect('invalid')  # Si no son validos, se redirige al usuario a una pagina de error
 
 
 # Redirige al usuario a una pagina de error
@@ -96,7 +100,7 @@ def delete_user(request):
             sessionLogger.info(logMessages.logout_message+username+'\'') ##Logging
             return redirect('main')
         else:
-            messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
+            messages.error(request, _('El nombre de usuario introducido no coincide con tu nombre de usuario.'))
 
     return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
 
