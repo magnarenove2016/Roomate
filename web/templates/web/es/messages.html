@@ -1,14 +1,12 @@
 <script>
-
     jQuery(function ($) {
         $('.close').on("click", function (e) {
             $(this).parent().fadeOut();
         });
     });
-
 </script>
 
-<div class="messages">
+<div class="messages"><h1 style="color:black">
     {% for message in messages %}
         <!-- Mensajes de error -->
         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}

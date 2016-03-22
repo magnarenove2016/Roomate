@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail  # para contactar con el support
 from django.shortcuts import render, redirect
 from django.template import RequestContext  # para mostrar el mail en el .html
+from django.utils import translation
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
@@ -283,8 +284,12 @@ def undeveloped(request):
 def change_language(request, language, actual):
     if language == castellano:
         request.session['lang'] = castellano
+        request.session[translation.LANGUAGE_SESSION_KEY] = castellano
+        translation.activate(castellano)
     elif language == euskera:
         request.session['lang'] = euskera
+        request.session[translation.LANGUAGE_SESSION_KEY] = euskera
+        translation.activate('eu')
     return redirect(actual);
 
 
