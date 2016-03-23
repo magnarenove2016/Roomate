@@ -188,7 +188,7 @@ def edit_house(request, dir, ciudad):
                         Cas.longitude=location.longitude
                         Cas.save()
                         #dbLogger.info(logMessages.casaEdited_message+request.user.username+'Ciudad: '+Cas.ciudad+'Direccion: '+Cas.direccion+'\'')##Logging
-                        dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
+                        dbLogger.info(logMessages.casaEdited_message+request.user.username+'\'')##Logging
                         for f in request.FILES._itervalues():
                             newFoto=FotoCasa(foto=f)
                             newFoto.casa=Cas
