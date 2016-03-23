@@ -1,17 +1,20 @@
+import hashlib
+import random
 import re
+from datetime import  datetime
+from html import unescape
 
 from captcha.fields import ReCaptchaField
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext_lazy as _
-from datetime import  datetime
+from django.utils.translation import ugettext as _
 from web.models import validation
-import hashlib,random
-import html
 
 # Formato de mensaje para controlar correos duplicados en el registro
-DOBLE_EMAIL = _(html.unescape("Este correo ya est&aacute; en uso. Por favor utilice otro correo o inicie sesi&oacute;n."))
+DOBLE_EMAIL = _("Este correo ya est&aacute; en uso. Por favor utilice otro correo o inicie sesi&oacute;n.")
+INVALID_PASS = _("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener,"
+                 " al menos, una letra y un n&uacute;mero")
 
 # Formulario de registro del usuario.
 class RegistrationForm(UserCreationForm):
@@ -30,8 +33,8 @@ class RegistrationForm(UserCreationForm):
     # Checkbox para las condiciones de uso que el usuario debe aceptar
     tos = forms.BooleanField(
         widget = forms.CheckboxInput,
-        label = html.unescape('He le&iacute;do y acepto las condiciones de uso'),
-        error_messages={'required': 'Debes aceptar las condiciones de uso para continuar'}
+        label = unescape(_('He le&iacute;do y acepto las condiciones de uso')),
+        error_messages={'required': _('Debes aceptar las condiciones de uso para continuar')}
     )
 
     # Funcion que se encargar de mirar en la base de datos
@@ -43,7 +46,7 @@ class RegistrationForm(UserCreationForm):
             no exista previamente en la base de datos.
             """
             if User.objects.filter(email__iexact=self.cleaned_data['email']): # Buscar en la base de datos el correo introducido
-                raise forms.ValidationError(DOBLE_EMAIL)
+                raise forms.ValidationError(unescape(_(DOBLE_EMAIL)))
             return self.cleaned_data['email']
 
     def clean_password2(self):
@@ -55,10 +58,7 @@ class RegistrationForm(UserCreationForm):
 
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
-            raise forms.ValidationError(
-                html.unescape("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero"),
-                code='invalid_password',
-            )
+            raise forms.ValidationError(unescape(_(INVALID_PASS)), code='invalid_password')
 
         return password2
 
@@ -91,10 +91,7 @@ class ValidatedPasswordChangeForm(PasswordChangeForm):
 
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
-            raise forms.ValidationError(
-                 html.unescape("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero"),
-                code='invalid_password',
-            )
+            raise forms.ValidationError(unescape(_(INVALID_PASS)), code='invalid_password')
 
         return password2
 
@@ -109,9 +106,6 @@ class ValidatedSetPasswordForm(SetPasswordForm):
 
         # Si la password no cumple estos requisitos, se eleva un error
         if not valid:
-            raise forms.ValidationError(
-                 html.unescape("La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y contener, al menos, una letra y un n&uacute;mero"),
-                code='invalid_password',
-            )
+            raise forms.ValidationError(unescape(_(INVALID_PASS)), code='invalid_password')
 
         return password2

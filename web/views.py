@@ -289,7 +289,7 @@ def change_language(request, language, actual):
     elif language == euskera:
         request.session['lang'] = euskera
         request.session[translation.LANGUAGE_SESSION_KEY] = euskera
-        translation.activate('eu')
+        translation.activate(euskera)
     return redirect(actual);
 
 
@@ -301,6 +301,7 @@ def about_us(request):
 def welcome(request):
     if 'lang' not in request.session:
         request.session['lang'] = castellano
+        request.session[translation.LANGUAGE_SESSION_KEY] = castellano
     return render(request, 'web/' + request.session['lang'] + '/welcome.html', {})
 
 

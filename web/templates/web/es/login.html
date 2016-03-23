@@ -23,11 +23,6 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        {% if form.errors %}
-                            <p class="text-danger">{% trans "Los datos introducidos son err&oacute;neos" %}</p>
-
-                        {% endif %}
-
                         <form class="navbar-form navbar-center" role="form" action="/accounts/login/" method="post"
                               id="login-nav">{% csrf_token %}
                             <div class="form-group">

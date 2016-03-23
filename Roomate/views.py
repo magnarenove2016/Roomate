@@ -1,18 +1,18 @@
+import logging
+from datetime import timedelta
+import logMessages
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, render_to_response, redirect
-from django.template.context_processors import csrf
-from django.utils.translation import ugettext as _
-from . import forms
-from django.core import management
-from web.models import validation
-from datetime import timedelta
 from django.contrib.sites.shortcuts import get_current_site
-import logging
-import logMessages
+from django.core import management
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import resolve
-from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,) #por ahora solo se hace uso de passwordresetform en view_open
+from django.shortcuts import render, redirect
+from django.template.context_processors import csrf
+from django.utils.translation import ugettext as _
+from web.models import validation
+from html import unescape
+from . import forms
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -30,7 +30,7 @@ def auth_view(request):
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
     elif user is not None:
-        messages.error(request, _("La cuenta con la que estás intentando acceder no está activa."))
+        messages.error(request, unescape(_("La cuenta con la que est&aacute;s intentando acceder no est&aacute; activa.")))
     else:
         messages.error(request, _("Los datos introducidos son incorrectos, vuelve a intentarlo."))
     return redirect('invalid')  # Si no son validos, se redirige al usuario a una pagina de error

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-22 23:28+0100\n"
+"POT-Creation-Date: 2016-03-23 17:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: .\Roomate\forms.py:14
+msgid ""
+"Este correo ya est&aacute; en uso. Por favor utilice otro correo o inicie "
+"sesi&oacute;n."
+msgstr ""
+
+#: .\Roomate\forms.py:15
+msgid ""
+"La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y "
+"contener, al menos, una letra y un n&uacute;mero"
+msgstr ""
+
+#: .\Roomate\forms.py:35
+msgid "He le&iacute;do y acepto las condiciones de uso"
+msgstr ""
+
+#: .\Roomate\forms.py:36
+msgid "Debes aceptar las condiciones de uso para continuar"
+msgstr ""
+
 #: .\Roomate\views.py:33
-msgid "La cuenta con la que estás intentando acceder no está activa."
+msgid ""
+"La cuenta con la que est&aacute;s intentando acceder no est&aacute; activa."
 msgstr ""
 
 #: .\Roomate\views.py:35
 msgid "Los datos introducidos son incorrectos, vuelve a intentarlo."
-msgstr "Sartutako datuak okerrak dira, berriro saiatu zaitez."
+msgstr ""
 
 #: .\Roomate\views.py:103
 msgid "El nombre de usuario introducido no coincide con tu nombre de usuario."
@@ -1268,10 +1289,108 @@ msgstr ""
 msgid "%s: error: %s\n"
 msgstr ""
 
-#: .\web\models.py:10
+#: .\web\forms.py:21
+msgid "Ciudad"
+msgstr "Hiria"
+
+#: .\web\forms.py:22 .\web\forms.py:25
+msgid "Descripci&oacute;n"
+msgstr "Deskribapena"
+
+#: .\web\forms.py:23
+msgid "N&uacute;mero de habitaciones"
+msgstr "Eskuragarri dauden logela kopurua"
+
+#: .\web\forms.py:24
+msgid "N&uacute;mero de habitaciones disponibles"
+msgstr "Alkilatzeko gela kopurua"
+
+#: .\web\forms.py:26
+msgid "Precio del alquiler (en euros)"
+msgstr ""
+
+#: .\web\forms.py:27
+msgid "Gastos complementarios (en euros)"
+msgstr ""
+
+#: .\web\forms.py:47
+msgid "Nombre"
+msgstr ""
+
+#: .\web\forms.py:48
+msgid "Apellidos"
+msgstr ""
+
+#: .\web\forms.py:49
+msgid "N&uacute;mero de tel&eacute;fono"
+msgstr ""
+
+#: .\web\forms.py:50
+msgid "Instrumento"
+msgstr ""
+
+#: .\web\forms.py:51
+msgid "Una breve descripci&oacute;n sobre ti"
+msgstr ""
+
+#: .\web\forms.py:52 .\web\models.py:144
+msgid "Ciudad / zona en la que buscas piso"
+msgstr ""
+
+#: .\web\models.py:9
 msgid ""
 "Revise las fechas de estancia. La fecha de inicio no debe ser superior a la "
 "fecha de final."
+msgstr ""
+
+#: .\web\models.py:10
+msgid ""
+"N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 "
+"d&iacute;gitos)"
+msgstr ""
+
+#: .\web\models.py:21 .\web\models.py:27 .\web\models.py:137
+msgid "Sin especificar"
+msgstr "Zehaztu gabe"
+
+#: .\web\models.py:22 .\web\models.py:138
+msgid "Hombre"
+msgstr "Gizona"
+
+#: .\web\models.py:23 .\web\models.py:139
+msgid "Mujer"
+msgstr "Emakumea"
+
+#: .\web\models.py:28
+msgid "Estudiante"
+msgstr ""
+
+#: .\web\models.py:29
+msgid "Trabajador"
+msgstr ""
+
+#: .\web\models.py:33
+msgid "Ninguna"
+msgstr ""
+
+#: .\web\models.py:34
+msgid "Perro"
+msgstr ""
+
+#: .\web\models.py:35
+msgid "Gato"
+msgstr ""
+
+#: .\web\models.py:36
+msgid "Otros"
+msgstr ""
+
+#: .\web\models.py:142
+msgid "Sexo"
+msgstr ""
+
+#: .\web\models.py:143
+msgid "Fumador"
 msgstr ""
 
 #: .\web\templates\web\es\base.html:71
@@ -1355,6 +1474,7 @@ msgstr ""
 "duen kodea erabili da</p>"
 
 #: .\web\templates\web\es\login.html:9
+#, python-format
 msgid "¡Hola %(username)s!"
 msgstr "Kaixo %(username)s!"
 
@@ -1366,30 +1486,52 @@ msgstr "Saioa amaitu"
 msgid "Login"
 msgstr "Sartu"
 
-#: .\web\templates\web\es\login.html:27
-msgid "Los datos introducidos son err&oacute;neos"
-msgstr "Sartutako datuak okerrak dira"
-
-#: .\web\templates\web\es\login.html:35
+#: .\web\templates\web\es\login.html:30
 msgid "Usuario"
 msgstr "Erabiltzailea"
 
-#: .\web\templates\web\es\login.html:37
+#: .\web\templates\web\es\login.html:32
 msgid "Nombre de usuario"
 msgstr "Erabiltzailea"
 
-#: .\web\templates\web\es\login.html:42 .\web\templates\web\es\login.html:44
+#: .\web\templates\web\es\login.html:37 .\web\templates\web\es\login.html:39
 msgid "Contrase&ntilde;a"
 msgstr "Pasahitza"
 
-#: .\web\templates\web\es\login.html:47
+#: .\web\templates\web\es\login.html:42
 msgid "¿Has olvidado tu contrase&ntilde;a?"
 msgstr "Zure pasahitza ahaztu duzu?"
 
-#: .\web\templates\web\es\login.html:50
+#: .\web\templates\web\es\login.html:45
 msgid "Entrar"
 msgstr "Sartu"
 
-#: .\web\templates\web\es\login.html:51
+#: .\web\templates\web\es\login.html:46
 msgid "Registrarse"
 msgstr "Erregistratu"
+
+# Sobreescribir traducciones (incompletas) de Django
+# Cada vez que se ejecuta compilemessages se comentan (hay que descomentarlas)
+msgid ""
+"This password is too short. It must contain at least %(min_length)d "
+"character."
+msgid_plural ""
+"This password is too short. It must contain at least %(min_length)d "
+"characters."
+msgstr[0] ""
+"Esta contraseña es muy corta. Debe contener al menos %(min_length)d "
+"caracter."
+msgstr[1] ""
+"Esta contraseña es muy corta. Debe contener al menos %(min_length)d "
+"caracteres."
+
+msgid "This password is too common."
+msgstr "This password is too common."
+
+msgid "This password is entirely numeric."
+msgstr "This password is entirely numeric."
+
+# Error del captcha
+msgid "Incorrect, please try again."
+msgstr "Incorrecto, por favor, vuelve a intentarlo."
+

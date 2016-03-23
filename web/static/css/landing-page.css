@@ -152,11 +152,11 @@ h6 {
 }
 
 .alert-message.success {
-	background-color: #5da423;
+	background-color: #64ba49;
 }
 
 .alert-message.warning {
-	background-color: #e3b000;
+	background-color: #d28346;
 }
 
 .alert-message.error {
