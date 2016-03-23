@@ -72,12 +72,12 @@ class ContactForm(forms.Form):
         required=True,
         widget=forms.Textarea
     )
-    # lo que aparecera en el html de contacto, los nombres
-    # def __init__(self, *args, **kwargs):
-    #     super(ContactForm, self).__init__(*args, **kwargs)
-    #     self.fields['contact_name'].label = "Your name:"
-    #     self.fields['contact_email'].label = "Your email:"
-    #     self.fields['content'].label = "What do you want to say?"
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.fields['contact_name'].widget.attrs.update({'placeholder': _('Nombre de usuario')})
+        self.fields['contact_email'].widget.attrs.update({'placeholder': _('Cuenta de correo')})
+        self.fields['content'].widget.attrs.update({'placeholder': _('Mensaje para los desarrolladores')})
 
 #formulario para Buscar companero
 class BusquedaForm(forms.ModelForm):

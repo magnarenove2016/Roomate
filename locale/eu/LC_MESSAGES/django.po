@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-23 17:17+0100\n"
+"POT-Creation-Date: 2016-03-23 19:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\Roomate\forms.py:14
+#: .\Roomate\forms.py:15
 msgid ""
 "Este correo ya est&aacute; en uso. Por favor utilice otro correo o inicie "
 "sesi&oacute;n."
 msgstr ""
 
-#: .\Roomate\forms.py:15
+#: .\Roomate\forms.py:16
 msgid ""
 "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y "
 "contener, al menos, una letra y un n&uacute;mero"
 msgstr ""
 
-#: .\Roomate\forms.py:35
+#: .\Roomate\forms.py:36
 msgid "He le&iacute;do y acepto las condiciones de uso"
 msgstr ""
 
-#: .\Roomate\forms.py:36
+#: .\Roomate\forms.py:37
 msgid "Debes aceptar las condiciones de uso para continuar"
 msgstr ""
 
@@ -1337,6 +1337,18 @@ msgstr ""
 msgid "Ciudad / zona en la que buscas piso"
 msgstr ""
 
+#: .\web\forms.py:69 .\web\templates\web\es\login.html.py:32
+msgid "Nombre de usuario"
+msgstr "Erabiltzailea"
+
+#: .\web\forms.py:70
+msgid "Cuenta de correo"
+msgstr "Posta elektroniko helbidea"
+
+#: .\web\forms.py:73
+msgid "Mensaje para los desarrolladores"
+msgstr "Teknikarientzako mezua"
+
 #: .\web\models.py:9
 msgid ""
 "Revise las fechas de estancia. La fecha de inicio no debe ser superior a la "
@@ -1490,10 +1502,6 @@ msgstr "Sartu"
 msgid "Usuario"
 msgstr "Erabiltzailea"
 
-#: .\web\templates\web\es\login.html:32
-msgid "Nombre de usuario"
-msgstr "Erabiltzailea"
-
 #: .\web\templates\web\es\login.html:37 .\web\templates\web\es\login.html:39
 msgid "Contrase&ntilde;a"
 msgstr "Pasahitza"
@@ -1534,4 +1542,3 @@ msgstr "This password is entirely numeric."
 # Error del captcha
 msgid "Incorrect, please try again."
 msgstr "Incorrecto, por favor, vuelve a intentarlo."
-
