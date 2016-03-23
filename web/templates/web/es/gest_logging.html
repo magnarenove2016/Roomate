@@ -15,22 +15,24 @@
             </div>
             <div class="row">
                 <div class="col-lg-2">
-                    </br>
-                    </br>
-                    </br>
-                    <ul  style="list-style-type:none;padding-left:10px">
-                        <li>{% bootstrap_button "roomate.log" button_type="link" href="/logging/1" button_class="btn-default" %}</li>
-                        <ul style="list-style-type:disc;padding-left:25px;padding-top:5px">
-                            <li>{% bootstrap_button "session.log" button_type="link" href="/logging/2" button_class="btn-default" %}</li>
-                            <li>{% bootstrap_button "dbAccess.log" button_type="link" href="/logging/3" button_class="btn-default" %}</li>
+                    <div id="log_but_cont">
+                        <div>
+                            <h4>Arichivos .log</h4style>
+                        </div>
+                        <ul class="log_file_button" >
+                            <li>{% bootstrap_button "roomate.log" button_type="link" href="/logging/1" button_class="btn-default" %}</li>
+                            <ul >
+                                <li>{% bootstrap_button "session.log" button_type="link" href="/logging/2" button_class="btn-default btn-block" %}</li>
+                                <li>{% bootstrap_button "dbAccess.log" button_type="link" href="/logging/3" button_class="btn-default btn-block" %}</li>
+                            </ul>
                         </ul>
-                    </ul>
+                    </div>
                 </div>
                 <div class="col-lg-10">
                     </br>
                     </br>
                     </br>
-                    <textarea style="font-family:'Courier New' ;width:100%;height:555px">{{ text_log }}</textarea>
+                    <textarea class="log_file_display" >{{ text_log }}</textarea>
                 </div>
             </div>
         </div>
