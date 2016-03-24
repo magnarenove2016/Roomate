@@ -27,14 +27,17 @@
                             {% bootstrap_field form.email show_label=false show_help=false %}
 
                             {% bootstrap_label "3. Pasahitza" %}
-                            {% bootstrap_field form.password1 show_label=false show_help=false %}
+                            {% if form.password2.errors %}
+                            {% bootstrap_field form.password1 show_label=false show_help=false field_class="has-error"%}
+                            {% else %}
+                            {% bootstrap_field form.password1 show_label=false show_help=false%}
+                            {% endif %}
 
                             {% bootstrap_label "4. Pasahitz baieztapena" %}
                             {% bootstrap_field form.password2 show_label=false show_help=false %}
 
                             {% bootstrap_label "5. Kaptcha" %}
                             {% bootstrap_field form.captcha show_label=false %}
-
 
                             <div class="form-group">
                                 <div class="checkbox">

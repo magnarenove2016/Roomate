@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _  # traduccion de los formatos de texto de errores
 
 # formato de mensaje para controlar que no se meta mal las fechas
-FECHAS_ESTANCIA_ERROR = _("Revise las fechas de estancia. La fecha de inicio no debe ser superior a la fecha de final.")
+FECHAS_ESTANCIA_ERROR = _("Revisa las fechas de estancia. La fecha de inicio no debe ser superior a la fecha final.")
 PHONE_ERROR = _('N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)')
 
 """
@@ -65,7 +65,7 @@ class Profile(models.Model):
         if (self.iniEstancia is None): return
         if (self.finEstancia is None): return
         if (self.iniEstancia > self.finEstancia):
-            raise ValidationError(FECHAS_ESTANCIA_ERROR)
+            raise ValidationError({'iniEstancia':'', 'finEstancia': _(FECHAS_ESTANCIA_ERROR)})
 
     def __str__(self):
         return 'Perfil de ' + self.user.username

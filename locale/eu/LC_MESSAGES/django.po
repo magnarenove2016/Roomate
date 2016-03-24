@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-24 13:31+0100\n"
+"POT-Creation-Date: 2016-03-24 21:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -429,7 +429,7 @@ msgstr ""
 
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:65
 msgid "This field is required."
-msgstr ""
+msgstr "Eremu hau derrigorrezkoa da"
 
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:255
 msgid "Enter a whole number."
@@ -1307,27 +1307,27 @@ msgstr "Alkilatzeko gela kopurua"
 
 #: .\web\forms.py:26
 msgid "Precio del alquiler (en euros)"
-msgstr ""
+msgstr "Akura-saria (eurotan)"
 
 #: .\web\forms.py:27
 msgid "Gastos complementarios (en euros)"
-msgstr ""
+msgstr "Bestelako gastuak (eurotan)"
 
 #: .\web\forms.py:47
 msgid "Nombre"
-msgstr ""
+msgstr "Izena"
 
 #: .\web\forms.py:48
 msgid "Apellidos"
-msgstr ""
+msgstr "Abizena"
 
 #: .\web\forms.py:49
 msgid "N&uacute;mero de tel&eacute;fono"
-msgstr ""
+msgstr "Telefono zenbakia"
 
 #: .\web\forms.py:50
 msgid "Instrumento"
-msgstr ""
+msgstr "Instrumentua"
 
 #: .\web\forms.py:51
 msgid "Una breve descripci&oacute;n sobre ti"
@@ -1335,7 +1335,7 @@ msgstr ""
 
 #: .\web\forms.py:52 .\web\models.py:144
 msgid "Ciudad / zona en la que buscas piso"
-msgstr ""
+msgstr "Pisua bilatzen ari zaren hiria edo zonaldea"
 
 #: .\web\forms.py:78 .\web\templates\web\es\login.html.py:32
 msgid "Nombre de usuario"
@@ -1351,8 +1351,8 @@ msgstr "Teknikarientzako mezua"
 
 #: .\web\models.py:9
 msgid ""
-"Revise las fechas de estancia. La fecha de inicio no debe ser superior a la "
-"fecha de final."
+"Revisa las fechas de estancia. La fecha de inicio no debe ser superior a la "
+"fecha final."
 msgstr ""
 
 #: .\web\models.py:10
@@ -1387,23 +1387,23 @@ msgstr ""
 
 #: .\web\models.py:34
 msgid "Perro"
-msgstr ""
+msgstr "Txakurra"
 
 #: .\web\models.py:35
 msgid "Gato"
-msgstr ""
+msgstr "Katua"
 
 #: .\web\models.py:36
 msgid "Otros"
-msgstr ""
+msgstr "Beste batzuk"
 
 #: .\web\models.py:142
 msgid "Sexo"
-msgstr ""
+msgstr "Sexua"
 
 #: .\web\models.py:143
 msgid "Fumador"
-msgstr ""
+msgstr "Erretzailea"
 
 #: .\web\templates\web\es\base.html:71
 msgid "Buscar casa..."
@@ -1518,11 +1518,15 @@ msgstr "Sartu"
 msgid "Registrarse"
 msgstr "Erregistratu"
 
-#: .\web\views.py:50 .\web\views.py:270
+#: .\web\views.py:52 .\web\views.py:279
 msgid "Los cambios han sido guardados!"
-msgstr ""
+msgstr "Aldaketak gorde egin dira!"
 
-#: .\web\views.py:244
+#: .\web\views.py:55
+msgid "No se han podido guardar todos los cambios, hay un error en el perfil."
+msgstr "Ezin izan dira aldaketa guztiak gorde, akats bat dago profilean."
+
+#: .\web\views.py:253
 msgid "La casa ha sido creada correctamente!"
 msgstr ""
 
@@ -1540,6 +1544,9 @@ msgstr[0] ""
 msgstr[1] ""
 "Esta contraseña es muy corta. Debe contener al menos %(min_length)d "
 "caracteres."
+
+msgid "The password is too similar to the %(verbose_name)s."
+msgstr "Pasahitza erabiltzaile izenera antzekoegi da."
 
 msgid "This password is too common."
 msgstr "This password is too common."
