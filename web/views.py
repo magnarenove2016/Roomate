@@ -1,13 +1,15 @@
 import logging
 import math
-import logMessages
 
+import logMessages
 from Roomate.views import castellano, euskera
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail  # para contactar con el support
 from django.shortcuts import render, redirect
 from django.template import RequestContext  # para mostrar el mail en el .html
 from django.utils import translation
+from django.utils.translation import ugettext as _
 from geopy.geocoders import Nominatim
 from .forms import *
 from .models import *
@@ -45,6 +47,7 @@ def edit_profile(request):
         if formProfile.is_valid():  # comprobamos que el profile es valido
             formProfile.save()  # y lo guardamos
             dbLogger.info(logMessages.profileEdited_message + request.user.username + '\'')##Logging
+            messages.success(request, _("Los cambios han sido guardados!"))
             return redirect('completar_perfil')
 
     else:
@@ -238,6 +241,7 @@ def show_location(request):
     casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
     if(request.method=="POST"):
         if 'accept' in request.POST:
+            messages.success(request, _("La casa ha sido creada correctamente!"))
             return redirect('show_my_houses')
         else:
             #case that he clicks cancel
@@ -263,6 +267,7 @@ def show_loc_edit(request):
     casa=Casa.objects.filter(direccion=casaDir,ciudad=casaCi).all()
     if(request.method=="POST"):
         if 'accept' in request.POST:
+            messages.success(request, _("Los cambios han sido guardados!"))
             return redirect('show_my_houses')
         else:
             #case that he clicks cancel

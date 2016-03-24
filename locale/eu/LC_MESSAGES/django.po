@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-23 19:06+0100\n"
+"POT-Creation-Date: 2016-03-24 13:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1337,15 +1337,15 @@ msgstr ""
 msgid "Ciudad / zona en la que buscas piso"
 msgstr ""
 
-#: .\web\forms.py:69 .\web\templates\web\es\login.html.py:32
+#: .\web\forms.py:78 .\web\templates\web\es\login.html.py:32
 msgid "Nombre de usuario"
 msgstr "Erabiltzailea"
 
-#: .\web\forms.py:70
+#: .\web\forms.py:79
 msgid "Cuenta de correo"
 msgstr "Posta elektroniko helbidea"
 
-#: .\web\forms.py:73
+#: .\web\forms.py:80
 msgid "Mensaje para los desarrolladores"
 msgstr "Teknikarientzako mezua"
 
@@ -1517,6 +1517,14 @@ msgstr "Sartu"
 #: .\web\templates\web\es\login.html:46
 msgid "Registrarse"
 msgstr "Erregistratu"
+
+#: .\web\views.py:50 .\web\views.py:270
+msgid "Los cambios han sido guardados!"
+msgstr ""
+
+#: .\web\views.py:244
+msgid "La casa ha sido creada correctamente!"
+msgstr ""
 
 # Sobreescribir traducciones (incompletas) de Django
 # Cada vez que se ejecuta compilemessages se comentan (hay que descomentarlas)
