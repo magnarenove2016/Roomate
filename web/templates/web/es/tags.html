@@ -1,0 +1,49 @@
+ <script type="text/javascript">
+    $(document).ready(function(){
+
+        $('.add-tag').click(function(){
+            // Desvincular las funciones, ya que tras completar la peticion AJAX se vuelven a vincular.
+            // De lo contrario, la funcion se ejecutara tantas veces como peticiones AJAX se hayan realizado.
+            $('.add-tag').unbind();
+            $('.delete-tag').unbind();
+
+            // Peticion AJAX para crear un nuevo tag
+            $.ajax({
+                url: '{% url 'add_tag' %}',
+                success: function(data) {
+                    $('#tags').append(data);
+                }
+            });
+        });
+
+        $('.delete-tag').click(function(){
+            var targetURL = $(this).attr('rel');
+            var parent =  $(this).parent();
+
+            // Peticion AJAX para borrar un tag
+            $.ajax({
+                url: targetURL,
+                complete: function() {
+                    // Animacion para hacer desaparecer el tag
+                    parent.animate({
+                        'width':'0',
+                        'opacity':'0',
+                        'margin-right': '-6px',
+                        'margin-left': '-7px'
+                        }, 'slow', function(){
+                            parent.remove();
+                    });
+                }
+            });
+        });
+
+    });
+</script>
+
+{% for tag in tag_forms %}
+    <span class="tag label label-info">
+        {{ tag.text }}
+        <a rel="{% url 'delete_tag' texto_del_tag=tag.text.value %}" class="delete-tag glyphicon glyphicon-remove"></a>
+    </span>
+{% endfor %}
+

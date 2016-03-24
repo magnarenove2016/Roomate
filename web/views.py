@@ -20,35 +20,39 @@ dbLogger = logging.getLogger('database') ##Logging
 # Registrar un arrendatario completando su perfil
 @login_required
 def edit_profile(request):
-    # Comprobar si el usuario ya tiene un perfil creado
+    # Comprobar si el usuario ya tiene un perfil creado (y si no, crearselo)
     try:
         profile = request.user.profile
     except:
-        profile = Profile(user=request.user)  # si no tiene perfil, se lo creamos
+        profile = Profile(user=request.user)
 
-    tags = Tag.objects.filter(perfil=profile)  # obtener tags asociados al perfil
+    tags = Tag.objects.filter(perfil=profile) # obtener tags asociados al perfil
 
     if request.method == 'POST':
         formProfile = ProfileForm(request.POST, instance=profile, prefix='perfil')  # extraemos el profile del POST
 
+        # Guardar los cambios realizados en los tags
         for i, tag in enumerate(tags):
             tagForm = TagForm(request.POST, instance=tag, prefix='tag_%s' % i)
             tagForm.perfil = profile
             if tagForm.is_valid():
                 tagForm.save()  # TODO: comprobar si el tag ya existe?
-                dbLogger.info(logMessages.tagCreated_message+request.user.username+'\'')##Logging
+                dbLogger.info(logMessages.tagCreated_message + request.user.username + '\'')  # Logging
 
+        # Guardar las fotos subidas por el usuario
         for file in request.FILES._itervalues():
             newFoto = FotoPerfil(foto=file)
             newFoto.perfil = profile
             newFoto.save()
-            dbLogger.info(logMessages.foPerAdded_message+request.user.username+'\'')##Logging
+            dbLogger.info(logMessages.foPerAdded_message + request.user.username + '\'')  # Logging
 
         if formProfile.is_valid():  # comprobamos que el profile es valido
             formProfile.save()  # y lo guardamos
-            dbLogger.info(logMessages.profileEdited_message + request.user.username + '\'')##Logging
+            dbLogger.info(logMessages.profileEdited_message + request.user.username + '\'')  # Logging
             messages.success(request, _("Los cambios han sido guardados!"))
             return redirect('completar_perfil')
+        else:
+            messages.error(request, _('No se han podido guardar todos los cambios, hay un error en el perfil.'))
 
     else:
         formProfile = ProfileForm(instance=profile, prefix='perfil')  # formulario con solo con los tags que ya tiene
@@ -73,7 +77,6 @@ def delete_profile_image(request, path_image):
     dbLogger.info(logMessages.foPerDeleted_message+request.user.username+'\'')##Logging
     return edit_profile(request) #
 
-
 # anadir tag al usuario
 @login_required
 def add_tag(request):
@@ -87,10 +90,16 @@ def add_tag(request):
     tag = Tag()
 
     tag.perfil = profile  # asignamos el perfil
-    tag.text = "Etiqueta en Blanco"  # y un texto generico
+    tag.text = "Etiqueta en blanco"  # y un texto generico
     tag.save()  # y lo guardamos
     dbLogger.info(logMessages.tagAdded_message+request.user.username+'\'')
-    return redirect('/completar_perfil/', )
+
+    if(request.is_ajax()):
+        tag_forms = []
+        tag_forms.append(TagForm(instance=tag))
+        return render(request, 'web/es/tags.html', {'tag_forms' : tag_forms})
+    else:
+        return redirect('/completar_perfil/', )
 
 
 # eliminar determinado tag del usuario

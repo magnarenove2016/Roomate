@@ -156,7 +156,7 @@ h6 {
 }
 
 .alert-message.warning {
-	background-color: #d28346;
+	background-color: #c58834;
 }
 
 .alert-message.error {
@@ -625,7 +625,6 @@ textarea {
     font-weight: bold;
 }
 
-
 .house-info ul {
     padding: 20px;
 }
@@ -658,9 +657,13 @@ textarea {
 
 .label, .tag, .add-tag{
     display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
     font-size: 12px;
     margin-left: 4px;
     margin-bottom: 6px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .tag > input {
@@ -668,10 +671,19 @@ textarea {
     outline: none;
     background-color: rgba(0, 0, 0, 0);
     border: none;
+    padding-left: 4px;
+}
+
+.tag > input:focus {
+    background-color: rgb(61, 170, 206);
+    border-radius: 2px;
 }
 
 .tag > a, .add-tag > a {
     text-decoration: none;
+    width: 16px;
+    height: 18px;
+    padding-top: 2px;
 }
 
 .tag > a:hover, .add-tag > a:hover {
@@ -685,6 +697,9 @@ textarea {
 .add-tag > a:hover {
     color: rgb(32, 96, 32);
 }
+
+/* ------------------------- LOGS --------------------------*/
+
 #log_but_cont{
     margin-top: 60px;
     background-color:lightblue;
@@ -707,7 +722,7 @@ textarea {
     width:125px;
 }
 .log_file_display{
-    font-family:'Courier New' ;
+    font-family:'Courier New';
     width:100%;
     height:500px;
 }
