@@ -57,13 +57,9 @@ def edit_profile(request):
     else:
         formProfile = ProfileForm(instance=profile, prefix='perfil')  # formulario con solo con los tags que ya tiene
 
-    tag_forms = []  # lista de formularios de tag vacia
-    for i, tag in enumerate(tags):  # iterar los campos de tag asociados al perfil
-         tag_forms.append(
-              TagForm(instance=tag, prefix='tag_%s' % i))  # anadir un campo tipo tag con un prefijo unico
+    tag_forms = get_tag_forms(tags)
 
-    # images=profile.fotos
-    images=FotoPerfil.objects.filter(perfil=profile)
+    images = FotoPerfil.objects.filter(perfil=profile)
 
     return render(request, 'web/' + request.session['lang'] + '/edit_profile.html',
                   {'form': formProfile, 'tag_forms': tag_forms, 'images': images})
@@ -76,6 +72,14 @@ def delete_profile_image(request, path_image):
     fc.all().delete()
     dbLogger.info(logMessages.foPerDeleted_message+request.user.username+'\'')##Logging
     return edit_profile(request) #
+
+
+def get_tag_forms(tags):
+    tag_forms = []
+    for i, tag in enumerate(tags):
+         # Anadir un campo al tag con un prefijo unico
+         tag_forms.append(TagForm(instance=tag, prefix='tag_%s' % i))
+    return tag_forms
 
 # anadir tag al usuario
 @login_required
@@ -95,8 +99,8 @@ def add_tag(request):
     dbLogger.info(logMessages.tagAdded_message+request.user.username+'\'')
 
     if(request.is_ajax()):
-        tag_forms = []
-        tag_forms.append(TagForm(instance=tag))
+        tags = Tag.objects.filter(perfil=profile)
+        tag_forms = get_tag_forms(tags)
         return render(request, 'web/es/tags.html', {'tag_forms' : tag_forms})
     else:
         return redirect('/completar_perfil/', )

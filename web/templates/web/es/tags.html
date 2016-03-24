@@ -11,7 +11,7 @@
             $.ajax({
                 url: '{% url 'add_tag' %}',
                 success: function(data) {
-                    $('#tags').append(data);
+                    $('#tags').html(data);
                 }
             });
         });
