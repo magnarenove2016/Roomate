@@ -655,8 +655,7 @@ textarea {
 }
 /*----------------------------- TAGS -----------------------------*/
 
-.label, .tag, .add-tag{
-    display: inline-block;
+.label, .tag, .add-tag {
     white-space: nowrap;
     overflow: hidden;
     font-size: 12px;
@@ -664,6 +663,10 @@ textarea {
     margin-bottom: 6px;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+#tags .tag, .add-tag {
+    display: inline-block;
 }
 
 .tag > input {
