@@ -4,6 +4,11 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
+
+###
+#FICHERO DE TRADUCCIONES EN EUSKERA
+###
+
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -23,33 +28,37 @@ msgid ""
 "Este correo ya est&aacute; en uso. Por favor utilice otro correo o inicie "
 "sesi&oacute;n."
 msgstr ""
-
+"sartutako posta elektroniko helbidea existitzen da. Mesedez, sar ezazu beste "
+"bat edo saioa hasi."
 #: .\Roomate\forms.py:16
 msgid ""
 "La contrase&ntilde;a debe tener una longitud m&iacute;nima de 8 caracteres y "
 "contener, al menos, una letra y un n&uacute;mero"
 msgstr ""
-
+"Pasahitzak 8 letrako gutxiengo luzeera izan behar du eta gutxienez letra batez eta "
+"zenbaki batez egon behar da osaturik."
 #: .\Roomate\forms.py:36
 msgid "He le&iacute;do y acepto las condiciones de uso"
-msgstr ""
+msgstr "Irakurri eta onartu egiten ditut erabilpen baldintzak."
 
 #: .\Roomate\forms.py:37
 msgid "Debes aceptar las condiciones de uso para continuar"
-msgstr ""
+msgstr "Erabilpen baldintzak onartu behar dituzu jarraitu ahal izateko"
 
 #: .\Roomate\views.py:33
 msgid ""
 "La cuenta con la que est&aacute;s intentando acceder no est&aacute; activa."
 msgstr ""
-
+"Saioa hasteko sarturiko kontua ez dago aktibatua."
 #: .\Roomate\views.py:35
 msgid "Los datos introducidos son incorrectos, vuelve a intentarlo."
-msgstr ""
+msgstr "Sarturiko datuak ez dira zuzenak. Mesedez, saiatu berriro."
 
 #: .\Roomate\views.py:103
 msgid "El nombre de usuario introducido no coincide con tu nombre de usuario."
-msgstr ""
+msgstr "Sarturiko erabiltzaile izena ez dator bat zure erabiltzaile izenarekin."
+
+#myvenv acaba en la linea 1300
 
 #: .\myvenv\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"
@@ -443,7 +452,7 @@ msgstr ""
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:415
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:1159
 msgid "Enter a valid date."
-msgstr ""
+msgstr "Sartu baliozko data bat."
 
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:439
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:1160
@@ -452,7 +461,7 @@ msgstr ""
 
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:461
 msgid "Enter a valid date/time."
-msgstr ""
+msgstr "Sartu baliozko data/denbora bat."
 
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:490
 msgid "Enter a valid duration."
@@ -1299,11 +1308,11 @@ msgstr "Deskribapena"
 
 #: .\web\forms.py:23
 msgid "N&uacute;mero de habitaciones"
-msgstr "Eskuragarri dauden logela kopurua"
+msgstr "Eskuragarri dauden gela kopurua"
 
 #: .\web\forms.py:24
 msgid "N&uacute;mero de habitaciones disponibles"
-msgstr "Alkilatzeko gela kopurua"
+msgstr "Eskuragarri dauden gela kopurua"
 
 #: .\web\forms.py:26
 msgid "Precio del alquiler (en euros)"
@@ -1319,7 +1328,7 @@ msgstr "Izena"
 
 #: .\web\forms.py:48
 msgid "Apellidos"
-msgstr "Abizena"
+msgstr "Abizenak"
 
 #: .\web\forms.py:49
 msgid "N&uacute;mero de tel&eacute;fono"
@@ -1331,15 +1340,15 @@ msgstr "Instrumentua"
 
 #: .\web\forms.py:51
 msgid "Una breve descripci&oacute;n sobre ti"
-msgstr ""
+msgstr "Zure buruaren deskribapen labur bat"
 
 #: .\web\forms.py:52 .\web\models.py:144
 msgid "Ciudad / zona en la que buscas piso"
-msgstr "Pisua bilatzen ari zaren hiria edo zonaldea"
+msgstr "Pisua bilatzen zauden hiria edo zonaldea"
 
 #: .\web\forms.py:78 .\web\templates\web\es\login.html.py:32
 msgid "Nombre de usuario"
-msgstr "Erabiltzailea"
+msgstr "Erabiltzaile izena"
 
 #: .\web\forms.py:79
 msgid "Cuenta de correo"
@@ -1354,16 +1363,16 @@ msgid ""
 "Revisa las fechas de estancia. La fecha de inicio no debe ser superior a la "
 "fecha final."
 msgstr ""
-
+"Berrikusi egonaldiaren datak. Hasiera data ezin da amaiera data baino handiagoa izan"
 #: .\web\models.py:10
 msgid ""
 "N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 "
 "d&iacute;gitos)"
 msgstr ""
-
+"Telefono zenbaki okerra (9 eta 15 zifra artean izan behar ditu)"
 #: .\web\models.py:21 .\web\models.py:27 .\web\models.py:137
 msgid "Sin especificar"
-msgstr "Zehaztu gabe"
+msgstr "Zehaztu gabea"
 
 #: .\web\models.py:22 .\web\models.py:138
 msgid "Hombre"
@@ -1375,15 +1384,15 @@ msgstr "Emakumea"
 
 #: .\web\models.py:28
 msgid "Estudiante"
-msgstr ""
+msgstr "Ikaslea"
 
 #: .\web\models.py:29
 msgid "Trabajador"
-msgstr ""
+msgstr "Langilea"
 
 #: .\web\models.py:33
 msgid "Ninguna"
-msgstr ""
+msgstr "Ez"
 
 #: .\web\models.py:34
 msgid "Perro"
@@ -1443,7 +1452,7 @@ msgstr "Etxea gehitu"
 
 #: .\web\templates\web\es\base.html:132
 msgid "Visualizar casas"
-msgstr "Nire etxeak"
+msgstr "Nire etxeak ikusi"
 
 #: .\web\templates\web\es\base.html:135
 msgid "Buscar compa&ntilde;ero"
@@ -1528,7 +1537,7 @@ msgstr "Ezin izan dira aldaketa guztiak gorde, akats bat dago profilean."
 
 #: .\web\views.py:253
 msgid "La casa ha sido creada correctamente!"
-msgstr ""
+msgstr "Etxea sortu egin da!"
 
 # Sobreescribir traducciones (incompletas) de Django
 # Cada vez que se ejecuta compilemessages se comentan (hay que descomentarlas)
@@ -1539,21 +1548,19 @@ msgid_plural ""
 "This password is too short. It must contain at least %(min_length)d "
 "characters."
 msgstr[0] ""
-"Esta contraseña es muy corta. Debe contener al menos %(min_length)d "
-"caracter."
+"Pasahitza oso laburra da. Gutxienez letra %(min_length)d izan behar du."
 msgstr[1] ""
-"Esta contraseña es muy corta. Debe contener al menos %(min_length)d "
-"caracteres."
+"Pasahitza oso laburra da. Gutxienez %(min_length)d letra izan behar ditu."
 
 msgid "The password is too similar to the %(verbose_name)s."
-msgstr "Pasahitza erabiltzaile izenera antzekoegi da."
+msgstr "Pasahitza erabiltzaile izenaren antzekoegia da."
 
 msgid "This password is too common."
-msgstr "This password is too common."
+msgstr "Pasahitza arruntegia da."
 
 msgid "This password is entirely numeric."
-msgstr "This password is entirely numeric."
+msgstr "Pasahitza zenbakiz soilik dago osatua."
 
 # Error del captcha
 msgid "Incorrect, please try again."
-msgstr "Incorrecto, por favor, vuelve a intentarlo."
+msgstr "Ez zuzena. Mesedez, saiatu zaitez berriro."
