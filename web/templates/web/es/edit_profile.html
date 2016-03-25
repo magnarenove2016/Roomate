@@ -143,21 +143,18 @@
                                 <small>¡Descr&iacute;bete a ti mismo!</small>
                             </h4>
 
-                            <!-- Iterar por todos los tags asociados a este usuario -->
-                            {% for tag in tag_forms %}
-                                <span class="tag label label-info">
-                                    {{ tag.text }}
-                                    <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}" class="glyphicon glyphicon-remove"></a>
-                                </span>
-                            {% endfor %}
+                            <span id="tags">
+                                {% block tags %}
+                                    {% include "web/es/tags.html" %}
+                                {% endblock %}
+                            </span>
 
                             <!-- Boton para anadir tag -->
                             <span class="add-tag label label-success">
-                                <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
+                                <a class="glyphicon glyphicon-plus"></a>
                             </span>
 
-                            <p class="aviso"><em>Aviso! Guarda tu perfil antes de a&ntilde;adir una etiqueta o se perder&aacute;n
-                            los cambios que hayas realizado.</em></p>
+                            <p class="aviso"><em>Puedes editar los tags haciendo click dentro de ellos.</em></p>
                         </div>
 
                         <div class="form-category">

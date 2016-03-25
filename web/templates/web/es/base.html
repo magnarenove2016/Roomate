@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
@@ -66,9 +68,9 @@
                     <form action="{% url 'get_location_search' %}" method="get" class="navbar-form navbar-left">
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Buscar casa..." name="s" id="id_s"/>
+                            <input type="text" class="form-control" placeholder="{% trans "Buscar casa..." %}" name="s" id="id_s"/>
                         </div>
-                        <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
+                        <button type="submit" class="save btn btn-default" value="Search">{% trans "Buscar" %}</button>
                     </form>
                 </li>
 
@@ -81,7 +83,8 @@
                 <!-- Idiomas -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">ES<span class="caret"></span></a>
+                       aria-expanded="false">{{ request.session.lang|upper }}
+                        <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{% url 'change_language' language="eu" actual=request.path_info%}">Euskera</a></li>
                         <li role="separator" class="divider"></li>
@@ -104,7 +107,7 @@
 
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#second-navbar-collapse">
-                    <span class="sr-only">Cambiar navegaci&oacute;n</span>
+                    <span class="sr-only">{% trans "Cambiar navegaci&oacute;n" %}</span>
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
             </div>
@@ -114,22 +117,22 @@
 
                     {% if request.user.is_superuser %}
 
-                        <li><a href="/admin/auth/user/">Gestiona usuarios</a></li>
-                        <li><a href="/admin/web/tag/">Gestionar tags</a></li>
-                        <li><a href="{% url 'gest_logging' log_file=0 %}">Gestiona logs</a></li>
-                        <li><a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a></li>
+                        <li><a href="/admin/auth/user/">{% trans "Gestiona usuarios" %}</a></li>
+                        <li><a href="/admin/web/tag/">{% trans "Gestionar tags" %}</a></li>
+                        <li><a href="{% url 'gest_logging' log_file=0 %}">{% trans "Gestiona logs" %}</a></li>
+                        <li><a href="{% url 'database_backup' %}">{% trans "Gestionar copias de seguridad" %}</a></li>
 
                     {% else %}
 
-                        <li><a href="{% url 'completar_perfil' %}">Mi perfil</a></li>
-                        <li><a href="{% url 'add_house' %}">A&ntilde;adir casa</a></li>
+                        <li><a href="{% url 'completar_perfil' %}">{% trans "Mi perfil" %}</a></li>
+                        <li><a href="{% url 'add_house' %}">{% trans "A&ntilde;adir casa" %}</a></li>
 
                         <!-- Mostrar este boton si el usuario tiene alguna casa -->
                         {% if request.user.casas.all %}
-                            <li><a href="{% url 'show_my_houses' %}">Visualizar casas</a></li>
+                            <li><a href="{% url 'show_my_houses' %}">{% trans "Visualizar casas" %}</a></li>
                         {% endif %}
 
-                        <li><a href="{% url 'busqueda' %}">Buscar compa&ntilde;ero</a></li>
+                        <li><a href="{% url 'busqueda' %}">{% trans "Buscar compa&ntilde;ero" %}</a></li>
 
                         <li class="dropdown pull-right hidden-xs">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -138,15 +141,15 @@
                                 <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
                             <ul class="dropdown-menu">
-                                <li><a href="{% url 'password_change' %}">Cambiar contrase&ntilde;a</a></li>
+                                <li><a href="{% url 'password_change' %}">{% trans "Cambiar contrase&ntilde;a" %}</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
+                                <li><a href="{% url 'delete_user' %}">{% trans "Borrar cuenta" %}</a></li>
                             </ul>
                         </li>
 
                         <!-- Desplegar dropdown si la pantalla es pequena -->
-                        <li class="visible-xs"><a href="{% url 'password_change' %}">Cambiar contrase&ntilde;a</a></li>
-                        <li class="visible-xs"><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
+                        <li class="visible-xs"><a href="{% url 'password_change' %}">{% trans "Cambiar contrase&ntilde;a" %}</a></li>
+                        <li class="visible-xs"><a href="{% url 'delete_user' %}">{% trans "Borrar cuenta" %}</a></li>
 
                     {% endif %}
 
@@ -161,11 +164,13 @@
 {% block contenido %}
 {% endblock %}
 
-</div>
-<!-- /.banner -->
-
 {% block footer %}
     {% include "web/es/footer.html" %}
 {% endblock %}
+
+{% block messages %}
+    {% include "web/es/messages.html" %}
+{% endblock %}
+
 </body>
 </html>

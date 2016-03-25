@@ -1,17 +1,18 @@
+import logging
+from datetime import timedelta
+import logMessages
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, render_to_response, redirect
-from django.template.context_processors import csrf
-from . import forms
-from django.core import management
-from web.models import validation
-from datetime import timedelta
 from django.contrib.sites.shortcuts import get_current_site
-import logging
-import logMessages
+from django.core import management
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import resolve
-from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,) #por ahora solo se hace uso de passwordresetform en view_open
+from django.shortcuts import render, redirect
+from django.template.context_processors import csrf
+from django.utils.translation import ugettext as _
+from web.models import validation
+from html import unescape
+from . import forms
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -28,8 +29,11 @@ def auth_view(request):
         sessionLogger.info(logMessages.login_message+username+'\'')##Logging
         auth.login(request, user)
         return redirect('main')  # Le redirigimos a la pagina de Inicio
+    elif user is not None:
+        messages.error(request, unescape(_("La cuenta con la que est&aacute;s intentando acceder no est&aacute; activa.")))
     else:
-        return redirect('invalid')  # Si no son validos, se redirige al usuario a una pagina de error
+        messages.error(request, _("Los datos introducidos son incorrectos, vuelve a intentarlo."))
+    return redirect('invalid')  # Si no son validos, se redirige al usuario a una pagina de error
 
 
 # Redirige al usuario a una pagina de error
@@ -96,7 +100,7 @@ def delete_user(request):
             sessionLogger.info(logMessages.logout_message+username+'\'') ##Logging
             return redirect('main')
         else:
-            messages.error(request, 'El nombre de usuario introducido no coincide con tu nombre de usuario.')
+            messages.error(request, _('El nombre de usuario introducido no coincide con tu nombre de usuario.'))
 
     return render(request, 'web/' + request.session['lang'] + '/delete_user.html')
 

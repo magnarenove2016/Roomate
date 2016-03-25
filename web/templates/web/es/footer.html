@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <!-- Modulo con el Footer [para meter en base.html] -->
 <footer>
     <div class="container">
@@ -5,25 +7,30 @@
             <div class="col-lg-12">
                 <ul class="list-inline">
                     <li>
-                        <a href="{% url 'main' %}">Home</a>
+                        <a href="{% url 'main' %}">{% trans "Home" %}</a>
                     </li>
                     <li class="footer-menu-divider">&sdot;</li>
                     <li>
-                        <a href="{% url 'about_us' %}">Sobre nosotros</a>
+                        <a href="{% url 'about_us' %}">{% trans "Sobre nosotros" %}</a>
                     </li>
                     <li class="footer-menu-divider">&sdot;</li>
                     <li>
-                        <a href="{% url 'legal' %}">Apartado legal</a>
-                        <!-- TODO: vincular esto con la url del caso de uso -->
+                        <a href="{% url 'legal' %}">{% trans "Apartado legal" %}</a>
                     </li>
                     <li class="footer-menu-divider">&sdot;</li>
                     <li>
-                        <a href="{% url 'contact' %}">Contacta con nosotros</a>
-                        <!-- TODO: vincular esto con la url del caso de uso -->
+                        <a href="{% url 'contact' %}">{% trans "Contacta con nosotros" %}</a>
                     </li>
                 </ul>
-                <p class="copyright text-muted small">En este proyecto se ha usado codigo con <a
-                        href="http://www.apache.org/licenses/LICENSE-2.0">licencia apache</a></p>
+                <p class="copyright text-muted small">
+                    {% blocktrans with "http://www.apache.org/licenses/LICENSE-2.0" as link %}
+                        En este proyecto se ha usado codigo con <a target="_blank" href="{{ link }}">licencia apache</a>
+                    {% endblocktrans %}
+
+
+
+                </p>
+
             </div>
         </div>
     </div>

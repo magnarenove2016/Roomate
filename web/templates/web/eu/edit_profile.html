@@ -138,21 +138,18 @@
                                 <small>¡Zeure burua deskribatu!</small>
                             </h4>
 
-                            <!-- Iterar por todos los tags asociados a este usuario -->
-                            {% for tag in tag_forms %}
-                                <span class="tag label label-info">{{ tag.text }}
-                                <a href="{% url 'delete_tag' texto_del_tag=tag.text.value %}"
-                                   class="glyphicon glyphicon-remove"></a>
+                            <span id="tags">
+                                {% block tags %}
+                                    {% include "web/es/tags.html" %}
+                                {% endblock %}
                             </span>
-                            {% endfor %}
 
                             <!-- Boton para anadir tag -->
                             <span class="add-tag label label-success">
-                                <a href="{% url 'add_tag' %}" class="glyphicon glyphicon-plus"></a>
+                                <a class="glyphicon glyphicon-plus"></a>
                             </span>
 
-                            <p class="aviso"><em>Adi! Gorde ezazu zure profila etiketak gehitu aurretikan edo egindako aldaketak
-                                galduko dira.</em></p>
+                            <p class="aviso"><em>Etiketak editatu ditzakezu haien barruan klik egiten.</em></p>
                         </div>
 
                         <div class="form-category">

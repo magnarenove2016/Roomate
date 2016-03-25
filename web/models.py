@@ -1,13 +1,13 @@
+from time import time
+
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator  # utilizando una expresion regular valida un determinado campo
 from django.db import models
 from django.utils.translation import ugettext_lazy as _  # traduccion de los formatos de texto de errores
-from time import time
-import html
 
 # formato de mensaje para controlar que no se meta mal las fechas
-FECHAS_ESTANCIA_ERROR = _(
-    u"Revise las fechas de estancia. "u"La fecha de inicio no debe ser superior a la fecha de final.")
+FECHAS_ESTANCIA_ERROR = _("Revisa las fechas de estancia. La fecha de inicio no debe ser superior a la fecha final.")
+PHONE_ERROR = _('N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)')
 
 """
     Perfil del usuario que contiene todos los datos extra que
@@ -18,49 +18,46 @@ FECHAS_ESTANCIA_ERROR = _(
 class Profile(models.Model):
     # Las elecciones posibles de la opcion de sexo. del usuario
     GENDER_CHOICES = (
-        ('', 'Sin especificar'),
-        ('H', 'Hombre'),
-        ('M', 'Mujer'),
+        ('', _('Sin especificar')),
+        ('H', _('Hombre')),
+        ('M', _('Mujer')),
     )
     # Las elecciones posibles de la opcion de ocupacion. del usuario
     OCUPATION_CHOICES = (
-        ('', 'Sin especificar'),
-        ('E', 'Estudiante'),
-        ('T', 'Trabajador'),
+        ('', _('Sin especificar')),
+        ('E', _('Estudiante')),
+        ('T', _('Trabajador')),
     )
     # Las elecciones posibles de la opcion de mascota. del usuario
     PET_CHOICES = (
-        ('', 'Ninguna'),
-        ('P', 'Perro'),
-        ('G', 'Gato'),
-        ('O', 'Otros'),
+        ('', _('Ninguna')),
+        ('P', _('Perro')),
+        ('G', _('Gato')),
+        ('O', _('Otros')),
     )
 
     # Expresion regular para validar el numero de telefono
-    phone_regex = RegexValidator(regex=r'^\+?1?(\d| ){9,15}$',
-                                 message=html.unescape('N&uacute;mero de tel&eacute;fono inv&aacute;lido (debe tener de 9 a 15 d&iacute;gitos)'))
+    phone_regex = RegexValidator(regex=r'^\+?1?(\d){9,15}$', message=PHONE_ERROR)
 
     # Usuario asociado al perfil (un perfil por usuario)
     user = models.OneToOneField('auth.User', models.CASCADE, related_name='profile')
 
     # Campos del perfil
-    firstName = models.CharField(max_length=35, blank=True, verbose_name='Nombre')
-    lastName = models.CharField(max_length=35, blank=True, verbose_name='Apellidos')
-    telephone = models.CharField(max_length=15, validators=[phone_regex], blank=True, verbose_name='Numero de telefono')
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name="Sexo")
+    firstName = models.CharField(max_length=35, blank=True)
+    lastName = models.CharField(max_length=35, blank=True)
+    telephone = models.CharField(max_length=15, validators=[phone_regex], blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
 
-    birthdate = models.DateField(blank=True, null=True, verbose_name="Fecha de nacimiento")
-    ocupation = models.CharField(max_length=1, choices=OCUPATION_CHOICES, blank=True, verbose_name="Ocupacion")
-    description = models.TextField(blank=True, verbose_name="Descripcion")
+    birthdate = models.DateField(blank=True, null=True)
+    ocupation = models.CharField(max_length=1, choices=OCUPATION_CHOICES, blank=True,)
+    description = models.TextField(blank=True, )
 
-    pet = models.CharField(max_length=1, choices=PET_CHOICES, blank=True, verbose_name='Mascota')
-    isSmoker = models.BooleanField(default=False, verbose_name='Fumador')
-    lookingIn = models.CharField(max_length=35, blank=True, verbose_name="Ciudad/zona en la que buscas piso")
-    iniEstancia = models.DateField(blank=True, null=True, verbose_name="Inicio de la estancia")
-    finEstancia = models.DateField(blank=True, null=True, verbose_name="Fin de la estancia")
-    Instrument = models.CharField(max_length=50, blank=True, verbose_name='Instrumento')
-
-    # photo = models.ImageField(upload_to='/data/photos/', verbose_name='Una foto tuya')
+    pet = models.CharField(max_length=1, choices=PET_CHOICES, blank=True)
+    isSmoker = models.BooleanField(default=False)
+    lookingIn = models.CharField(max_length=35, blank=True)
+    iniEstancia = models.DateField(blank=True, null=True)
+    finEstancia = models.DateField(blank=True, null=True)
+    Instrument = models.CharField(max_length=50, blank=True)
 
     # Controlar que las fechas de estancia sean coherentes
     def clean(self):
@@ -68,7 +65,7 @@ class Profile(models.Model):
         if (self.iniEstancia is None): return
         if (self.finEstancia is None): return
         if (self.iniEstancia > self.finEstancia):
-            raise ValidationError(FECHAS_ESTANCIA_ERROR)
+            raise ValidationError({'iniEstancia':'', 'finEstancia': _(FECHAS_ESTANCIA_ERROR)})
 
     def __str__(self):
         return 'Perfil de ' + self.user.username
@@ -96,7 +93,7 @@ class Tag(models.Model):
 class Casa(models.Model):
     id = models.AutoField(primary_key=True)
     dueno = models.ForeignKey('auth.User', models.CASCADE, blank=True, null=True, related_name="casas")
-    direccion=models.TextField(verbose_name="Direccion")
+    direccion=models.TextField()
     ciudad = models.CharField(max_length=200)
     numHabitaciones = models.IntegerField()
     numHabitacionesDisponibles = models.IntegerField()
@@ -109,7 +106,6 @@ class Casa(models.Model):
 
     def obtener_habitaciones(self):
         return self.habitaciones.all()
-
 
 
 def generar_ruta_image(instance, filename):
@@ -138,15 +134,15 @@ class FotoHabitacion(models.Model):
 class Busqueda(models.Model):
     #las elecciones posibles de la opcion de sexo. del usuario
     GENDER_CHOICES = (
-        ('', 'Ambos'),
-        ('H', 'Hombre'),
-        ('M', 'Mujer'),
+        ('', _('Sin especificar')),
+        ('H', _('Hombre')),
+        ('M', _('Mujer')),
     )
 
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name="Sexo")
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name=_("Sexo"))
+    isSmoker = models.BooleanField(default=False, verbose_name=_('Fumador'))
+    lookingIn = models.CharField(max_length=35, blank=True, verbose_name=_("Ciudad / zona en la que buscas piso"))
 
-    isSmoker = models.BooleanField(default=False, verbose_name='Fumador')
-    lookingIn = models.CharField(max_length=35, blank=True, verbose_name="Ciudad/zona en la que buscas piso")
 #clase para mantener registro de gente que esta o no registrada
 class validation(models.Model):
     user = models.OneToOneField(

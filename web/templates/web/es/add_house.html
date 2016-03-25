@@ -76,13 +76,13 @@
                 ​<div class="form-category">
 
                     {% bootstrap_label "Ciudad:" %}
-                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
+                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false field_class="hide-placeholder"%}
 
                     <label>Direcci&oacute;n:</label>
                     <div class="form-group">
                         <label class="sr-only control-label" for="id_direccion">Direcci&oacute;n</label>
                         <textarea class="form-control" cols="40" id="id_direccion" name="direccion"
-                        required="required" rows="1" title=""></textarea>
+                        required="required" rows="1" title="" placeholder="Direcci&oacute;n de la casa / del piso "></textarea>
                     </div>
 
                     <div class="row">
