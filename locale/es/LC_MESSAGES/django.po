@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-24 21:10+0100\n"
+"POT-Creation-Date: 2016-03-25 15:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -443,7 +443,7 @@ msgstr ""
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:415
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:1159
 msgid "Enter a valid date."
-msgstr ""
+msgstr "Introduce una fecha válida."
 
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:439
 #: .\myvenv\Lib\site-packages\django\forms\fields.py:1160
@@ -730,51 +730,51 @@ msgstr ""
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "January"
-msgstr ""
+msgstr "Enero"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "February"
-msgstr ""
+msgstr "Febrero"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "March"
-msgstr ""
+msgstr "Marzo"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "April"
-msgstr ""
+msgstr "Abril"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "May"
-msgstr ""
+msgstr "Mayo"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "June"
-msgstr ""
+msgstr "Junio"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "July"
-msgstr ""
+msgstr "Julio"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "September"
-msgstr ""
+msgstr "Septiembre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "October"
-msgstr ""
+msgstr "Octubre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "November"
-msgstr ""
+msgstr "Noviembre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:20
 msgid "December"
-msgstr ""
+msgstr "Diciembre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:23
 msgid "jan"
@@ -887,62 +887,62 @@ msgstr ""
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:45
 msgctxt "alt. month"
 msgid "January"
-msgstr ""
+msgstr "Enero"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:46
 msgctxt "alt. month"
 msgid "February"
-msgstr ""
+msgstr "Febrero"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:47
 msgctxt "alt. month"
 msgid "March"
-msgstr ""
+msgstr "Marzo"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:48
 msgctxt "alt. month"
 msgid "April"
-msgstr ""
+msgstr "Abril"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:49
 msgctxt "alt. month"
 msgid "May"
-msgstr ""
+msgstr "Mayo"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:50
 msgctxt "alt. month"
 msgid "June"
-msgstr ""
+msgstr "Junio"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:51
 msgctxt "alt. month"
 msgid "July"
-msgstr ""
+msgstr "Julio"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:52
 msgctxt "alt. month"
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:53
 msgctxt "alt. month"
 msgid "September"
-msgstr ""
+msgstr "Septiembre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:54
 msgctxt "alt. month"
 msgid "October"
-msgstr ""
+msgstr "Octubre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:55
 msgctxt "alt. month"
 msgid "November"
-msgstr ""
+msgstr "Noviembre"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:56
 msgctxt "alt. month"
 msgid "December"
-msgstr ""
+msgstr "Diciembre"
 
 #: .\myvenv\Lib\site-packages\django\utils\ipv6.py:10
 msgid "This is not a valid IPv6 address."
@@ -1515,7 +1515,7 @@ msgstr ""
 msgid "Registrarse"
 msgstr ""
 
-#: .\web\views.py:52 .\web\views.py:279
+#: .\web\views.py:52 .\web\views.py:283
 msgid "Los cambios han sido guardados!"
 msgstr ""
 
@@ -1523,7 +1523,7 @@ msgstr ""
 msgid "No se han podido guardar todos los cambios, hay un error en el perfil."
 msgstr ""
 
-#: .\web\views.py:253
+#: .\web\views.py:257
 msgid "La casa ha sido creada correctamente!"
 msgstr ""
 

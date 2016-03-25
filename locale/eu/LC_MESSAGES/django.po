@@ -730,51 +730,51 @@ msgstr ""
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "January"
-msgstr ""
+msgstr "Urtarrila"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "February"
-msgstr ""
+msgstr "Otsaila"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "March"
-msgstr ""
+msgstr "Martxoa"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "April"
-msgstr ""
+msgstr "Apirila"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "May"
-msgstr ""
+msgstr "Maiatza"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:18
 msgid "June"
-msgstr ""
+msgstr "Ekaina"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "July"
-msgstr ""
+msgstr "Uztaila"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "August"
-msgstr ""
+msgstr "Abuztua"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "September"
-msgstr ""
+msgstr "Iraila"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "October"
-msgstr ""
+msgstr "Urria"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:19
 msgid "November"
-msgstr ""
+msgstr "Azaroa"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:20
 msgid "December"
-msgstr ""
+msgstr "Abendua"
 
 #: .\myvenv\Lib\site-packages\django\utils\dates.py:23
 msgid "jan"
