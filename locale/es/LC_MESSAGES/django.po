@@ -4,6 +4,11 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
+
+###
+#FICHERO DE TRADUCCIONES EN CASTELLANO
+###
+
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
