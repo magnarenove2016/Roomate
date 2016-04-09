@@ -11,7 +11,7 @@
         var speed = 1.5;
         var timeOut;
 
-        function typeIt(text, char, speed) {
+        function typeIt(text, char) {
             var humanize = Math.round(Math.random() * (100 - 30) / speed) + 60;
             timeOut = setTimeout(function () {
                 var type = text.substring(0, char);
@@ -39,6 +39,7 @@
             });
         });
     </script>
+
 
     <!-- Header -->
     <a name="about"></a>

@@ -5,22 +5,26 @@
 {% block title %}Harremanetan jarri{% endblock %}
 
 {% block contenido %}
-    <a name="contenido"></a>
-    <div class="container">
-        <div class="contact-header">
-            <form role="form" action="" method="post">
+    <div class="content-section-a">
+        <div class="container">
+            <form role="form" action="" method="post" class="form-search">
                 {% csrf_token %}
 
-                <h1>Harremanetan jarri</h1><br>
+                <h3 class="text-center">Harremanetan jarri</h3>
 
-                {% bootstrap_label "Izen abizenak / erabiltzailea: " %}
-                {% bootstrap_field form.contact_name show_label=false show_help=false set_required=true %}
-                {% bootstrap_label "Posta elektroniko helbidea: " %}
-                {% bootstrap_field form.contact_email show_label=false show_help=false set_required=true %}
-                {% bootstrap_label "Teknikarientzako mezua: " %}
-                {% bootstrap_field form.content show_label=false show_help=false set_required=true %}
-                <!-- <button type="submit">Submit</button>-->
-                {% bootstrap_button "Bidali" button_type="submit" button_class="btn-primary" %}
+                <div class="form-category">
+                    {% bootstrap_label "Izen abizenak / erabiltzailea: " %}
+                    {% bootstrap_field form.contact_name show_label=false show_help=false set_required=true %}
+                    {% bootstrap_label "Posta elektroniko helbidea: " %}
+                    {% bootstrap_field form.contact_email show_label=false show_help=false set_required=true %}
+                    {% bootstrap_label "Teknikarientzako mezua: " %}
+                    {% bootstrap_field form.content show_label=false show_help=false set_required=true %}
+                </div>
+
+                <div class='text-right'>
+                    <button type="submit" class="btn btn-primary">Bidali</button>
+                </div>
+
             </form>
         </div>
     </div>
