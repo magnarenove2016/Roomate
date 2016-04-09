@@ -4,19 +4,15 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-body {
-    width: 100%;
+html, body{
+    min-height: 100% !important;
     height: 100%;
 }
 
-html {
-    min-height: 100%;
-    position: relative;
-}
-
 body {
+    width: 100%;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    padding-bottom: 150px;
+    padding-bottom: 183px;
     background-color: #f8f8f8;
 }
 
@@ -231,16 +227,20 @@ h6 {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
-.intro-header > .container {
-    padding: 0px;
-    margin-bottom: 0px;
-}
-
 .intro-header {
+    display: table;
+    height: 100%;
+    width: 100%;
+    padding-top: 50px;
     text-align: center;
     color: #f8f8f8;
     background: url(../img/doormat.jpg) no-repeat center center;
     background-size: cover;
+}
+
+.intro-header .container {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .intro-message .form-control {
@@ -282,8 +282,9 @@ h6 {
 
 .intro-message {
     position: relative;
-    padding-top: 20%;
-    padding-bottom: 20%;
+    text-align: center;
+    padding-bottom: 15%;
+    padding-top: 12%;
 }
 
 .intro-message > h1 {
@@ -298,12 +299,13 @@ h6 {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.intro-message > h3 {
+.intro-header .intro-message > h3 {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
 @media (max-width: 767px) {
     .intro-message {
+        padding-top: 15%;
         padding-bottom: 15%;
     }
 
@@ -311,18 +313,18 @@ h6 {
         font-size: 3em;
     }
 
+    .intro-divider {
+        width: 100%;
+    }
+}
+
+@media (max-width: 352px) {
     ul.intro-social-buttons > li {
-        display: block;
-        margin-bottom: 20px;
-        padding: 0;
+        margin-bottom: 10px;
     }
 
     ul.intro-social-buttons > li:last-child {
         margin-bottom: 0;
-    }
-
-    .intro-divider {
-        width: 100%;
     }
 }
 
@@ -349,6 +351,7 @@ h6 {
 }
 
 .content-section-a {
+    min-height: calc(110% - 183px);
     padding: 50px 0;
     background-color: #f8f8f8;
 }
@@ -417,9 +420,9 @@ h6 {
 }
 
 footer {
-    box-shadow: inset 7px 7px 30px -7px rgba(0,0,0,0.20);
+    box-shadow: inset 0px 7px 20px -7px rgba(0,0,0,0.20);
     border-top: 1px solid rgb(210, 210, 210);
-    position: absolute;
+
     padding: 40px 0;
     bottom: 0;
     width: 100%;
