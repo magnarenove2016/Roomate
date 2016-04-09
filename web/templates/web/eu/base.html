@@ -63,16 +63,6 @@
         <div class="collapse navbar-collapse" id="first-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form action="{% url 'get_location_search' %}" method="get" class="navbar-form navbar-left">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Etxea bilatu..." name="s" id="id_s"/>
-                        </div>
-                        <button type="submit" class="btn btn-default" value="Search">Bilatu</button>
-                    </form>
-                </li>
-
-                <li>
                     {% block login %}
                         {% include "web/eu/login.html" %}
                     {% endblock %}

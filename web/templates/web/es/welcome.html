@@ -2,45 +2,42 @@
 
 {% extends 'web/es/base.html' %}
 
-{% load i18n %}
-
 {% block contenido %}
 
     <script type="text/javascript">
         {# Idea sacada de http://jsfiddle.net/Ajey/FaLs4/ #}
-        var description = "Introduce aqu\u00ED d\u00F3nde buscas piso";
-        var format = "Formato: calle, ciudad, pa\u00EDs";
+        var description = "Introduce aqu\u00ED la zona donde buscas piso";
+        var format = "Formato: calle / ciudad / pa\u00EDs";
         var speed = 1.5;
         var timeOut;
 
         function typeIt(text, char) {
-                var humanize = Math.round(Math.random()*(100 - 30)/speed) + 60;
-                timeOut = setTimeout(function () {
-                    var type = text.substring(0, char);
-                    $('#id_s').attr('placeholder', type + '|');
-                    typeIt(text, char + 1);
+            var humanize = Math.round(Math.random() * (100 - 30) / speed) + 60;
+            timeOut = setTimeout(function () {
+                var type = text.substring(0, char);
+                $('#id_s').attr('placeholder', type + '|');
+                typeIt(text, char + 1);
 
-                    if (char == text.length) {
-                        $('#id_s').attr('placeholder', $('#id_s').attr('placeholder').slice(0, -1)) // remove the '|'
-                        clearTimeout(timeOut);
-                    }
-                }, humanize);
+                if (char == text.length) {
+                    $('#id_s').attr('placeholder', $('#id_s').attr('placeholder').slice(0, -1)) // remove the '|'
+                    clearTimeout(timeOut);
+                }
+            }, humanize);
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             {# Escribir el mensaje inicial #}
             $('#id_s').attr('placeholder', '|');
             typeIt(description, 1);
 
-             {# Cambiar el placeholder cuando se pulsa el boton de ayuda #}
-             $("#help-button").click(function() {
-                 $('#id_s').attr('placeholder', '|');
-                 $("#id_s").val("");
-                 clearTimeout(timeOut);
-                 typeIt(format, 1);
+            {# Cambiar el placeholder cuando se pulsa el boton de ayuda #}
+            $("#help-button").click(function () {
+                $('#id_s').attr('placeholder', '|');
+                $("#id_s").val("");
+                clearTimeout(timeOut);
+                typeIt(format, 1);
             });
         });
-
     </script>
 
     <!-- Header -->
@@ -54,6 +51,7 @@
                         <h1>Bienvenido a Roomate</h1>
                         <h3>Tu web de b&uacute;squeda de compa&ntilde;eros de piso</h3>
                         <hr class="intro-divider">
+
                         <form action="{% url 'get_location_search' %}" method="get" class="form-inline">
                             {% csrf_token %}
                             <div class="form-group form-group-lg">
@@ -61,7 +59,7 @@
                                 <i class="fa fa-question-circle clickable" id="help-button" ></i>
                                 <span id="help"></span>
                             </div>
-                            <button type="submit" class="save btn btn-lg btn-danger" value="Search">{% trans "Buscar casa" %}</button>
+                            <button type="submit" class="save btn btn-lg btn-danger" value="Search">Buscar casa</button>
                         </form>
                     </div>
 
