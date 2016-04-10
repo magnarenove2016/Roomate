@@ -22,7 +22,7 @@ class RegistrationForm(UserCreationForm):
     # Anadir al formulario un campo para el email, el captcha,
     # y un checkbox para que el usuario acepte las condiciones de uso
     email = forms.EmailField(
-        required = True
+        required = True,max_length=50
     )
 
     # Anadir el campo de Captcha
