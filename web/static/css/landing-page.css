@@ -4,14 +4,16 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-body,
-html {
-    width: 100%;
+html, body{
+    min-height: 100% !important;
     height: 100%;
 }
 
 body {
+    width: 100%;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-bottom: 183px;
+    background-color: #f8f8f8;
 }
 
 h1,
@@ -50,6 +52,7 @@ h6 {
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
     text-align: center;
     top: 50px;
+    z-index: 2;
 }
 
 #second-nav .navbar-nav {
@@ -106,7 +109,8 @@ h6 {
     min-height: 32px !important
 }
 
-.clickable {
+.clickable,
+.clickable:hover{
     cursor: pointer;
 }
 
@@ -122,6 +126,7 @@ h6 {
     width: 100%;
     color: white;
     padding: 10px;
+    z-index: 3;
 
     animation-name: showMessages;
     animation-iteration-count: 1;
@@ -222,13 +227,55 @@ h6 {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
+.background {
+    padding-top: 50px;
+    background: url(../img/doormat.jpg) no-repeat center center;
+    background-size: cover;
+}
+
 .intro-header {
-    padding-top: 50px; /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
-    padding-bottom: 50px;
+    display: table;
+    height: 100%;
+    width: 100%;
+    padding-top: 50px;
     text-align: center;
     color: #f8f8f8;
     background: url(../img/doormat.jpg) no-repeat center center;
     background-size: cover;
+}
+
+.intro-header .container {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.intro-message .form-control {
+    padding-right: 40px;
+}
+
+@media(min-width: 767px) {
+    .intro-message .form-control {
+        width: 500px;
+        margin-right: 5px;
+    }
+}
+
+.intro-message .form-group {
+    position: relative;
+}
+
+#help-button {
+    position: absolute;
+    right: 15px;
+    top: 11px;
+
+    color: #bcbcbc;
+    font-size: 25px;
+}
+
+.intro-message .form-control,
+.intro-message .btn {
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
 }
 
 .contact-header {
@@ -241,8 +288,9 @@ h6 {
 
 .intro-message {
     position: relative;
-    padding-top: 20%;
-    padding-bottom: 20%;
+    text-align: center;
+    padding-bottom: 15%;
+    padding-top: 12%;
 }
 
 .intro-message > h1 {
@@ -257,12 +305,13 @@ h6 {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.intro-message > h3 {
+.intro-header .intro-message > h3 {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
 @media (max-width: 767px) {
     .intro-message {
+        padding-top: 15%;
         padding-bottom: 15%;
     }
 
@@ -270,19 +319,34 @@ h6 {
         font-size: 3em;
     }
 
+    .intro-divider {
+        width: 100%;
+    }
+}
+
+@media (max-width: 352px) {
     ul.intro-social-buttons > li {
-        display: block;
-        margin-bottom: 20px;
-        padding: 0;
+        margin-bottom: 10px;
     }
 
     ul.intro-social-buttons > li:last-child {
         margin-bottom: 0;
     }
+}
 
-    .intro-divider {
-        width: 100%;
-    }
+.intro-social-buttons {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgb(220,220,220);
+    max-width: 600px;
+}
+
+.intro-social-buttons a {
+    color: #403e41;
+}
+
+.intro-social-buttons i {
+    color: #403e41;
 }
 
 .network-name {
@@ -293,6 +357,7 @@ h6 {
 }
 
 .content-section-a {
+    min-height: calc(110% - 183px);
     padding: 50px 0;
     background-color: #f8f8f8;
 }
@@ -361,7 +426,12 @@ h6 {
 }
 
 footer {
-    padding: 50px 0;
+    box-shadow: inset 0px 7px 20px -7px rgba(0,0,0,0.20);
+    border-top: 1px solid rgb(210, 210, 210);
+
+    padding: 40px 0;
+    bottom: 0;
+    width: 100%;
     background-color: #f8f8f8;
 }
 
@@ -569,6 +639,8 @@ textarea {
     text-align: left;
     padding: 20px 40px 20px 40px;
     margin: 20px;
+    border: solid 1px rgb(200, 200, 200);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.10);
 }
 
 .about-us > .list {
@@ -655,8 +727,7 @@ textarea {
 }
 /*----------------------------- TAGS -----------------------------*/
 
-.label, .tag, .add-tag{
-    display: inline-block;
+.label, .tag, .add-tag {
     white-space: nowrap;
     overflow: hidden;
     font-size: 12px;
@@ -664,6 +735,10 @@ textarea {
     margin-bottom: 6px;
     padding-left: 5px;
     padding-right: 5px;
+}
+
+#tags .tag, .add-tag {
+    display: inline-block;
 }
 
 .tag > input {

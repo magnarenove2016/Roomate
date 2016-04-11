@@ -4,6 +4,43 @@
 
 {% block contenido %}
 
+    <script type="text/javascript">
+        {# Idea sacada de http://jsfiddle.net/Ajey/FaLs4/ #}
+        var description = "Idatzi hemen pisua bilatzen ari zaren zonaldea";
+        var format = "Formatua: kalea / hiria / herrialdea";
+        var speed = 1.5;
+        var timeOut;
+
+        function typeIt(text, char) {
+            var humanize = Math.round(Math.random() * (100 - 30) / speed) + 60;
+            timeOut = setTimeout(function () {
+                var type = text.substring(0, char);
+                $('#id_s').attr('placeholder', type + '|');
+                typeIt(text, char + 1);
+
+                if (char == text.length) {
+                    $('#id_s').attr('placeholder', $('#id_s').attr('placeholder').slice(0, -1)) // remove the '|'
+                    clearTimeout(timeOut);
+                }
+            }, humanize);
+        }
+
+        $(document).ready(function () {
+            {# Escribir el mensaje inicial #}
+            $('#id_s').attr('placeholder', '|');
+            typeIt(description, 1);
+
+            {# Cambiar el placeholder cuando se pulsa el boton de ayuda #}
+            $("#help-button").click(function () {
+                $('#id_s').attr('placeholder', '|');
+                $("#id_s").val("");
+                clearTimeout(timeOut);
+                typeIt(format, 1);
+            });
+        });
+    </script>
+
+
     <!-- Header -->
     <a name="about"></a>
     <div class="intro-header">
@@ -16,30 +53,15 @@
                         <h3>Pisukideak aurkitzeko zure web orrialdea</h3>
                         <hr class="intro-divider">
 
-                        <!-- Botones sociales -->
-                        <ul class="list-inline intro-social-buttons">
-                            <li>
-                                <a target="_blank" href="https://twitter.com/magnasis" class="btn btn-default btn-lg"><i
-                                        class="fa fa-twitter fa-fw"></i> <span
-                                        class="network-name">Twitter</span></a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="https://www.facebook.com/MagnaSIS/" class="btn btn-default btn-lg"><i
-                                        class="fa fa-facebook fa-fw"></i> <span
-                                        class="network-name">Facebook</span></a>
-                            </li>
-                            <li>
-                                <a target="_blank" href="https://github.com/magnarenove2016/Roomate.git" class="btn btn-default btn-lg"><i
-                                        class="fa fa-github fa-fw"></i> <span
-                                        class="network-name">Github</span></a>
-                            </li>
-                            <li>
-                                <a href="{% url 'contact' %}" class="btn btn-default btn-lg"><i
-                                        class="fa fa-envelope fa-fw"></i> <span
-                                        class="network-name">Gurekin harremanetan jarri</span></a>
-                            </li>
-                        </ul>
-
+                         <form action="{% url 'get_location_search' %}" method="get" class="form-inline">
+                            {% csrf_token %}
+                            <div class="form-group form-group-lg">
+                                <input type="text" class="format form-control" name="s" id="id_s"/>
+                                <i class="fa fa-question-circle clickable" id="help-button" ></i>
+                                <span id="help"></span>
+                            </div>
+                            <button type="submit" class="save btn btn-lg btn-danger" value="Search">Etxea bilatu</button>
+                        </form>
                     </div>
 
                 </div>
