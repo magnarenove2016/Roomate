@@ -67,12 +67,16 @@ def register_new_user(request):
     return render(request, 'web/' + request.session['lang'] + '/register.html', {'form': form})
 
 def enviarCorreosActivation(user,dir):
-    email_subject = 'Confirmacion de cuenta'
+    email_subject = 'Confirmación de cuenta en RooMate'
     usr = validation.objects.filter(user=user).all()
-    email_body = "Hola %s, bienvenido a Roomate. Por favor, haz click \
-    en el siguiente link para confirmar tu correo y disfrutar \
-    plenamente de tu cuenta:<br> \
-    <a href='http://%s/accounts/confirm/%s'>Confirmar cuenta</a>" % (user.username,dir,usr[0].ash)
+    email_body = "Hola %s, <br> ¡Te damos la bienvenida a RooMate! <br><br> \
+    Gracias por haber elegido nuestra página web. <br><br> \
+    Estás a un simple clic de comenzar a disfrutar de las búsquedas de compañeros que estabas deseando. <br> \
+    También podrás disfrutar de los sencillos métodos de alquiler que te ofrecemos. <br><br>  \
+    Ya solo necesitas activar tu cuenta para poder aprovechar todos tus privilegios: <br> \
+    <a href='http://%s/accounts/confirm/%s'>Haz clic aquí para activar tu cuenta</a> <br> <br> \
+    ¡Gracias por confiar en nosotros! <br><br> \
+    Atentamente, <br> El equipo de RooMate." % (user.username,dir,usr[0].ash)
     subject, from_email = 'hello', 'no-reply@magnasis.com'
     text_content = 'Correo de confirmaci&oacute;n.'
     msg = EmailMultiAlternatives(email_subject, text_content, from_email, [user.email])
