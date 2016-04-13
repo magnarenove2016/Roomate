@@ -67,7 +67,7 @@ def register_new_user(request):
     return render(request, 'web/' + request.session['lang'] + '/register.html', {'form': form})
 
 def enviarCorreosActivation(user,dir):
-    email_subject = 'Confirmación de cuenta en RooMate'
+    email_subject = 'Confirmación de cuenta en RooMate / RooMate-ko kontu konfirmazio mezua'
     usr = validation.objects.filter(user=user).all()
     email_body = "Hola %s, <br> ¡Te damos la bienvenida a RooMate! <br><br> \
     Gracias por haber elegido nuestra página web. <br><br> \
@@ -76,9 +76,19 @@ def enviarCorreosActivation(user,dir):
     Ya solo necesitas activar tu cuenta para poder aprovechar todos tus privilegios: <br> \
     <a href='http://%s/accounts/confirm/%s'>Haz clic aquí para activar tu cuenta</a> <br> <br> \
     ¡Gracias por confiar en nosotros! <br><br> \
-    Atentamente, <br> El equipo de RooMate." % (user.username,dir,usr[0].ash)
+    Atentamente, <br> El equipo de RooMate.<br><br> \
+    ________________________________________________________________________________________________<br><br> \
+    Kaixo %s, <br> \
+    Ongi etorria ematen dizugu RooMate-ra! <br><br> \
+    Mila esker gure web orrialdea aukeratzeagatik. <br><br> \
+    Bilatzen zenuen pisukideak aurkitzeko klik batetara zaude soilik.<br> \
+    Halaber, gure alokairu metodo azkar eta sinpleetaz gozatu ahalko duzu. <br><br> \
+    Zure kontua aktibatzea geratzen da soilik zure pribilexu guztietaz disfrutatu ahal izateko: <br> \
+    <a href='http://%s/accounts/confirm/%s'Egin ezazu klik hemen zure kontua aktibatzeko</a> <br><br> \
+    Mila esker eskainitako konfidantzagatik! <br><br> \
+    Ondo izan, <br> RooMate-ko taldea. <br><br>" % (user.username,dir,usr[0].ash,user.username,dir,usr[0].ash)
     subject, from_email = 'hello', 'no-reply@magnasis.com'
-    text_content = 'Correo de confirmaci&oacute;n.'
+    text_content = 'Correo de confirmaci&oacute;n. / Konfirmazio mezua'
     msg = EmailMultiAlternatives(email_subject, text_content, from_email, [user.email])
     msg.attach_alternative(email_body, "text/html")
     msg.send()
