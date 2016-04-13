@@ -1,15 +1,16 @@
 {% load staticfiles %}
 
 <!-- Si el usuario ya ha hecho login -->
-{% if user.is_authenticated %}
+{% if user.is_authenticated%}
     <li>
         <p class="navbar-text">
-            Kaixo {{ user.username }}! (<a href="{% url 'views.logout' %}">Saioa amaitu</a>)
+            Kaixo {{ user.username }}!
+                {% if user.is_superuser %}(<a href="{% url 'views.logout' %}">Saioa amaitu</a>){% endif %}
         </p>
     </li>
 
 <!-- el usuario no se ha logeado -->
-{% else %}
+{% elif not user.is_authenticated %}
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Sartu</b> <span class="caret"></span></a>
 
