@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator  # utilizando una expresion re
 from django.db import models
 from django.utils.translation import ugettext_lazy as _  # traduccion de los formatos de texto de errores
 from time import time
+import json
 
 # formato de mensaje para controlar que no se meta mal las fechas
 FECHAS_ESTANCIA_ERROR = _(
@@ -108,6 +109,9 @@ class Casa(models.Model):
 
     def obtener_habitaciones(self):
         return self.habitaciones.all()
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+            sort_keys=True, indent=4)
 
 
 

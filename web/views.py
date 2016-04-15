@@ -2,14 +2,25 @@ import logging
 import math
 import logMessages
 
+from django.utils.encoding import smart_str
 from Roomate.views import castellano, euskera
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail  # para contactar con el support
 from django.shortcuts import render, redirect
 from django.template import RequestContext  # para mostrar el mail en el .html
-from geopy.geocoders import Nominatim
+
 from .forms import *
 from .models import *
+
+#new imports
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
+from django.db import transaction, IntegrityError
+
+import json
+import urllib.request
+import urllib.parse
+from decimal import Decimal
 
 sessionLogger = logging.getLogger('web') ##Logging
 dbLogger = logging.getLogger('database') ##Logging
@@ -106,51 +117,69 @@ def delete_tag(request, texto_del_tag):
     return redirect('/completar_perfil/', )
 
 
+#New
+def geocode( address):
+    address = urllib.parse.quote_plus(smart_str(address))
+    maps_api_url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false' % address
+    response = urllib.request.urlopen(maps_api_url)
+    data = json.loads(response.read().decode('utf8'))
+
+    if data['status'] == 'OK' and data != None:
+        lat = data['results'][0]['geometry']['location']['lat']
+        lng = data['results'][0]['geometry']['location']['lng']
+        return Decimal(lat), Decimal(lng)
+    else:
+        return None, None
+#end new
+
 # Anadir una casa (requiere login)
 @login_required
 def add_house(request):
-    if request.session.get('refreshing_vcs',False)==False:
-        request.session['refreshing_vcs']=True
-        if request.method == "POST":
-            #creamos form
-            formcasa = CasaForm(request.POST,request.FILES)
-            if formcasa.is_valid():
-                #obtener datos y guardar perfil
-                Cas = formcasa.save(commit=False)
-                casa=Casa.objects.filter(direccion=Cas.direccion,ciudad=Cas.ciudad, dueno=request.user)
-                if casa.count()==0:
-                    Cas.dueno=request.user
-                    loc = getLocation("Espana "+Cas.ciudad+" "+Cas.direccion)
-                    if loc is not None:
-                        location=loc[0]
-                        Cas.latitude=location.latitude
-                        Cas.longitude=location.longitude
-                        Cas.save()
-                        dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
-                        for f in request.FILES._itervalues():
-                            newFoto=FotoCasa(foto=f)
-                            newFoto.casa=Cas
-                            newFoto.save()
-                            dbLogger.info(logMessages.fotoAdded_message+request.user.username+'\'')##Logging
+    if request.method == "POST":
+        #creamos form
+        formcasa = CasaForm(request.POST,request.FILES)
+        print("some")
+        if formcasa.is_valid():
+            geolocator = Nominatim()
+            #new ani multi-click
+            try:
+                with transaction.atomic():
+                    #obtener datos y guardar perfil
+                    Cas = formcasa.save(commit=False)
+                    casa=Casa.objects.filter(direccion=Cas.direccion,ciudad=Cas.ciudad, dueno=request.user)
+                    if casa.count()==0:
+                        Cas.dueno=request.user
+                        #location = geolocator.geocode("Espana "+Cas.ciudad+" "+Cas.direccion)
+                        #google geolocator
+                        loc="Espana "+Cas.ciudad+" "+Cas.direccion.replace('/', ' ').replace('\\', ' ')
+                        #print(loc)
+                        Cas.latitude, Cas.longitude  = geocode(address=loc)
+                        if Cas.latitude!= None and Cas.longitude!= None:
+                            Cas.save()
+                            dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
+                            for f in request.FILES._itervalues():
+                                newFoto=FotoCasa(foto=f)
+                                newFoto.casa=Cas
+                                newFoto.save()
+                                dbLogger.info(logMessages.fotoAdded_message+request.user.username+'\'')##Logging
 
-                        request.session['direccion'] = Cas.direccion
-                        request.session['ciudad'] = Cas.ciudad
-                        request.session['refreshing_vcs']=False
-                        return redirect("/show_location/")
+                            request.session['direccion'] = Cas.direccion
+                            request.session['ciudad'] = Cas.ciudad
+                            return redirect("/show_location/")
+                        else:
+                            return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
                     else:
-                        request.session['refreshing_vcs']=False
-                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
-                else:
-                    request.session['refreshing_vcs']=False
-                    return render(request, 'web/'+request.session['lang']+'/error_casa.html', {})
-            else:
-                request.session['refreshing_vcs']=False
-                return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+                        return render(request, 'web/'+request.session['lang']+'/error_casa.html', {})
+            except IntegrityError:
+                formcasa.addError('House exists')
+            except ConnectionAbortedError:
+                print("Connection closed")
         else:
-            #generamos form
-            formcasa = CasaForm()
-        request.session['refreshing_vcs']=False
-        return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+            return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
+    else:
+        #generamos form
+        formcasa = CasaForm()
+    return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
 
 #Anadir una casa (requiere login)
 
@@ -169,49 +198,48 @@ def show_house(request, dir, ciudad):
 
 @login_required
 def edit_house(request, dir, ciudad):
-    if request.session.get('refreshing_vcs',False)==False:
-        request.session['refreshing_vcs']=True
-        casa = Casa.objects.filter(direccion=dir,ciudad=ciudad, dueno=request.user)
+        casa = Casa.objects.filter(direccion=dir, ciudad=ciudad, dueno=request.user)
         if casa is not None:
             if request.method == "POST":
                 casa=Casa.objects.filter(direccion=dir,ciudad=ciudad, dueno=request.user)
                 #creamos form
                 formcasa = CasaForm(request.POST,request.FILES, instance=casa.first())
                 if formcasa.is_valid():
-                    #obtener datos y guardar perfil
-                    Cas = formcasa.save(commit=False)
-                    Cas.dueno=request.user
-                    loc = getLocation("Espana "+Cas.ciudad+" "+Cas.direccion)
-                    if loc is not None:
-                        location=loc[0]
-                        Cas.latitude=location.latitude
-                        Cas.longitude=location.longitude
-                        Cas.save()
-                        #dbLogger.info(logMessages.casaEdited_message+request.user.username+'Ciudad: '+Cas.ciudad+'Direccion: '+Cas.direccion+'\'')##Logging
-                        dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
-                        for f in request.FILES._itervalues():
-                            newFoto=FotoCasa(foto=f)
-                            newFoto.casa=Cas
-                            newFoto.save()
-                            #dbLogger.info(logMessages.fotoAdded_message+request.user.username+' de la casa:'+Cas.ciudad+' '+Cas.direccion+'\'')##Logging
-                            dbLogger.info(logMessages.fotoAdded_message+request.user.username+'\'')##Logging
+                    try:
+                        with transaction.atomic():
+                            #obtener datos y guardar perfil
+                            Cas = formcasa.save(commit=False)
+                            Cas.dueno=request.user
+                            loc="Espana "+ciudad+" "+dir.replace('/', ' ').replace('\\', ' ')
+                            Cas.latitude, Cas.longitude  = geocode(address=loc)
+                            if Cas.latitude!= None and Cas.longitude!= None:
+                                Cas.save()
+                                #dbLogger.info(logMessages.casaEdited_message+request.user.username+'Ciudad: '+Cas.ciudad+'Direccion: '+Cas.direccion+'\'')##Logging
+                                dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
+                                for f in request.FILES._itervalues():
+                                    newFoto=FotoCasa(foto=f)
+                                    newFoto.casa=Cas
+                                    newFoto.save()
+                                    #dbLogger.info(logMessages.fotoAdded_message+request.user.username+' de la casa:'+Cas.ciudad+' '+Cas.direccion+'\'')##Logging
+                                    dbLogger.info(logMessages.fotoAdded_message+request.user.username+'\'')##Logging
 
-                        request.session['direccion'] = Cas.direccion
-                        request.session['ciudad'] = Cas.ciudad
-                        request.session['refreshing_vcs']=False
-                        return redirect("/show_location/")
-                    else:
-                        request.session['refreshing_vcs']=False
-                        return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
-
+                                request.session['direccion'] = Cas.direccion
+                                request.session['ciudad'] = Cas.ciudad
+                                return redirect("/show_location/")
+                            else:
+                                return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
+                    except IntegrityError:
+                        formcasa.addError('House exists')
+                    except ConnectionAbortedError:
+                        print("Connection closed")
                 else:
-                    request.session['refreshing_vcs']=False
                     return render(request, 'web/'+request.session['lang']+'/add_house.html', {'formCasa': formcasa})
             else:
                 #generamos form
                 formcasa = CasaForm(instance=casa.first())
-            request.session['refreshing_vcs']=False
             return render(request, 'web/'+request.session['lang']+'/edit_house.html', {'formCasa': formcasa,'casa': casa.first()})
+        else:
+            return render(request, 'web/'+request.session['lang']+'/error_casa_no_encontrada.html', {})
 
 
 """" eliminar determinado tag del usuario"""
@@ -222,7 +250,7 @@ def delete_house_image(request, path_image):
     dir=fc.first().casa.direccion
     fc.all().delete()
     dbLogger.info(logMessages.foCasDeleted_message+request.user.username+'\'')##Logging
-    return edit_house(request, dir, cit) #falta editar este y crear el boton que lo llame
+    return redirect("/edit_house/"+dir+"/"+cit+"/") #falta editar este y crear el boton que lo llame
 
 #Ensenar localizacion de casa y confirmar (requiere login)
 @login_required
@@ -305,19 +333,26 @@ def metersToKm(dist):
 def get_location_search(request):
     if 's' in request.GET:
         search_str = request.GET['s']
-        loc = getLocation(search_str)
-        if loc is not None:
-            search = loc[0]
-            casas=Casa.objects.filter(latitude__gte=search.latitude-0.05).filter(latitude__lte=search.latitude+0.05)
+
+        #loc = getLocation(search_str)
+        #if loc is not None:
+
+        lat, long= geocode(address=search_str)
+        print (lat)
+        if not lat==None or not long==None:
+            #search = loc[0]
+            casas=Casa.objects.filter(latitude__gte=float(lat)-0.05).filter(latitude__lte=float(lat)+0.05)
             if casas.count()!=0:
                 searched=[]
                 for casa in casas:
-                    if distance_meters(search.latitude, search.longitude,casa.latitude,casa.longitude)< 1500:
+                    if distance_meters(float(lat), float(long),casa.latitude,casa.longitude)< 1500:
                         searched.append(casa)
                 return render(request, 'web/' + request.session['lang'] + '/search_result.html', {'casas':searched})
             else:
                 #No houses in that range
                 return render(request, 'web/' + request.session['lang'] + '/info.html', {})
+
+
         else:
             # Loc not found
             return render(request, 'web/' + request.session['lang'] + '/info_no_loc.html', {})
