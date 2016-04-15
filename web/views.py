@@ -157,7 +157,6 @@ def add_house(request):
     if request.method == "POST":
         #creamos form
         formcasa = CasaForm(request.POST,request.FILES)
-        print("some")
         if formcasa.is_valid():
             geolocator = Nominatim()
             #new ani multi-click
@@ -166,14 +165,14 @@ def add_house(request):
                     #obtener datos y guardar perfil
                     Cas = formcasa.save(commit=False)
                     casa=Casa.objects.filter(direccion=Cas.direccion,ciudad=Cas.ciudad, dueno=request.user)
-                    if casa.count()==0:
+                    if casa.count() == 0:
                         Cas.dueno=request.user
                         #location = geolocator.geocode("Espana "+Cas.ciudad+" "+Cas.direccion)
                         #google geolocator
                         loc="Espana "+Cas.ciudad+" "+Cas.direccion.replace('/', ' ').replace('\\', ' ')
                         #print(loc)
-                        Cas.latitude, Cas.longitude  = geocode(address=loc)
-                        if Cas.latitude!= None and Cas.longitude!= None:
+                        Cas.latitude, Cas.longitude = geocode(address=loc)
+                        if Cas.latitude != None and Cas.longitude != None:
                             Cas.save()
                             dbLogger.info(logMessages.casaCreated_message+request.user.username+'\'')##Logging
                             for f in request.FILES._itervalues():
