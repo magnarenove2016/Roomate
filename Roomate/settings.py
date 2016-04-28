@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCALE_PATHS = (
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 	'bootstrap3',
     'dbbackup',  # django-dbbackup
     'dropbox',
+    'storages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -138,8 +140,19 @@ SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
+AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = 'A3B2628D2A9407D0F3AFFFC3C7AC97B1'
+AWS_SECRET_ACCESS_KEY = '1a0e704c7d207a6a7ece1ed0c6747abc564d5e07'
+AWS_STORAGE_BUCKET_NAME = 'magnasis'
+AWS_S3_CUSTOM_DOMAIN ='%s.rest.s3for.me' % AWS_STORAGE_BUCKET_NAME
+
+MEDIA_URL = 'http://%s/' % AWS_S3_CUSTOM_DOMAIN
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+
+
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = True
