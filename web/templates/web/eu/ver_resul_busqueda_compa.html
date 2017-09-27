@@ -1,0 +1,140 @@
+{% extends 'web/eu/base.html' %}
+
+{% load staticfiles %}
+
+{% load bootstrap3 %}
+
+{% block title %}Pisukidea bilatu{% endblock %}
+
+{% block contenido %}
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            $('.panel-body').slideUp(0);
+            $('.panel-footer').slideUp(0);
+        });
+
+        jQuery(function ($) {
+            $('.panel-heading span.clickable').on("click", function (e) {
+                if ($(this).hasClass('panel-collapsed')) {
+                    // expand the panel
+                    $(this).parents('.panel').find('.panel-body').slideDown();
+                    $(this).parents('.panel').find('.panel-footer').slideDown();
+                    $(this).removeClass('panel-collapsed');
+                    $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                }
+                else {
+                    // collapse the panel
+                    $(this).parents('.panel').find('.panel-body').slideUp();
+                    $(this).parents('.panel').find('.panel-footer').slideUp();
+                    $(this).addClass('panel-collapsed');
+                    $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                }
+            });
+        });
+    </script>
+
+    <div class="content-section-a">
+        <div class="container">
+
+            <div class="title text-center">
+                <h3>Bilaketaren emaitza</h3>
+                {% if not usuarios %}
+                    <p>Ez da aurkitu esandako irizpideak betetzen dituen erabiltzailerik</p>
+                {% else %}
+                    <p>Pisukide posibleak:</p>
+                {% endif %}
+            </div>
+
+            {% if usuarios %}
+                {% for usuario in usuarios %}
+                    {% if request.user.username != usuario.user.username %}
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading">
+                                <h4>{{ usuario.user.username }}</h4>
+                                <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+
+                            <div class="panel-body">
+
+                                <ul class="list-group">
+
+                                    {% if usuario.firstName != '' %}
+                                        <li class="list-group-item">
+                                            <b>Izena:</b> {{ usuario.firstName }} {{ usuario.lastName }}
+                                        </li>
+                                    {% endif %}
+
+                                    {% if usuario.lookingIn != '' %}
+                                        <li class="list-group-item">
+                                            <b>Non ari da pisua bilatzen:</b> {{ usuario.lookingIn }}
+                                        </li>
+                                    {% endif %}
+
+                                    <li class="list-group-item">
+                                        <b>Beste datu batzuk:</b>
+                                        {% if usuario.gender == "M" %}
+                                            <span class="label label-default">Emakumea</span>
+                                        {% elif usuario.gender == "H" %}
+                                            <span class="label label-default ">Gizona</span>
+                                        {% endif %}
+                                        {% if usuario.get_pet_display != 'Ninguna' %}
+                                            <span class="label label-default ">Maskota: {{ usuario.get_pet_display }}</span>
+                                        {% else %}
+                                            <span class="label label-default ">Maskotarik gabe</span>
+                                        {% endif %}
+                                        {% if usuario.isSmoker %}
+                                            <span class="label label-default">Erretzailea</span>
+                                        {% else %}
+                                            <span class="label label-default">Ez du erretzen</span>
+                                        {% endif %}
+                                        {% if usuario.Instrument != '' %}
+                                            <span class="label label-default">Musika-tresna: {{ usuario.Instrument }}</span>
+                                        {% endif %}
+                                    </li>
+
+                                    {% if usuario.description != '' %}
+                                        <li class="list-group-item">
+                                            <b>Deskribapena:</b>
+                                            <p>{{ usuario.description }}</p>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if usuario.tags.all %}
+                                        <div class="list-group-item">
+                                            <b>Etiketak:</b>
+
+                                            {% for tag in usuario.tags.all %}
+                                                <span class="tag label label-info">
+                                                    {{ tag.text }}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                </ul>
+
+                            </div> <!-- .panel-body -->
+
+                            <div class="panel-footer">
+                                <a href="/usuario/{{ usuario.user.username }}" class="btn btn-default" role="button">
+                                    Harremanetan jarri
+                                </a>
+                            </div>
+
+                        </div> <!-- .panel -->
+
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

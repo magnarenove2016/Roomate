@@ -1,0 +1,144 @@
+{% extends 'web/es/base.html' %}
+
+{% load staticfiles %}
+
+{% load bootstrap3 %}
+
+{% block title %}Buscar compa&ntilde;ero{% endblock %}
+
+{% block contenido %}
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('.panel-body').slideUp(0);
+            $('.panel-footer').slideUp(0);
+        });
+
+        jQuery(function ($) {
+            $('.panel-heading span.clickable').on("click", function (e) {
+                if ($(this).hasClass('panel-collapsed')) {
+                    // expand the panel
+                    $(this).parents('.panel').find('.panel-body').slideDown();
+                    $(this).parents('.panel').find('.panel-footer').slideDown();
+                    $(this).removeClass('panel-collapsed');
+                    $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                }
+                else {
+                    // collapse the panel
+                    $(this).parents('.panel').find('.panel-body').slideUp();
+                    $(this).parents('.panel').find('.panel-footer').slideUp();
+                    $(this).addClass('panel-collapsed');
+                    $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                }
+            });
+        });
+    </script>
+
+    <div class="content-section-a">
+        <div class="container">
+
+            <div class="title text-center">
+                <h3>Resultado de la b&uacute;squeda</h3>
+                {% if not usuarios %}
+                    <p>No se ha encontrado ning&uacute;n usuario que cumpla los criterios indicados</p>
+                {% else %}
+                    <p>Posibles compa&ntilde;eros de piso:</p>
+                {% endif %}
+
+            </div>
+
+            {% if usuarios %}
+                {% for usuario in usuarios %}
+                    {% if request.user.username != usuario.user.username %}
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading">
+                                <h4>{{ usuario.user.username }}</h4>
+                                <span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                            </div>
+
+                            <div class="panel-body">
+
+                                <ul class="list-group">
+
+                                    {% if usuario.firstName != '' %}
+                                        <li class="list-group-item">
+                                            <b>Nombre:</b> {{ usuario.firstName }} {{ usuario.lastName }}
+                                        </li>
+                                    {% endif %}
+
+                                    {% if usuario.lookingIn != '' %}
+                                        <li class="list-group-item">
+                                            <b>Zona en la que busca piso:</b> {{ usuario.lookingIn }}
+                                        </li>
+                                    {% endif %}
+
+                                    <li class="list-group-item">
+                                        <b>Otros datos:</b>
+                                        {% if usuario.gender == "M" %}
+                                            <span class="label label-default">Mujer</span>
+                                        {% elif usuario.gender == "H" %}
+                                            <span class="label label-default ">Hombre</span>
+                                        {% endif %}
+                                        {% if usuario.isSmoker %}
+                                             {% if usuario.gender == "M" %}
+                                                 <span class="label label-default">Fumadora</span>
+                                             {% else %}
+                                                 <span class="label label-default">Fumador</span>
+                                             {% endif %}
+                                        {% else %}
+                                            <span class="label label-default">No fuma</span>
+                                        {% endif %}
+                                        {% if usuario.get_pet_display != 'Ninguna' %}
+                                            <span class="label label-default ">Mascota: {{ usuario.get_pet_display }}</span>
+                                        {% else %}
+                                            <span class="label label-default ">Sin mascota</span>
+                                        {% endif %}
+                                        {% if usuario.Instrument != '' %}
+                                            <span class="label label-default">Instrumento: {{ usuario.Instrument }}</span>
+                                        {% endif %}
+                                    </li>
+
+                                    {% if usuario.description != '' %}
+                                        <li class="list-group-item">
+                                            <b>Descripci&oacute;n:</b>
+                                            <p>{{ usuario.description }}</p>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if usuario.tags.all %}
+                                        <div class="list-group-item">
+                                            <b>Tags:</b>
+
+                                            {% for tag in usuario.tags.all %}
+                                                <span class="tag label label-info">
+                                                    {{ tag.text }}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                </ul>
+
+                            </div> <!-- .panel-body -->
+
+                            <div class="panel-footer">
+                                <a href="/usuario/{{ usuario.user.username }}" class="btn btn-default" role="button">
+                                    Ponerse en contacto
+                                </a>
+                            </div>
+
+                        </div> <!-- .panel -->
+
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

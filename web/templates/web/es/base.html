@@ -1,6 +1,8 @@
+{% load i18n %}
+
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
 
@@ -11,7 +13,6 @@
     <meta name="author" content="">
 
     <title>Roomate</title>
-
 
     <!-- jQuery -->
     <script src="{% static 'js/jquery-1.11.2.min.js' %}" type="text/javascript"></script>
@@ -46,109 +47,122 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top topnav" id="first-nav" role="navigation">
     <div class="container topnav">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#first-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand topnav" href="{% url 'main' %}">
-                <img src="{% static 'img/roomate-logo.png' %}" alt="Roomate_logo" height="30" width="110">
+                <img src="{% static 'img/roomate-logo-small.png' %}" alt="Roomate_logo" id="logo">
             </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="first-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <!-- selector de idiomas--> <!-- TODO: rework a esta seccion para que no se solape con el resto -->
-                <li>
-                    <a href="{% url 'change_language' language="es" %}" class="language" rel="es-ES">
-                        <img src="{% static 'img/lang/es_ES.jpg' %}"/>Espa&ntilde;ol
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'change_language' language="eu" %}" class="language" rel="eu_EU">
-                        <img src="{% static 'img/lang/eu_EU.jpg' %}"/>Euskera
-                    </a>
-                </li>
-                </li>
-                {% if request.user.is_superuser %}
-                    <li>
-                        <a href="/admin/auth/user/">Gestiona usuarios</a>
-                    </li>
-                    <li>
-                        <a href="/admin/web/tag/">Gestionar tags</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'undeveloped' %}">Gestiona logs</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'database_backup' %}">Gestionar copias de seguridad</a>
-                    </li>
-                {% else %}
-                    <li>
-                        <form action="/search/" method="get"
-                              class="glow navbar-form navbar-left post-form">    {% csrf_token %}
-                            <input type="text" class="form-control" placeholder="Buscar hogar..." name="s" id="id_s"/>
-                            <button type="submit" class="save btn btn-default" value="Search">Buscar</button>
-                        </form>
-                    </li>
-                    <li>
-                        <a href="{% url 'undeveloped' %}">Buscar compa&ntilde;ero</a>
-                    </li>
-                    {% if user.is_authenticated %}
-
-                        <li>
-                            <a href="{% url 'completar_perfil' %}">Mi perfil</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'add_house' %}">Añadir casa</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
                 <li>
                     {% block login %}
                         {% include "web/es/login.html" %}
                     {% endblock %}
                 </li>
-                <!-- Menú desplegable para acceder a los caso de uso
-                     cambiar contraseña y borrar usuario -->
-                {% if user.is_authenticated %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
-                            <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
 
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'password_change' %}">Cambiar contraseña</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="{% url 'delete_user' %}">Borrar cuenta</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
+                <!-- Idiomas -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">{{ request.session.lang|upper }}
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'change_language' language="eu" actual=request.path_info%}">Euskera</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'change_language' language="es" actual=request.path_info%}">Espa&ntilde;ol</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
+
+        <div class="navbar-"></div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
 
+<!-- Casos de uso -->
+{% if user.is_authenticated %}
+    <div class="navbar" id="second-nav" role="navigation">
+        <div class="container-fluid topnav">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#second-navbar-collapse">
+                    <span class="sr-only">{% trans "Cambiar navegaci&oacute;n" %}</span>
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="second-navbar-collapse">
+                <ul class="nav navbar-nav">
+
+                    {% if request.user.is_superuser %}
+
+                        <li><a href="/admin/auth/user/">{% trans "Gestiona usuarios" %}</a></li>
+                        <li><a href="/admin/web/tag/">{% trans "Gestionar tags" %}</a></li>
+                        <li><a href="{% url 'gest_logging' log_file=0 %}">{% trans "Gestiona logs" %}</a></li>
+                        <li><a href="{% url 'database_backup' %}">{% trans "Gestionar copias de seguridad" %}</a></li>
+
+                    {% else %}
+
+                        <li><a href="{% url 'completar_perfil' %}">{% trans "Mi perfil" %}</a></li>
+                        <li><a href="{% url 'add_house' %}">{% trans "A&ntilde;adir casa" %}</a></li>
+
+                        <!-- Mostrar este boton si el usuario tiene alguna casa -->
+                        {% if request.user.casas.all %}
+                            <li><a href="{% url 'show_my_houses' %}">{% trans "Visualizar casas" %}</a></li>
+                        {% endif %}
+
+                        <li><a href="{% url 'busqueda' %}">{% trans "Buscar compa&ntilde;ero" %}</a></li>
+
+                        <li class="dropdown pull-right hidden-xs">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <span class="glyphicon glyphicon-cog"></span><span class="caret"></span></a>
+
+                            <ul class="dropdown-menu">
+                                <li><a style="color:#ff3338" href="{% url 'views.logout' %}">{% trans "Cerrar sesi&oacute;n" %}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{% url 'password_change' %}">{% trans "Cambiar contrase&ntilde;a" %}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{% url 'delete_user' %}">{% trans "Borrar cuenta" %}</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Desplegar dropdown si la pantalla es pequena -->
+                        <li class="visible-xs"><a href="{% url 'password_change' %}">{% trans "Cambiar contrase&ntilde;a" %}</a></li>
+                        <li class="visible-xs"><a href="{% url 'delete_user' %}">{% trans "Borrar cuenta" %}</a></li>
+
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}
 
 <!-- Page Content -->
 
 {% block contenido %}
 {% endblock %}
 
-</div>
-<!-- /.banner -->
-
 {% block footer %}
     {% include "web/es/footer.html" %}
 {% endblock %}
+
+{% block messages %}
+    {% include "web/es/messages.html" %}
+{% endblock %}
+
 </body>
 </html>

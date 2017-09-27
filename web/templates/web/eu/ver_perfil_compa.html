@@ -1,0 +1,32 @@
+{% extends 'web/eu/base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block title %}Ver perfil{% endblock %}
+
+{% block contenido %}
+    <div class="content-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="">
+                    <div class="panel panel-default  ">
+                        <div class="panel-heading"><h4>Kontaktu informazioa </h4></div>
+                        <ul class="list-group">
+                            {% if fon != '' %}
+                                <li class="list-group-item"> Telefono zenbakia: <span
+                                        class="label label-default "> {{ fon }}</span></li> {% endif %}
+                            {% if mail != '' %}
+                                <li class="list-group-item"> Posta elektroniko helbidea: <span
+                                        class="label label-default ">{{ mail }}</span></li> {% endif %}
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.container -->
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'web/es/base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% block contenido %}
+
+    <div class="content-section-a">
+        <div class="container">
+
+            <form method="POST" class="form-search">
+                {% csrf_token %}
+
+                <h3 class="text-center">Buscar compa&ntilde;eros de piso</h3>
+
+                <div class="form-category">
+
+                    {% bootstrap_label "Zona / ciudad de b&uacute;squeda:" %}
+                    {% bootstrap_field form.lookingIn show_label=false show_help=false %}
+
+                    <label>Sexo:</label>
+                    <div class="form-group">
+                        <label class="sr-only control-label" for="id_gender">Sexo</label>
+                        <select class="form-control" id="id_gender" name="gender" title="">
+                            <option value="" selected="selected">Sin especificar</option>
+                            <option value="H">Hombre</option>
+                            <option value="M">Mujer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="id_isSmoker">
+                                <input class="" id="id_isSmoker" name="isSmoker" type="checkbox"/>
+                                Fumador
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+
+            </form>
+
+        </div>
+        <!-- /.contenido -->
+    </div>
+    <!-- /.intro-header -->
+{% endblock %}

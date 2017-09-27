@@ -1,0 +1,129 @@
+{% extends 'web/eu/base.html' %}
+
+{% load staticfiles %}
+
+{% load bootstrap3 %}
+
+{% block contenido %}
+
+    <link href="{% static 'css/dropzone.css' %}" type="text/css" rel="stylesheet"/>
+
+    <script src="{% static 'js/dropzone.js' %}"></script>
+    <script type="text/javascript">
+        Dropzone.options.myDropzone = {
+            url: "#",
+            // Prevents Dropzone from uploading dropped files immediately
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            //probably with this it was easier to recover files
+            paramName: "file",
+            acceptedFiles: "image/*",
+            maxFilesize: 5.0,
+            maxFiles: 2,
+            parallelUploads: 10000,
+            uploadMultiple: true,
+
+
+            init: function () {
+                myDropzone = this;
+                // You might want to show the submit button only when
+                // files are dropped here:
+                this.on("addedfile", function (file) {
+                    if (document.querySelectorAll(".btremove").length > 0) {
+                        var sub = document.querySelector(".btremove");
+                        sub.parentNode.removeChild(sub);
+                        var textright = document.querySelector(".text-right");
+                        var cancel = document.querySelector(".btn-default");
+                        var element = document.createElement("button");
+                        element.className = "btn btn-primary";
+                        element.type = "button";
+
+                        var data = document.createTextNode("Guardar cambios");
+                        element.appendChild(data);
+                        textright.insertBefore(element, textright.firstChild);
+                        submitButton = element;
+
+                        submitButton.addEventListener("click", function () {
+                            var files = myDropzone.getAcceptedFiles();
+                            myDropzone.processFiles(files);
+                            var filesqueue = myDropzone.getQueuedFiles();
+                            for (var file in filesqueue) {
+                                myDropzone.processFile(file);
+                            }
+                            //myDropzone.processQueue();
+                            document.getElementById("myDropzone").submit();
+                            // Tell Dropzone to process all queued files.
+                        });
+                    }
+                });
+
+            }
+        };
+    </script>
+
+    <div class="content-section-a add-house">
+        <div class="container">
+            <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data">
+                ​
+                {% csrf_token %}
+
+                <div class="description">
+                     <h3>Etxe berri bat gehitu</h3>
+                     <p>Hurrengo galdera sorta bete etxe berri bat gehitzeko</p>
+                </div>
+
+                <!-- Formulario de aniadir casa -->
+                ​<div class="form-category">
+
+                    {% bootstrap_label "Hiria:" %}
+                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
+
+                    <label>Helbidea:</label>
+                    <div class="form-group">
+                        <label class="sr-only control-label" for="id_direccion">Direcci&oacute;n</label>
+                        <textarea class="form-control" cols="40" id="id_direccion" name="direccion"
+                        required="required" rows="1" title="" placeholder="Etxearen / pisuaren helbidea"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                        {% bootstrap_label "Alkilatzeko gela kopurua:" %}
+                        {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                        </div>
+                        <div class="col-md-6">
+                        {% bootstrap_label "Eskuragarri dauden logela kopurua:" %}
+                        {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                        </div>
+                    </div>
+
+                    {% bootstrap_label "Etxearen / pisuaren deskribapena:" %}
+                    {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
+
+                </div>
+
+                <div class="form-category">
+
+                    {% bootstrap_label "Akura-saria:" %}
+                    {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
+
+                    {% bootstrap_label "Bestelako gastuak:" %}
+                    {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
+
+                    <div class="form-group">
+                        <div class="checkbox"><label for="id_alquilerPorHabitaciones">
+                            {{ formCasa.alquilerPorHabitaciones }}
+                            Gelatiko alokairua</label></div>
+                    </div>
+
+                </div>
+
+                <div class='text-right'>
+                    {% bootstrap_button "Aldaketak gorde" button_type="submit" button_class="btn-primary btremove" %}
+                    <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Ezeztatu</a>
+                </div>
+
+            </form>
+        </div>
+        <!-- /.content -->
+    </div>
+
+{% endblock %}

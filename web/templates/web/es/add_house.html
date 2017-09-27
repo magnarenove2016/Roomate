@@ -1,5 +1,7 @@
 {% extends 'web/es/base.html' %}
+
 {% load staticfiles %}
+
 {% load bootstrap3 %}
 
 {% block contenido %}
@@ -59,48 +61,70 @@
         };
     </script>
 
-
-    <a name="contenido"></a>
-    <div class="content-section-a">
+    <div class="content-section-a add-house">
         <div class="container">
-            <h1>Por favor, completa el siguiente formulario</h1>
             <form method="POST" class="container dropzone" id="myDropzone" enctype="multipart/form-data">
                 ​
                 {% csrf_token %}
-                <h3>Crea tu casa</h3>
 
-                <hr>  <!-- Formulario de aniadir casa -->
-                ​
-                {% bootstrap_label "Ciudad:" %}
-                {% bootstrap_field formCasa.ciudad show_label=false show_help=false %}
+                <div class="description">
+                     <h3>A&ntilde;ade una nueva casa</h3>
+                     <p>Rellena el siguiente formulario para a&ntilde;adir una nueva casa</p>
+                </div>
 
-                {% bootstrap_label "Número de habitaciones a alquilar:" %}
-                {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                <!-- Formulario de aniadir casa -->
+                ​<div class="form-category">
 
-                {% bootstrap_label "Número de habitaciones disponibles:" %}
-                {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                    {% bootstrap_label "Ciudad:" %}
+                    {% bootstrap_field formCasa.ciudad show_label=false show_help=false field_class="hide-placeholder"%}
 
-                {% bootstrap_label "Descipción de la casa / del piso:" %}
-                {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
+                    <label>Direcci&oacute;n:</label>
+                    <div class="form-group">
+                        <label class="sr-only control-label" for="id_direccion">Direcci&oacute;n</label>
+                        <textarea class="form-control" cols="40" id="id_direccion" name="direccion"
+                        required="required" rows="1" title="" placeholder="Direcci&oacute;n de la casa / del piso "></textarea>
+                    </div>
 
-                {% bootstrap_label "¿Se alquila la casa / el piso por habitaciones?" %}
-                {% bootstrap_field formCasa.alquilerPorHabitaciones show_label=false show_help=false %}
+                    <div class="row">
+                        <div class="col-md-6">
+                        {% bootstrap_label "N&uacute;mero de habitaciones a alquilar:" %}
+                        {% bootstrap_field formCasa.numHabitaciones show_label=false show_help=false %}
+                        </div>
+                        <div class="col-md-6">
+                        {% bootstrap_label "N&uacute;mero de habitaciones disponibles:" %}
+                        {% bootstrap_field formCasa.numHabitacionesDisponibles show_label=false show_help=false %}
+                        </div>
+                    </div>
 
-                {% bootstrap_label "Precio del alquiler:" %}
-                {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
+                    {% bootstrap_label "Descripci&oacute;n de la casa / del piso:" %}
+                    {% bootstrap_field formCasa.descripcion show_label=false show_help=false %}
 
-                {% bootstrap_label "Gastos adicionales:" %}
-                {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
+                </div>
+
+                <div class="form-category">
+
+                    {% bootstrap_label "Precio del alquiler:" %}
+                    {% bootstrap_field formCasa.precioAlquiler show_label=false show_help=false %}
+
+                    {% bootstrap_label "Gastos adicionales:" %}
+                    {% bootstrap_field formCasa.gastosComplementarios show_label=false show_help=false %}
+
+                    <div class="form-group">
+                        <div class="checkbox"><label for="id_alquilerPorHabitaciones">
+                            {{ formCasa.alquilerPorHabitaciones }}
+                            Alquiler por habitaciones</label></div>
+                    </div>
+
+                </div>
 
                 <div class='text-right'>
                     {% bootstrap_button "Guardar cambios" button_type="submit" button_class="btn-primary btremove" %}
-                    {% bootstrap_button "Cancelar" button_type="link" href="/" button_class="btn-default" %}
+                    <a href="{% url 'show_my_houses' %}" class="btn btn-danger">Cancelar</a>
                 </div>
+
             </form>
-
-
         </div>
-        <!-- /.contenido -->
+        <!-- /.content -->
     </div>
 
 {% endblock %}

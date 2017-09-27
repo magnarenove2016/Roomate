@@ -1,0 +1,52 @@
+{% load staticfiles %}
+
+<!-- Si el usuario ya ha hecho login -->
+{% if user.is_authenticated%}
+    <li>
+        <p class="navbar-text">
+            Kaixo {{ user.username }}!
+                {% if user.is_superuser %}(<a href="{% url 'views.logout' %}">Saioa amaitu</a>){% endif %}
+        </p>
+    </li>
+
+<!-- el usuario no se ha logeado -->
+{% elif not user.is_authenticated %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Sartu</b> <span class="caret"></span></a>
+
+        <!-- Dropdown especifico para el login -->
+        <ul id="login-dp" class="dropdown-menu">
+            <li>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <form class="navbar-form navbar-center" role="form" action="/accounts/login/" method="post"
+                              id="login-nav">{% csrf_token %}
+                            <div class="form-group">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <label class="control-label">Erabiltzailea</label>
+                                <input type="text" name="username" id="username" required class="form-control"
+                                       placeholder="Erabiltzailea">
+                            </div>
+
+                            <div class="form-group">
+                                <span class="glyphicon glyphicon-lock"></span>
+                                <label class="control-label">Pasahitza</label>
+                                <input type="password" name="password" id="password" required class="form-control"
+                                       placeholder="Pasahitza">
+                            </div>
+
+                            <a href="/accounts/password/reset/">Zure pasahitza ahaztu duzu?</a>
+
+                            <div class="form-group text-center buttons">
+                                <input type="submit" value="Sartu" class="btn btn-primary">
+                                <a href="/register/" class="btn btn-default">Erregistratu</a>
+                            </div>
+
+                        </form>
+
+                    </div>
+            </li>
+        </ul>
+    </li>
+{% endif %}

@@ -1,8 +1,7 @@
-# coding: latin1
 from django.contrib.auth.models import User
 from django.test import TestCase
 from unittest import skip
-
+import html
 
 # -------------------------------------------------------------------------------
 
@@ -12,6 +11,11 @@ class DefaultTestCase(TestCase):
         self.username = "user1"
         self.password = "pass1"
         self.email = "false@email.com"
+
+        session = self.client.session
+        session["lang"] = 'es'
+        session.save()
+
         User.objects.create_user(self.username, self.email, self.password)
 
 
@@ -119,9 +123,8 @@ class PasswordChangeTest(DefaultTestCase):
         self.assertTrue(user.check_password(self.password))
 
         # Comprobar que se muestran los mensajes de error correspondientes
-        self.assertFormError(response, 'form', 'old_password',
-                             'Su contraseña antigua es incorrecta. Por favor, vuelva a introducirla. ')
-        self.assertFormError(response, 'form', 'new_password2', 'Los dos campos de contraseña no coinciden.')
+        self.assertFormError(response, 'form', 'old_password', html.unescape('Su contrase&ntilde;a antigua es incorrecta. Por favor, vuelva a introducirla. '))
+        self.assertFormError(response, 'form', 'new_password2', html.unescape('Los dos campos de contrase&ntilde;a no coinciden.'))
 
 
 # -------------------------------------------------------------------------------

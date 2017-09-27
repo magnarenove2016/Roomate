@@ -1,0 +1,57 @@
+<script>
+    jQuery(function ($) {
+        $('.close').on("click", function (e) {
+            $(this).parent().fadeOut();
+        });
+    });
+</script>
+
+<div class="messages">
+    {% for message in messages %}
+        <!-- Mensajes de error -->
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+
+            <div class="alert-message error">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                {{ message }}
+            </div>
+
+        <!-- Mensajes informativos -->
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+
+            <div class="alert-message info">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="glyphicon glyphicon glyphicon-info-sign"></span>
+                {{ message }}
+            </div>
+
+        <!-- Mensajes de exito -->
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+
+            <div class="alert-message success">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+                {{ message }}
+            </div>
+
+        <!-- Mensajes de aviso -->
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+
+            <div class="alert-message warning">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                {{ message }}
+            </div>
+
+        {% endif %}
+    {% endfor %}
+</div>

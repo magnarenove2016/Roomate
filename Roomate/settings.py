@@ -12,8 +12,12 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,7 +27,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'f&2jh2uw)mlq@!1g=#ok_1!rlxu95q_oal3&t%lpk6ux!yvebl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
 	'bootstrap3',
     'dbbackup',  # django-dbbackup
     'dropbox',
+    'storages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -48,6 +52,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -134,20 +139,31 @@ SERVER_EMAIL = 'no-reply@magnasis.com'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
+AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = 'A3B2628D2A9407D0F3AFFFC3C7AC97B1'
+AWS_SECRET_ACCESS_KEY = '1a0e704c7d207a6a7ece1ed0c6747abc564d5e07'
+AWS_STORAGE_BUCKET_NAME = 'magnasis'
+AWS_S3_CUSTOM_DOMAIN ='%s.rest.s3for.me' % AWS_STORAGE_BUCKET_NAME
+
+MEDIA_URL = 'http://%s/' % AWS_S3_CUSTOM_DOMAIN
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+
+
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
 APPEND_SLASH = True
 
 #Clave publica para usar en ReCaptcha
-RECAPTCHA_PUBLIC_KEY = '6LccDhkTAAAAALWXFAQSivIXYLNsiHL8pUElVzGQ'
-RECAPTCHA_PRIVATE_KEY = '6LccDhkTAAAAAKwu3cOcPn3sW0x_oIcaSKjTzq19'
+RECAPTCHA_PUBLIC_KEY = '6LeuGRsTAAAAAH_mhWMchrE-CzOsUBJCndfyyeWu'
+RECAPTCHA_PRIVATE_KEY = '6LeuGRsTAAAAACz4b37EwdxeD4VX5VZ4RUcLL-yK'
 NOCAPTCHA = True
 
 
 import dj_database_url
-DATABASES['default'] = dj_database_url.config()
+DATABASES['default'] = dj_database_url.config(conn_max_age=500)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -155,7 +171,84 @@ ALLOWED_HOSTS = ['*']
 
 DEBUG = False
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        # Formatos en los que se imprimen los logs. Es como dar formato en un printf de c. Sirven caracteres especiales como '\n', '\r', etc.
+        # Con etiquetas como %(atributo)s se pueden anadir los atributos de un Record. Todos los record tienen los mismos atributos.
+        # Aqui la lista: https://docs.python.org/2/library/logging.html#logrecord-attributes
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '[%(asctime)s] %(levelname)s %(message)s'
+        },
+        'dbVerbose':{
+            'format' : "[%(asctime)s] %(levelname)s \n    duration: %(duration)s\n   operation: %(sql).10s\n   parameters: %(params)s\n",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        }
+    },
+    'handlers': {
+        # Los Handlers determinan el proceso que sequira un Record. Basicamente dice a donde ira el Record, si a un fichero,
+        # un socket, un correo electronico, etc. Solamente trataran aqullos Records que tengan el mismo o superior nivel.
+        # Ademas, los Handlers pueden aplicar uno o mas filtros para decidir si tratar un Record o no.
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'roomate.log',
+            'formatter': 'simple'
+        },
+        'sessionfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'session.log',
+            'formatter': 'verbose'
+        },
+        'DBQfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'dbAccess.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        # Los Loggers son los objetos que crean y envian los records a los Handlers. Solo enviaran aquellos Redors que tengan
+        # el mismo o superior nivel. En tu programa instancias uno de los Loggers a continuacion declarados. A traves de el
+        # envias Records. Ej: loggerDejemplo = logging.getLogger('nombre')
+        #                     loggerDejemplo.info("mensaje del record") <------ hay una funcion para lanzar Records de cada
+        #                                                                       nivel.
+        # Los niveles son: DEBUG, INFO, WARNING, ERROR y CRITICAL
+        'django': {
+            'handlers':['null'],
+            'propagate': False,
+            'level':'INFO',
+        },
+        'web': {
+            'handlers': ['file','sessionfile'],
+            'level': 'INFO',
+        },
+        'database': {
+            'handlers': ['file','DBQfile'],
+            'level': 'INFO',
+        },
+        # Este Logger se activara solo enviando un Record por cada sentencia SQL, y solo lo hara si la variable DEBUG de settings.py esta en True.
+        # Todos los Records que envie seran de nivel DEBUG (el mas bajo) y por tanto, si se quiere poner en debug pero que no se hagan logs de las
+        # instrucciones sql (pues tienen un gran coste), se puede cambiar el nivel del logger a uno superior (como INFO o ERROR).
+#        'django.db.backends': {
+#            'handlers': ['DBQfile'],
+#            'level': 'INFO'
+#       }
+    }
+}
+
+
 try:
     from .local_settings import *
 except ImportError:
     pass
+
